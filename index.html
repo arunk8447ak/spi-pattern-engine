@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SPI Pattern Engine — Live Multi-Model Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#05050f;color:#dde2ff;font-family:'Inter',sans-serif;min-height:100vh;padding:40px 20px;display:flex;flex-direction:column;align-items:center}
+.container{max-width:1100px;width:100%}
+header{text-align:center;margin-bottom:40px}
+h1{font-family:'Orbitron',sans-serif;font-size:32px;font-weight:900;color:#00d4ff;letter-spacing:3px;margin-bottom:10px}
+p.sub{font-size:14px;color:#828580;max-width:650px;margin:0 auto;line-height:1.6}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;margin-bottom:40px}
+.card{background:#0f0f27;border:1px solid #1c1c38;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:14px;transition:all .3s ease;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-5px);border-color:#26265a;box-shadow:0 10px 30px rgba(0,0,0,0.5)}
+.badge{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;padding:4px 10px;border-radius:20px;letter-spacing:1px;width:fit-content}
+.title{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:700;color:#fff}
+.desc{font-size:12px;color:#828580;line-height:1.6;flex:1}
+.btn{display:inline-block;text-align:center;background:rgba(255,255,255,0.05);border:1px solid #26265a;color:#fff;text-decoration:none;padding:12px;border-radius:10px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;transition:all .2s}
+.btn:hover{background:rgba(255,255,255,0.15)}
+.v5-btn{background:rgba(251,191,36,0.15);border-color:#fbbf24;color:#fbbf24}
+.v5-btn:hover{background:rgba(251,191,36,0.25)}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>SPI PATTERN ENGINE</h1>
+    <p class="sub">Sequential Numeric Pattern Recognition & Walk-Forward Adaptive Modeling Portal. Launch any model version below.</p>
+  </header>
+  
+  <div class="grid">
+    <!-- V5 Card -->
+    <div class="card" style="border-color:rgba(251,191,36,0.4);background:linear-gradient(135deg,rgba(251,191,36,0.05),#0f0f27)">
+      <div class="badge" style="background:rgba(251,191,36,0.2);color:#fbbf24;border:1px solid #fbbf24">⚡ RECOMMENDED — V5 SAGE</div>
+      <div class="title" style="color:#fbbf24">Version 5: SAGE Adaptive Engine</div>
+      <div class="desc">Includes 32 Out-of-Sample Validated Golden Rules. Automatically evaluates trigger conditions daily with fallback to V3 Math Jumps.</div>
+      <a href="v5.html" class="btn v5-btn">LAUNCH V5 ENGINE ▶</a>
+    </div>
+
+    <!-- V4 Card -->
+    <div class="card" style="border-color:rgba(168,85,247,0.3)">
+      <div class="badge" style="background:rgba(168,85,247,0.15);color:#c084fc;border:1px solid #a855f7">★ V4 CONSENSUS</div>
+      <div class="title" style="color:#c084fc">Version 4: Consensus Engine</div>
+      <div class="desc">Multi-model voting engine combining 3 independent mathematical logic streams for exact single-number top picks.</div>
+      <a href="v4.html" class="btn">LAUNCH V4 ENGINE ▶</a>
+    </div>
+
+    <!-- V3 Card -->
+    <div class="card" style="border-color:rgba(255,96,48,0.3)">
+      <div class="badge" style="background:rgba(255,96,48,0.15);color:#ff6030;border:1px solid #ff6030">📊 V3 BASELINE</div>
+      <div class="title" style="color:#ff6030">Version 3: Math Jumps</div>
+      <div class="desc">Fixed 8-month validated offset baseline model delivering 8.43% Top-8 accuracy across 2,455 historical test days.</div>
+      <a href="v3.html" class="btn">LAUNCH V3 ENGINE ▶</a>
+    </div>
+
+    <!-- V2 Card -->
+    <div class="card">
+      <div class="badge" style="background:rgba(16,208,112,0.15);color:#10d070;border:1px solid #10d070">💚 V2 ENGINE</div>
+      <div class="title" style="color:#10d070">Version 2: Dual Offset Model</div>
+      <div class="desc">Dual-market offset synthesizer model.</div>
+      <a href="v2.html" class="btn">LAUNCH V2 ENGINE ▶</a>
+    </div>
+
+    <!-- V1 Card -->
+    <div class="card">
+      <div class="badge" style="background:rgba(0,212,255,0.15);color:#00d4ff;border:1px solid #00d4ff">💙 V1 BASE</div>
+      <div class="title" style="color:#00d4ff">Version 1: Core Foundation</div>
+      <div class="desc">Original baseline single-sequence market algorithm.</div>
+      <a href="v1.html" class="btn">LAUNCH V1 ENGINE ▶</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

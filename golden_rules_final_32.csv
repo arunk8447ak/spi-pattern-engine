@@ -1,0 +1,33 @@
+Rank,Source_Market,Source_Num,Target_Market,Transform,Predicted_Val,Window,Lag,Confidence_Score,Description
+1,Ghaziabad,85,Faridabad,Units,5,,0,57.1%,Ghaziabad 85 -> Faridabad Units=5
+2,Faridabad,96,Ghaziabad,Units,6,,0,50.0%,Faridabad 96 -> Ghaziabad Units=6
+3,Faridabad,7,Desawar,Full,7,2,0,50.0%,Faridabad 7 -> Desawar 5-9
+4,Faridabad,7,Desawar,Units,7,,0,50.0%,Faridabad 7 -> Desawar Units=7
+5,Faridabad,37,Desawar,Rashi_Inner,87,2,0,50.0%,Faridabad 37 -> Desawar 85-89
+6,Ghaziabad,30,Desawar,Rashi_Full,85,2,0,50.0%,Ghaziabad 30 -> Desawar 83-87
+7,Ghaziabad,47,Faridabad,Full,47,2,0,50.0%,Ghaziabad 47 -> Faridabad 45-49
+8,Gali,33,Ghaziabad,Full,33,2,0,50.0%,Gali 33 -> Ghaziabad 31-35
+9,Gali,33,Ghaziabad,Palti,33,2,0,50.0%,Gali 33 -> Ghaziabad 31-35 (Palti)
+10,Gali,35,Ghaziabad,Units,5,,0,42.9%,Gali 35 -> Ghaziabad Units=5
+11,Gali,83,Ghaziabad,Units,3,,0,40.0%,Gali 83 -> Ghaziabad Units=3
+12,Faridabad,75,Ghaziabad,Palti,57,2,0,40.0%,Faridabad 75 -> Ghaziabad 55-59
+13,Faridabad,36,Ghaziabad,Tens,3,,0,40.0%,Faridabad 36 -> Ghaziabad Tens=3
+14,Ghaziabad,86,Desawar,Tens,8,,0,40.0%,Ghaziabad 86 -> Desawar Tens=8
+15,Gali,59,Ghaziabad,Full,59,2,0,40.0%,Gali 59 -> Ghaziabad 57-61
+16,Gali,1,Desawar,Rashi_Outer,6,2,0,40.0%,Gali 1 -> Desawar 4-8
+17,Faridabad,28,Gali,Rashi_Outer,23,2,0,37.5%,Faridabad 28 -> Gali 21-25
+18,Faridabad,59,Gali,Full,59,2,0,37.5%,Faridabad 59 -> Gali 57-61
+19,Ghaziabad,17,Desawar,Palti,71,2,0,37.5%,Ghaziabad 17 -> Desawar 69-73
+20,Desawar,85,Faridabad,Units,5,,0,37.5%,Desawar 85 -> Faridabad Units=5
+21,Ghaziabad,78,Faridabad,Tens,7,,1,50.0%,Ghaziabad 78 -> Faridabad Tens=7
+22,Gali,99,Faridabad,Units,9,,1,40.0%,Gali 99 -> Faridabad Units=9
+23,Ghaziabad,16,Faridabad,Units,5,,3,50.0%,Ghaziabad 16 -> Faridabad Units=5
+24,Desawar,46,Faridabad,Rashi_Full,47,2,5,37.5%,Desawar 46 -> Faridabad 47-51
+25,Gali,32,Desawar,Tens,1,4,0,50.0%,Gali 32 -> Desawar 10-15
+26,Ghaziabad,88,Faridabad,Full,88,2,0,28.6%,Ghaziabad 88 -> Faridabad 86-90
+27,Desawar,76,Faridabad,Tens,5,4,0,33.3%,Desawar 76 -> Faridabad 50-59
+28,Gali,30,Ghaziabad,Full,12,7,0,42.9%,Gali 30 -> Ghaziabad 12-19
+29,Ghaziabad,86,Gali,Tens,6,4,0,40.0%,Ghaziabad 86 -> Gali 6-10
+30,Faridabad,25,Ghaziabad,Units,1,,0,50.0%,Faridabad 25 -> Ghaziabad Units=1
+31,Desawar,16,Ghaziabad,Full,14,4,0,40.0%,Desawar 16 -> Ghaziabad 14-18
+32,Ghaziabad,78,Faridabad,Units,8,,0,33.3%,Ghaziabad 78 -> Faridabad Units=8
