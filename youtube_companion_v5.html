@@ -2362,8 +2362,21 @@ var _lastFetchedByDate = {};
 
 // ─── GITHUB SYNC ────────────────────────────────────────────────────────────
 var GH_SETTINGS_KEY = 'SPI_GITHUB_SYNC_SETTINGS';
-function getGHSettings() { try { return JSON.parse(localStorage.getItem(GH_SETTINGS_KEY) || 'null'); } catch(e) { return null; } }
-function saveGHSettings(s) { localStorage.setItem(GH_SETTINGS_KEY, JSON.stringify(s)); }
+function getGHSettings() {
+    try {
+        var s = JSON.parse(localStorage.getItem(GH_SETTINGS_KEY) || 'null');
+        if (!s) {
+            s = {
+                owner: 'arunk8447ak',
+                repo: 'spi-pattern-engine',
+                file: 'spi_results.json',
+                branch: 'main',
+                token: ''
+            };
+        }
+        return s;
+    } catch(e) { return { owner: 'arunk8447ak', repo: 'spi-pattern-engine', file: 'spi_results.json', branch: 'main' }; }
+}
 
 async function githubPull() {
     var s = getGHSettings();
