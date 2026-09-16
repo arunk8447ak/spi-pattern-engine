@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SPI Master Portal • Suite & Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #070913;
+    --card: #0f172a;
+    --border: #1e293b;
+    --primary: #3b82f6;
+    --gold: #f59e0b;
+    --green: #10b981;
+    --purple: #a855f7;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    padding: 20px 16px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container { width: 100%; max-width: 500px; }
+
+  header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, #60a5fa, #a855f7, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 6px;
+  }
+
+  .subtitle { font-size: 13px; color: var(--muted); }
+
+  .hub-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .app-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 18px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
+
+  .app-card:active {
+    transform: scale(0.98);
+    background: #1e293b;
+  }
+
+  .app-card.featured {
+    background: linear-gradient(135deg, #1e1b4b, #0f172a);
+    border-color: #6366f1;
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+  }
+
+  .app-card.featured-gold {
+    background: linear-gradient(135deg, #2e1065, #0f172a);
+    border-color: #a855f7;
+  }
+
+  .card-left { display: flex; align-items: center; gap: 14px; }
+  .app-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    background: rgba(255,255,255,0.06);
+    flex-shrink: 0;
+  }
+
+  .app-info h2 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+  .app-info p { font-size: 12px; color: var(--muted); }
+
+  .badge {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+  }
+  .badge-hot { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+  .badge-live { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+  .badge-std { background: rgba(255, 255, 255, 0.08); color: var(--muted); }
+
+  .arrow { font-size: 16px; color: var(--muted); }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin: 14px 4px 8px 4px;
+  }
+
+  .footer-tip {
+    text-align: center;
+    font-size: 12px;
+    color: #64748b;
+    line-height: 1.6;
+    margin-top: auto;
+    padding: 16px 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="brand">SPI MASTER SUITE</div>
+    <div class="subtitle">Quick Launch Portal for Mobile & PC</div>
+  </header>
+
+  <div class="section-label">🎯 Management & Accounts</div>
+  <div class="hub-grid">
+    <a href="tracker.html" class="app-card featured">
+      <div class="card-left">
+        <div class="app-icon" style="background: rgba(16, 185, 129, 0.2);">💰</div>
+        <div class="app-info">
+          <h2>Money Tracker (Automated)</h2>
+          <p>Faridabad auto-ledger, balances & hit payouts</p>
+        </div>
+      </div>
+      <span class="badge badge-hot">LIVE</span>
+    </a>
+  </div>
+
+  <div class="section-label">⚡ Primary Prediction Models</div>
+  <div class="hub-grid">
+    <a href="youtube_companion_v6.html" class="app-card featured-gold">
+      <div class="card-left">
+        <div class="app-icon" style="background: rgba(168, 85, 247, 0.2);">🔮</div>
+        <div class="app-info">
+          <h2>YouTube Companion V6</h2>
+          <p>SAGE Engine + Weather Ensemble</p>
+        </div>
+      </div>
+      <span class="badge badge-hot">V6 PRO</span>
+    </a>
+
+    <a href="youtube_companion_v5.html" class="app-card">
+      <div class="card-left">
+        <div class="app-icon" style="background: rgba(59, 130, 246, 0.2);">📊</div>
+        <div class="app-info">
+          <h2>YouTube Companion V5</h2>
+          <p>BEST_LOGIC + Live Satta Auto-Sync</p>
+        </div>
+      </div>
+      <span class="badge badge-live">V5 FIXED</span>
+    </a>
+  </div>
+
+  <div class="section-label">📈 Earlier Companion Models</div>
+  <div class="hub-grid">
+    <a href="youtube_companion%20v4.html" class="app-card">
+      <div class="card-left">
+        <div class="app-icon">4️⃣</div>
+        <div class="app-info">
+          <h2>YouTube Companion V4</h2>
+          <p>4-Market & History Engine</p>
+        </div>
+      </div>
+      <span class="badge badge-std">V4</span>
+    </a>
+
+    <a href="youtube_companion%20v3.html" class="app-card">
+      <div class="card-left">
+        <div class="app-icon">3️⃣</div>
+        <div class="app-info">
+          <h2>YouTube Companion V3</h2>
+          <p>Faridabad Gold Cluster Model</p>
+        </div>
+      </div>
+      <span class="badge badge-std">V3</span>
+    </a>
+
+    <a href="youtube_companion%20v2.html" class="app-card">
+      <div class="card-left">
+        <div class="app-icon">2️⃣</div>
+        <div class="app-info">
+          <h2>YouTube Companion V2</h2>
+          <p>V2 Core Model</p>
+        </div>
+      </div>
+      <span class="badge badge-std">V2</span>
+    </a>
+
+    <a href="youtube_companion%20v1.html" class="app-card">
+      <div class="card-left">
+        <div class="app-icon">1️⃣</div>
+        <div class="app-info">
+          <h2>YouTube Companion V1</h2>
+          <p>V1 Base Model</p>
+        </div>
+      </div>
+      <span class="badge badge-std">V1</span>
+    </a>
+  </div>
+
+  <div class="footer-tip">
+    💡 <strong>Tip for Mobile:</strong> Tap your browser's share icon & select <strong>"Add to Home Screen"</strong> for 1-tap app launch!
+  </div>
+</div>
+
+</body>
+</html>
