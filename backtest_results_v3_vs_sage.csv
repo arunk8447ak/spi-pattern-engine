@@ -1,7 +1,0 @@
-Metric,V3 Baseline,SAGE V5 Engine,Lift / Difference
-Total Days Evaluated,"2,455 days","2,455 days",Same baseline
-Overall Top-8 Accuracy,8.43% (207 hits),8.75% (215 hits),+8 hits (+0.32%)
-Trigger Day Coverage,N/A,23.4% of days (574 days),+574 high confidence days
-Trigger Day Top-8 Accuracy,8.43%,44.8% Top-8,+36.37% boost on trigger days
-Negative Months Count,5 out of 22 months,1 out of 22 months,80% reduction in drawdown
-Best Performing Market,Gali (9.8%),Faridabad + Gali (10.2%),Consistent lift across all markets
