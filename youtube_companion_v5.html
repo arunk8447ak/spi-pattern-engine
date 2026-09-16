@@ -2272,94 +2272,99 @@ function mergeTKData(local, remote) {
   return changed;
 }
 
+
+// ─── STANDARDIZED CSV EXPORT WITH HIT / MISS & MISS DIFFERENCE ──────────────
+function getMissDiffAnalysis(preds, actual) {
+  if (actual === null || actual === undefined || isNaN(actual) || !preds || !preds.length) {
+    return { hitStr: "", diffStr: "" };
+  }
+  var act = parseInt(actual, 10);
+  if (preds.indexOf(act) !== -1) {
+    return { hitStr: "Exact hit", diffStr: "0" };
+  }
+  var minAbs = 999;
+  var bestDiff = 0;
+  preds.forEach(function(p) {
+    var d = p - act;
+    if (Math.abs(d) < minAbs) {
+      minAbs = Math.abs(d);
+      bestDiff = d;
+    }
+  });
+  var diffLabel = ">+-2";
+  if (minAbs === 1) diffLabel = (bestDiff > 0 ? "+1" : "-1");
+  else if (minAbs === 2) diffLabel = (bestDiff > 0 ? "+2" : "-2");
+  return { hitStr: "Exact miss", diffStr: diffLabel };
+}
+
 function exportDashboardToCSV() {
   var csv = [];
+  var mList = (typeof MKTS !== 'undefined' && MKTS && MKTS.length) ? MKTS : [
+    {id:"Desawar",name:"Desawar"},
+    {id:"Faridabad",name:"Faridabad"},
+    {id:"Ghaziabad",name:"Ghaziabad"},
+    {id:"Gali",name:"Gali"}
+  ];
+
   var headers = ["Date"];
-  // Per-market columns: Predicted, Actual, Hit, Main Hit, Haruf Andar, Haruf Bahar, Haruf Hit
-  MKTS.forEach(function(m) {
-    headers.push(m.id + " Predicted");
-    headers.push(m.id + " Actual");
-    headers.push(m.id + " Hit");
-    headers.push(m.id + " Main Hit");
-    headers.push(m.id + " Haruf Andar");
-    headers.push(m.id + " Haruf Bahar");
-    headers.push(m.id + " Haruf Hit");
+  mList.forEach(function(m) {
+    var mName = m.name || m.id;
+    headers.push(mName + " Predicted");
+    headers.push(mName + " Actual");
+    headers.push(mName + " Result");
+    headers.push(mName + " Miss Difference");
   });
   csv.push(headers.join(","));
 
-  var td = today();
+  var td = (typeof today === 'function') ? today() : new Date().toISOString().slice(0, 10);
   for (var i = 210; i >= 0; i--) {
-    var d = addD(td, -i);
+    var d = (typeof addD === 'function') ? addD(td, -i) : (function(cur, off){
+      var dt = new Date(cur); dt.setDate(dt.getDate() + off); return dt.toISOString().slice(0, 10);
+    })(td, -i);
+
     var row = [d];
     var hasData = false;
 
-    MKTS.forEach(function(m) {
-      var a = (ACT[m.id] && ACT[m.id][d] !== undefined) ? ACT[m.id][d] : null;
-      var p = ypePred(m.id, d);
+    mList.forEach(function(m) {
+      var a = (typeof ACT !== 'undefined' && ACT[m.id]) ? ACT[m.id][d] : (typeof TK !== 'undefined' && TK[m.id] ? TK[m.id][d] : null);
+      if (a === undefined) a = null;
+      var p = (typeof ypePred === 'function') ? ypePred(m.id, d) : null;
 
-      var pStr = "", aStr = "", hitStr = "", mainHitStr = "", harufA = "", harufB = "", harufHitStr = "";
-
+      var pStr = "";
+      var numList = [];
       if (p) {
         var clArr = p.cluster || [p.j1, p.j2];
-        clArr = clArr.slice(0, 8);
-        pStr = clArr.map(p2).join(" ");
-        // m1, m2
-        var m1 = p.j1 !== undefined ? p.j1 : (clArr[0] !== undefined ? clArr[0] : null);
-        var m2 = p.j2 !== undefined ? p.j2 : (clArr[1] !== undefined ? clArr[1] : null);
-        harufA = m1 !== null && m1 !== undefined ? String(Math.floor(m1/10)) : "";
-        harufB = m1 !== null && m1 !== undefined ? String(m1 % 10) : "";
-
-        if (a !== null && a !== undefined) {
-          // Hit: actual in any of 8 cluster numbers
-          hitStr = clArr.indexOf(a) >= 0 ? "HIT" : "MISS";
-          // Main Hit: actual = m1 or m2
-          var isMH = (m1 !== null && a === m1) || (m2 !== null && a === m2);
-          mainHitStr = isMH ? "MAIN HIT" : (clArr.indexOf(a) >= 0 ? "CLUSTER HIT" : "MISS");
-          // Haruf Hit
-          if (m1 !== null && m1 !== undefined) {
-            var andar = Math.floor(m1/10);
-            var bahar = m1 % 10;
-            var actA = Math.floor(a/10);
-            var actB = a % 10;
-            if (actA === andar) harufHitStr = "ANDAR";
-            else if (actB === bahar) harufHitStr = "BAHAR";
-            else harufHitStr = "MISS";
-          }
-        }
+        numList = clArr.slice(0, 8);
+        pStr = numList.map(function(n){ return String(n).padStart(2, '0'); }).join(" ");
       }
+      var aStr = (a !== null && !isNaN(a)) ? String(a).padStart(2, '0') : "";
+      var analysis = getMissDiffAnalysis(numList, a);
 
-      if (a !== null && a !== undefined) { aStr = p2(a); }
       if (aStr || pStr) hasData = true;
-
       row.push('"' + pStr + '"');
       row.push('"' + aStr + '"');
-      row.push('"' + hitStr + '"');
-      row.push('"' + mainHitStr + '"');
-      row.push('"' + harufA + '"');
-      row.push('"' + harufB + '"');
-      row.push('"' + harufHitStr + '"');
+      row.push('"' + analysis.hitStr + '"');
+      row.push('"' + analysis.diffStr + '"');
     });
 
-    if (hasData) csv.push(row.join(","));
+    if (hasData) {
+      csv.push(row.join(","));
+    }
   }
 
   var csvStr = csv.join("\n");
   var blob = new Blob([csvStr], { type: 'text/csv;charset=utf-8;' });
-  var link = document.createElement("a");
   var url = URL.createObjectURL(blob);
+  var link = document.createElement("a");
   link.setAttribute("href", url);
-  link.setAttribute("download", "spi_predictions_7months.csv");
-  link.style.visibility = 'hidden';
+  var title = (typeof docTitle !== 'undefined') ? docTitle : "SPI_Predictions";
+  link.setAttribute("download", title + "_" + td + ".csv");
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
 }
-
-window.openCloudSyncModal = openCloudSyncModal;
-window.closeCloudSyncModal = closeCloudSyncModal;
-window.saveCloudSyncSettings = saveCloudSyncSettings;
-window.copyAppsScriptCode = copyAppsScriptCode;
 window.exportDashboardToCSV = exportDashboardToCSV;
+
 
 
 // ─── SMART AUTO-FETCH & 15-MIN BUFFER SCHEDULER FOR SATTA-RESULTS.COM ───

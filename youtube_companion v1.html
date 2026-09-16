@@ -875,6 +875,100 @@ setTimeout(function(){
   if(el&&el.textContent.indexOf('ERROR')<0) el.remove();
 },5000);
 
+
+
+// ─── STANDARDIZED CSV EXPORT WITH HIT / MISS & MISS DIFFERENCE ──────────────
+function getMissDiffAnalysis(preds, actual) {
+  if (actual === null || actual === undefined || isNaN(actual) || !preds || !preds.length) {
+    return { hitStr: "", diffStr: "" };
+  }
+  var act = parseInt(actual, 10);
+  if (preds.indexOf(act) !== -1) {
+    return { hitStr: "Exact hit", diffStr: "0" };
+  }
+  var minAbs = 999;
+  var bestDiff = 0;
+  preds.forEach(function(p) {
+    var d = p - act;
+    if (Math.abs(d) < minAbs) {
+      minAbs = Math.abs(d);
+      bestDiff = d;
+    }
+  });
+  var diffLabel = ">+-2";
+  if (minAbs === 1) diffLabel = (bestDiff > 0 ? "+1" : "-1");
+  else if (minAbs === 2) diffLabel = (bestDiff > 0 ? "+2" : "-2");
+  return { hitStr: "Exact miss", diffStr: diffLabel };
+}
+
+function exportDashboardToCSV() {
+  var csv = [];
+  var mList = (typeof MKTS !== 'undefined' && MKTS && MKTS.length) ? MKTS : [
+    {id:"Desawar",name:"Desawar"},
+    {id:"Faridabad",name:"Faridabad"},
+    {id:"Ghaziabad",name:"Ghaziabad"},
+    {id:"Gali",name:"Gali"}
+  ];
+
+  var headers = ["Date"];
+  mList.forEach(function(m) {
+    var mName = m.name || m.id;
+    headers.push(mName + " Predicted");
+    headers.push(mName + " Actual");
+    headers.push(mName + " Result");
+    headers.push(mName + " Miss Difference");
+  });
+  csv.push(headers.join(","));
+
+  var td = (typeof today === 'function') ? today() : new Date().toISOString().slice(0, 10);
+  for (var i = 210; i >= 0; i--) {
+    var d = (typeof addD === 'function') ? addD(td, -i) : (function(cur, off){
+      var dt = new Date(cur); dt.setDate(dt.getDate() + off); return dt.toISOString().slice(0, 10);
+    })(td, -i);
+
+    var row = [d];
+    var hasData = false;
+
+    mList.forEach(function(m) {
+      var a = (typeof ACT !== 'undefined' && ACT[m.id]) ? ACT[m.id][d] : (typeof TK !== 'undefined' && TK[m.id] ? TK[m.id][d] : null);
+      if (a === undefined) a = null;
+      var p = (typeof ypePred === 'function') ? ypePred(m.id, d) : null;
+
+      var pStr = "";
+      var numList = [];
+      if (p) {
+        var clArr = p.cluster || [p.j1, p.j2];
+        numList = clArr.slice(0, 8);
+        pStr = numList.map(function(n){ return String(n).padStart(2, '0'); }).join(" ");
+      }
+      var aStr = (a !== null && !isNaN(a)) ? String(a).padStart(2, '0') : "";
+      var analysis = getMissDiffAnalysis(numList, a);
+
+      if (aStr || pStr) hasData = true;
+      row.push('"' + pStr + '"');
+      row.push('"' + aStr + '"');
+      row.push('"' + analysis.hitStr + '"');
+      row.push('"' + analysis.diffStr + '"');
+    });
+
+    if (hasData) {
+      csv.push(row.join(","));
+    }
+  }
+
+  var csvStr = csv.join("\n");
+  var blob = new Blob([csvStr], { type: 'text/csv;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
+  var link = document.createElement("a");
+  link.setAttribute("href", url);
+  var title = (typeof docTitle !== 'undefined') ? docTitle : "SPI_Predictions";
+  link.setAttribute("download", title + "_" + td + ".csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+window.exportDashboardToCSV = exportDashboardToCSV;
+
 </script>
 </body>
 </html>
