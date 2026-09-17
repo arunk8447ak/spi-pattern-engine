@@ -283,6 +283,9 @@ var ACT = {};
 function buildACT() {
   var mksList = ["Desawar", "Faridabad", "Ghaziabad", "Gali"];
   mksList.forEach(function(mk) {
+    if (typeof RD !== 'undefined' && !RD[mk]) RD[mk] = {};
+    if (typeof RECENT !== 'undefined' && !RECENT[mk]) RECENT[mk] = {};
+    if (typeof TK !== 'undefined' && !TK[mk]) TK[mk] = {};
     ACT[mk] = {};
     if (typeof RD !== 'undefined' && RD[mk]) {
       for (var d in RD[mk]) ACT[mk][d] = RD[mk][d];
