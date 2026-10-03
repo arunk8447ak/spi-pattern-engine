@@ -2905,61 +2905,7 @@ function showAutoFetchToast(msg, isErr = false) {
 // ── LAST FETCHED DATA (used for manual validation) ─────────────────────────
 var _lastFetchedByDate = {};
 
-// ─── GITHUB SYNC ────────────────────────────────────────────────────────────
-var GH_SETTINGS_KEY = 'SPI_GITHUB_SYNC_SETTINGS';
-function getGHSettings() {
-    try {
-        var s = JSON.parse(localStorage.getItem(GH_SETTINGS_KEY) || 'null');
-        if (!s) {
-            s = {
-                owner: 'arunk8447ak',
-                repo: 'spi-pattern-engine',
-                file: 'spi_results.json',
-                branch: 'main',
-                token: ''
-            };
-        }
-        return s;
-    } catch(e) { return { owner: 'arunk8447ak', repo: 'spi-pattern-engine', file: 'spi_results.json', branch: 'main' }; }
-}
-
-async function githubPull() {
-    var s = getGHSettings();
-    if (!s || !s.owner || !s.repo || !s.file) return false;
-    try {
-        var url = 'https://raw.githubusercontent.com/' + s.owner + '/' + s.repo + '/' + (s.branch||'main') + '/' + s.file + '?t=' + Date.now();
-        var res = await fetch(url);
-        if (!res.ok) return false;
-        var data = await res.json();
-        if (!data || typeof data !== 'object') return false;
-        for (var mkt in data) {
-            if (!TK[mkt]) TK[mkt] = {};
-            for (var d in data[mkt]) TK[mkt][d] = data[mkt][d];
-        }
-        saveTK(); buildACT(); renderAll();
-        showAutoFetchToast('☁️ GitHub Sync: Pulled latest results!');
-        return true;
-    } catch(e) { return false; }
-}
-
-async function githubPush() {
-    var s = getGHSettings();
-    if (!s || !s.owner || !s.repo || !s.file || !s.token) return false;
-    try {
-        var apiUrl = 'https://api.github.com/repos/' + s.owner + '/' + s.repo + '/contents/' + s.file;
-        var sha = null;
-        try {
-            var cur = await fetch(apiUrl, { headers: { 'Authorization': 'token ' + s.token, 'Accept': 'application/vnd.github.v3+json' } });
-            if (cur.ok) { var j = await cur.json(); sha = j.sha; }
-        } catch(e) {}
-        var content = btoa(unescape(encodeURIComponent(JSON.stringify(TK, null, 2))));
-        var body = { message: 'SPI results update ' + new Date().toISOString(), content: content, branch: s.branch || 'main' };
-        if (sha) body.sha = sha;
-        var res = await fetch(apiUrl, { method: 'PUT', headers: { 'Authorization': 'token ' + s.token, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' }, body: JSON.stringify(body) });
-        if (res.ok) { showAutoFetchToast('☁️ GitHub Sync: Pushed to cloud! ✅'); return true; }
-        return false;
-    } catch(e) { return false; }
-}
+// ─── GITHUB SYNC (defined in unified hub section) ───
 
 function openGHSyncModal() {
     var s = getGHSettings() || {};
