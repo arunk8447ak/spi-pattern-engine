@@ -1,0 +1,42 @@
+# V7.2 Auto: results apne aap update karta hai aur agle market ke 8 jodi Telegram par bhejta hai.
+# Script: automation/v7_auto.py   Setup steps: automation/README.md
+# GitHub cron times are UTC (IST = UTC + 5:30). GitHub kabhi-kabhi 5-15 min late chalata hai.
+name: V7.2 Auto (results + Telegram)
+
+on:
+  schedule:
+    - cron: '4-59/10 12-14 * * *'   # 17:34-20:24 IST  Faridabad result -> Ghaziabad numbers
+    - cron: '2-57/5 15-17 * * *'    # 20:32-23:27 IST  Ghaziabad result -> Gali numbers
+    - cron: '6-56/10 18-22 * * *'   # 23:36-04:26 IST  Gali result -> Desawar numbers
+    - cron: '8-58/15 23,0,1 * * *'  # 04:38-07:23 IST  Desawar result -> subah ka hisaab
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'test = Telegram par test message bhejo, normal = aam run'
+        required: true
+        default: 'test'
+        type: choice
+        options:
+          - test
+          - normal
+
+permissions:
+  contents: write
+
+concurrency:
+  group: v7-auto
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: V7.2 auto
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          MODE: ${{ github.event.inputs.mode || 'normal' }}
+        run: python3 automation/v7_auto.py "$MODE"
