@@ -1,0 +1,6 @@
+{
+  "markets": ["Ghaziabad", "Gali", "Desawar"],
+  "stake_per_jodi": 75,
+  "gali_haruf_stake": 0,
+  "send_morning_report": true
+}
