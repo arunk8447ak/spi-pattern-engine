@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>V7.2 Telegram Auto – Setup</title>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0d1117;color:#e6edf3;margin:0;padding:16px;line-height:1.5}
+.wrap{max-width:560px;margin:0 auto} h1{font-size:22px;margin:4px 0 6px} .sub{color:#8b949e;font-size:14px;margin-bottom:14px}
+.step{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:14px;margin:12px 0}
+.n{display:inline-block;background:#238636;color:#fff;border-radius:50%;width:26px;height:26px;text-align:center;line-height:26px;font-weight:700;margin-right:8px}
+.t{font-weight:700;font-size:16px} p{margin:8px 0} code{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:1px 6px;font-size:14px}
+a.btn{display:block;text-align:center;background:#1f6feb;color:#fff;text-decoration:none;font-weight:700;padding:12px;border-radius:10px;margin-top:10px}
+a.btn.green{background:#238636} a.small{color:#58a6ff;font-size:13px} .note{color:#8b949e;font-size:13px}
+</style></head><body><div class="wrap">
+<h1>📲 V7.2 Telegram Auto – ek baar ka setup</h1>
+<div class="sub">Iske baad Ghaziabad, Gali, Desawar ke 8 jodi apne aap aapke Telegram par aayenge. ~5 minute. GitHub mein login hona chahiye.
+Koi button na dikhe to browser menu mein <b>"Desktop site"</b> on karo.</div>
+
+<div class="step"><span class="n">1</span><span class="t">Auto-timer chalu karo (GitHub)</span>
+<p>Button dabao. GitHub par file pehle se bhari hui khulegi. Bas hara <b>"Commit changes…"</b> dabao, phir dobara <b>"Commit changes"</b>.</p>
+<a class="btn green" href="https://github.com/arunk8447ak/spi-pattern-engine/new/main?filename=.github/workflows/v7_auto.yml&amp;value=%23%20V7.2%20Auto%3A%20results%20apne%20aap%20update%20karta%20hai%20aur%20agle%20market%20ke%208%20jodi%20Telegram%20par%20bhejta%20hai.%0A%23%20Script%3A%20automation%2Fv7_auto.py%20%20%20Setup%20steps%3A%20automation%2FREADME.md%0A%23%20GitHub%20cron%20times%20are%20UTC%20%28IST%20%3D%20UTC%20%2B%205%3A30%29.%20GitHub%20kabhi-kabhi%205-15%20min%20late%20chalata%20hai.%0Aname%3A%20V7.2%20Auto%20%28results%20%2B%20Telegram%29%0A%0Aon%3A%0A%20%20schedule%3A%0A%20%20%20%20-%20cron%3A%20%274-59%2F10%2012-14%20%2A%20%2A%20%2A%27%20%20%20%23%2017%3A34-20%3A24%20IST%20%20Faridabad%20result%20-%3E%20Ghaziabad%20numbers%0A%20%20%20%20-%20cron%3A%20%272-57%2F5%2015-17%20%2A%20%2A%20%2A%27%20%20%20%20%23%2020%3A32-23%3A27%20IST%20%20Ghaziabad%20result%20-%3E%20Gali%20numbers%0A%20%20%20%20-%20cron%3A%20%276-56%2F10%2018-22%20%2A%20%2A%20%2A%27%20%20%20%23%2023%3A36-04%3A26%20IST%20%20Gali%20result%20-%3E%20Desawar%20numbers%0A%20%20%20%20-%20cron%3A%20%278-58%2F15%2023%2C0%2C1%20%2A%20%2A%20%2A%27%20%20%23%2004%3A38-07%3A23%20IST%20%20Desawar%20result%20-%3E%20subah%20ka%20hisaab%0A%20%20workflow_dispatch%3A%0A%20%20%20%20inputs%3A%0A%20%20%20%20%20%20mode%3A%0A%20%20%20%20%20%20%20%20description%3A%20%27test%20%3D%20Telegram%20par%20test%20message%20bhejo%2C%20normal%20%3D%20aam%20run%27%0A%20%20%20%20%20%20%20%20required%3A%20true%0A%20%20%20%20%20%20%20%20default%3A%20%27test%27%0A%20%20%20%20%20%20%20%20type%3A%20choice%0A%20%20%20%20%20%20%20%20options%3A%0A%20%20%20%20%20%20%20%20%20%20-%20test%0A%20%20%20%20%20%20%20%20%20%20-%20normal%0A%0Apermissions%3A%0A%20%20contents%3A%20write%0A%0Aconcurrency%3A%0A%20%20group%3A%20v7-auto%0A%20%20cancel-in-progress%3A%20false%0A%0Ajobs%3A%0A%20%20run%3A%0A%20%20%20%20runs-on%3A%20ubuntu-latest%0A%20%20%20%20timeout-minutes%3A%2010%0A%20%20%20%20steps%3A%0A%20%20%20%20%20%20-%20uses%3A%20actions%2Fcheckout%40v4%0A%20%20%20%20%20%20-%20name%3A%20V7.2%20auto%0A%20%20%20%20%20%20%20%20env%3A%0A%20%20%20%20%20%20%20%20%20%20GITHUB_TOKEN%3A%20%24%7B%7B%20secrets.GITHUB_TOKEN%20%7D%7D%0A%20%20%20%20%20%20%20%20%20%20TELEGRAM_BOT_TOKEN%3A%20%24%7B%7B%20secrets.TELEGRAM_BOT_TOKEN%20%7D%7D%0A%20%20%20%20%20%20%20%20%20%20TELEGRAM_CHAT_ID%3A%20%24%7B%7B%20secrets.TELEGRAM_CHAT_ID%20%7D%7D%0A%20%20%20%20%20%20%20%20%20%20MODE%3A%20%24%7B%7B%20github.event.inputs.mode%20%7C%7C%20%27normal%27%20%7D%7D%0A%20%20%20%20%20%20%20%20run%3A%20python3%20automation%2Fv7_auto.py%20%22%24MODE%22%0A" target="_blank" rel="noopener">1. Timer file banao</a>
+<p class="note">Agar file khaali khule: <a class="small" href="https://github.com/arunk8447ak/spi-pattern-engine/blob/main/automation/workflow.yml" target="_blank" rel="noopener">ye file</a> kholo, copy button se poora text copy karo, aur naam <code>.github/workflows/v7_auto.yml</code> rakh kar paste karke commit karo.</p></div>
+
+<div class="step"><span class="n">2</span><span class="t">Apna Telegram bot banao</span>
+<p>@BotFather ko <code>/newbot</code> bhejo → koi naam (jaise <code>SPI V7</code>) → username jo <code>bot</code> par khatam ho (jaise <code>spi_v7_arun_bot</code>). Wo ek <b>token</b> dega – copy kar lo.</p>
+<a class="btn" href="https://t.me/BotFather" target="_blank" rel="noopener">2. @BotFather kholo</a>
+<p class="note">Phir BotFather ke message mein apne naye bot ka link (t.me/…) dabao aur <b>Start</b> dabao. Ye zaroori hai.</p></div>
+
+<div class="step"><span class="n">3</span><span class="t">Apna chat ID lo</span>
+<p>@userinfobot mein Start dabao. Wo <b>Id</b> dikhayega (sirf number) – copy kar lo.</p>
+<a class="btn" href="https://t.me/userinfobot" target="_blank" rel="noopener">3. @userinfobot kholo</a></div>
+
+<div class="step"><span class="n">4</span><span class="t">Dono cheezein GitHub mein chhupa kar daalo</span>
+<p>Button dabao aur do baar secret banao:</p>
+<p>• Name <code>TELEGRAM_BOT_TOKEN</code> → Secret mein step 2 ka token → <b>Add secret</b><br>
+• Phir dobara button: Name <code>TELEGRAM_CHAT_ID</code> → Secret mein step 3 ka Id → <b>Add secret</b></p>
+<a class="btn" href="https://github.com/arunk8447ak/spi-pattern-engine/settings/secrets/actions/new" target="_blank" rel="noopener">4. Naya secret banao</a>
+<p class="note">Secrets kisi ko dikhte nahi, public files mein nahi jaate.</p></div>
+
+<div class="step"><span class="n">5</span><span class="t">Test karo</span>
+<p><b>Run workflow</b> dabao (mode <code>test</code> rehne do) → hara <b>Run workflow</b>. 1–2 minute mein Telegram par <b>"✅ V7.2 Auto chal raha hai!"</b> aana chahiye.</p>
+<a class="btn green" href="https://github.com/arunk8447ak/spi-pattern-engine/actions/workflows/v7_auto.yml" target="_blank" rel="noopener">5. Test run</a></div>
+
+<p class="note">Poori jaankari: <a class="small" href="https://github.com/arunk8447ak/spi-pattern-engine/blob/main/automation/README.md" target="_blank" rel="noopener">automation/README.md</a>. Ye V7.2 ke pichhle data par based hai; jeet ki guarantee nahi.</p>
+</div></body></html>
