@@ -10,15 +10,22 @@
 - **Laptop on rakhna zaroori nahi.** Ye GitHub par chalta hai.
 
 ## Ek baar ka setup (phone se ~5 minute)
-1. Telegram mein **@BotFather** kholo aur `/newbot` bhejo.
+**Sabse aasaan:** phone par ye page kholo. Har step ka button wahan hai:
+**https://arunk8447ak.github.io/spi-pattern-engine/setup.html** (portal par "Telegram Auto (V7.2)" card bhi yahi kholta hai).
+
+Wahi steps yahan bhi:
+1. **Timer file banao (GitHub):** setup page ka button "1. Timer file banao" dabao. GitHub par file pehle se bhari khulegi; bas **Commit changes** dabao.
+   - Button kaam na kare to: [automation/workflow.yml](workflow.yml) kholo, poora text copy karo. Phir repo mein **Add file → Create new file**, naam `.github/workflows/v7_auto.yml` rakho, text paste karo aur commit karo.
+   - (Ye step aapko khud karna padta hai, kyunki GitHub timer wali file sirf aap bana sakte ho.)
+2. Telegram mein **@BotFather** kholo aur `/newbot` bhejo.
    - Koi bhi naam do, jaise `SPI V7`.
    - Phir username do jo `bot` par khatam ho, jaise `spi_v7_arun_bot`.
    - BotFather ek **token** dega (jaise `123456789:ABC...`). Ise copy kar lo.
-2. Apne naye bot ko kholo aur **Start** dabao. Ye zaroori hai, warna bot aapko message nahi bhej sakta.
+   - Apne naye bot ko kholo aur **Start** dabao. Ye zaroori hai, warna bot aapko message nahi bhej sakta.
 3. Telegram mein **@userinfobot** kholo aur Start dabao. Wo aapka **Id** (sirf number) dikhayega. Ise copy kar lo.
 4. GitHub mein do secret daalo (phone browser mein "Desktop site" on karke, ya dusre laptop se):
    - Repo `arunk8447ak/spi-pattern-engine` kholo → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**.
-   - Pehla secret: Name `TELEGRAM_BOT_TOKEN`, Secret mein step 1 wala token.
+   - Pehla secret: Name `TELEGRAM_BOT_TOKEN`, Secret mein step 2 wala token.
    - Dusra secret: Name `TELEGRAM_CHAT_ID`, Secret mein step 3 wala Id.
 5. Test karo:
    - Repo ka **Actions** tab kholo → left mein **V7.2 Auto (results + Telegram)** chuno.
