@@ -9709,7 +9709,8 @@
     "2025-12-28": 75,
     "2025-12-29": 45,
     "2025-12-30": 94,
-    "2026-10-25": 52
+    "2026-10-25": 52,
+    "2026-06-30": 97
   },
   "Ghaziabad": {
     "2026-09-01": 86,
@@ -22911,7 +22912,8 @@
     "2026-10-12": 22,
     "2026-10-13": 96,
     "2026-10-24": 53,
-    "2026-10-25": 67
+    "2026-10-25": 67,
+    "2026-10-26": 28
   },
   "Shree Ganesh": {
     "2026-09-01": 89,
@@ -26141,123 +26143,725 @@
     "2026-10-24": 66,
     "2026-10-25": 81
   },
-  "2026-04-22": {},
-  "2026-04-21": {},
-  "2026-04-23": {},
-  "2026-04-24": {},
-  "2026-04-25": {},
-  "2026-04-26": {},
-  "2026-04-27": {},
-  "2026-04-28": {},
-  "2026-04-29": {},
-  "2026-04-30": {},
-  "2026-05-02": {},
-  "2026-05-03": {},
-  "2026-05-04": {},
-  "2026-05-05": {},
-  "2026-05-06": {},
-  "2026-05-07": {},
-  "2026-05-08": {},
-  "2026-05-09": {},
-  "2026-05-10": {},
-  "2026-05-11": {},
-  "2026-05-12": {},
-  "2026-05-13": {},
-  "2026-05-14": {},
-  "2026-05-15": {},
-  "2026-05-16": {},
-  "2026-05-17": {},
-  "2026-05-18": {},
-  "2026-05-19": {},
-  "2026-05-20": {},
-  "2026-05-21": {},
-  "2026-05-22": {},
-  "2026-05-23": {},
-  "2026-05-24": {},
-  "2026-05-25": {},
-  "2026-05-26": {},
-  "2026-05-27": {},
-  "2026-05-28": {},
-  "2026-05-29": {},
-  "2026-05-30": {},
-  "2026-05-31": {},
-  "2026-06-02": {},
-  "2026-06-03": {},
-  "2026-06-04": {},
-  "2026-06-05": {},
-  "2026-06-06": {},
-  "2026-06-07": {},
-  "2026-06-08": {},
-  "2026-06-09": {},
-  "2026-06-10": {},
-  "2026-06-11": {},
-  "2026-06-12": {},
-  "2026-06-13": {},
-  "2026-06-14": {},
-  "2026-06-19": {},
-  "2026-06-15": {},
-  "2026-06-16": {},
-  "2026-06-17": {},
-  "2026-06-18": {},
-  "2026-06-20": {},
-  "2026-06-21": {},
-  "2026-06-22": {},
-  "2026-06-23": {},
-  "2026-06-24": {},
-  "2026-06-25": {},
-  "2026-06-26": {},
-  "2026-06-27": {},
-  "2026-06-28": {},
-  "2026-06-29": {},
-  "2026-06-30": {},
-  "2026-07-02": {},
-  "2026-07-03": {},
-  "2026-07-04": {},
-  "2026-07-05": {},
-  "2026-07-06": {},
-  "2026-07-07": {},
-  "2026-07-08": {},
-  "2026-07-09": {},
-  "2026-07-10": {},
-  "2026-07-11": {},
-  "2026-07-12": {},
-  "2026-07-13": {},
-  "2026-07-14": {},
-  "2026-07-15": {},
-  "2026-07-16": {},
-  "2026-07-17": {},
-  "2026-07-18": {},
-  "2026-07-19": {},
-  "2026-07-20": {},
-  "2026-07-21": {},
-  "2026-07-22": {},
-  "2026-07-23": {},
-  "2026-07-24": {},
-  "2026-07-25": {},
-  "2026-07-26": {},
-  "2026-07-27": {},
-  "2026-07-28": {},
-  "2026-07-29": {},
-  "2026-07-30": {},
-  "2026-07-31": {},
-  "2026-08-02": {},
-  "2026-08-03": {},
-  "2026-08-04": {},
-  "2026-08-05": {},
-  "2026-08-06": {},
-  "2026-08-07": {},
-  "2026-08-08": {},
-  "2026-08-09": {},
-  "2026-08-10": {},
-  "2026-08-11": {},
-  "2026-08-12": {},
-  "2026-05-01": {},
-  "2026-06-01": {},
-  "2026-07-01": {},
-  "2026-08-01": {},
-  "2026-08-13": {},
-  "2026-08-14": {},
-  "2026-08-15": {},
-  "2026-08-16": {},
-  "2026-08-17": {}
+  "2026-04-22": {
+    "Desawar": 62,
+    "Faridabad": 60,
+    "Ghaziabad": 21,
+    "Gali": 95
+  },
+  "2026-04-21": {
+    "Desawar": 41,
+    "Faridabad": 4,
+    "Ghaziabad": 8,
+    "Gali": 25
+  },
+  "2026-04-23": {
+    "Desawar": 79,
+    "Faridabad": 68,
+    "Ghaziabad": 51,
+    "Gali": 33
+  },
+  "2026-04-24": {
+    "Desawar": 79,
+    "Faridabad": 91,
+    "Ghaziabad": 20,
+    "Gali": 11
+  },
+  "2026-04-25": {
+    "Desawar": 11,
+    "Faridabad": 59,
+    "Ghaziabad": 76,
+    "Gali": 38
+  },
+  "2026-04-26": {
+    "Desawar": 88,
+    "Faridabad": 31,
+    "Ghaziabad": 35,
+    "Gali": 9
+  },
+  "2026-04-27": {
+    "Desawar": 15,
+    "Faridabad": 65,
+    "Ghaziabad": 54,
+    "Gali": 19
+  },
+  "2026-04-28": {
+    "Desawar": 44,
+    "Faridabad": 25,
+    "Ghaziabad": 3,
+    "Gali": 8
+  },
+  "2026-04-29": {
+    "Desawar": 56,
+    "Faridabad": 13,
+    "Ghaziabad": 11,
+    "Gali": 85
+  },
+  "2026-04-30": {
+    "Desawar": 56
+  },
+  "2026-05-02": {
+    "Desawar": 79,
+    "Faridabad": 72,
+    "Ghaziabad": 79,
+    "Gali": 42
+  },
+  "2026-05-03": {
+    "Desawar": 0,
+    "Faridabad": 84,
+    "Ghaziabad": 93,
+    "Gali": 74
+  },
+  "2026-05-04": {
+    "Desawar": 27,
+    "Faridabad": 8,
+    "Ghaziabad": 78,
+    "Gali": 14
+  },
+  "2026-05-05": {
+    "Desawar": 6,
+    "Faridabad": 12,
+    "Ghaziabad": 15,
+    "Gali": 87
+  },
+  "2026-05-06": {
+    "Desawar": 3,
+    "Faridabad": 70,
+    "Ghaziabad": 92,
+    "Gali": 38
+  },
+  "2026-05-07": {
+    "Desawar": 84,
+    "Faridabad": 69,
+    "Ghaziabad": 47,
+    "Gali": 33
+  },
+  "2026-05-08": {
+    "Desawar": 6,
+    "Faridabad": 48,
+    "Ghaziabad": 33,
+    "Gali": 97
+  },
+  "2026-05-09": {
+    "Desawar": 19,
+    "Faridabad": 86,
+    "Ghaziabad": 44,
+    "Gali": 64
+  },
+  "2026-05-10": {
+    "Desawar": 62,
+    "Faridabad": 46,
+    "Ghaziabad": 86,
+    "Gali": 56
+  },
+  "2026-05-11": {
+    "Desawar": 10,
+    "Faridabad": 22,
+    "Ghaziabad": 43,
+    "Gali": 83
+  },
+  "2026-05-12": {
+    "Desawar": 8,
+    "Faridabad": 28,
+    "Ghaziabad": 43,
+    "Gali": 47
+  },
+  "2026-05-13": {
+    "Desawar": 46,
+    "Faridabad": 1,
+    "Ghaziabad": 8,
+    "Gali": 58
+  },
+  "2026-05-14": {
+    "Desawar": 76,
+    "Faridabad": 5,
+    "Ghaziabad": 27,
+    "Gali": 58
+  },
+  "2026-05-15": {
+    "Desawar": 74,
+    "Faridabad": 9,
+    "Ghaziabad": 17,
+    "Gali": 35
+  },
+  "2026-05-16": {
+    "Desawar": 73,
+    "Faridabad": 80,
+    "Ghaziabad": 6,
+    "Gali": 72
+  },
+  "2026-05-17": {
+    "Desawar": 76,
+    "Faridabad": 69,
+    "Ghaziabad": 54,
+    "Gali": 85
+  },
+  "2026-05-18": {
+    "Desawar": 88,
+    "Faridabad": 13,
+    "Ghaziabad": 81,
+    "Gali": 46
+  },
+  "2026-05-19": {
+    "Desawar": 39,
+    "Faridabad": 49,
+    "Ghaziabad": 83,
+    "Gali": 86
+  },
+  "2026-05-20": {
+    "Desawar": 74,
+    "Faridabad": 79,
+    "Ghaziabad": 10,
+    "Gali": 19
+  },
+  "2026-05-21": {
+    "Desawar": 96,
+    "Faridabad": 53,
+    "Ghaziabad": 17,
+    "Gali": 60
+  },
+  "2026-05-22": {
+    "Desawar": 71,
+    "Faridabad": 1,
+    "Ghaziabad": 0,
+    "Gali": 43
+  },
+  "2026-05-23": {
+    "Desawar": 16,
+    "Faridabad": 77,
+    "Ghaziabad": 18,
+    "Gali": 23
+  },
+  "2026-05-24": {
+    "Desawar": 97,
+    "Faridabad": 21,
+    "Ghaziabad": 88,
+    "Gali": 21
+  },
+  "2026-05-25": {
+    "Desawar": 73,
+    "Faridabad": 54,
+    "Ghaziabad": 86,
+    "Gali": 72
+  },
+  "2026-05-26": {
+    "Desawar": 9,
+    "Faridabad": 13,
+    "Ghaziabad": 8,
+    "Gali": 79
+  },
+  "2026-05-27": {
+    "Desawar": 83,
+    "Faridabad": 45,
+    "Ghaziabad": 45,
+    "Gali": 17
+  },
+  "2026-05-28": {
+    "Desawar": 64,
+    "Faridabad": 25,
+    "Ghaziabad": 41,
+    "Gali": 81
+  },
+  "2026-05-29": {
+    "Desawar": 53,
+    "Faridabad": 76,
+    "Ghaziabad": 65,
+    "Gali": 6
+  },
+  "2026-05-30": {
+    "Desawar": 71,
+    "Faridabad": 43,
+    "Ghaziabad": 76,
+    "Gali": 78
+  },
+  "2026-05-31": {
+    "Desawar": 36
+  },
+  "2026-06-02": {
+    "Desawar": 11,
+    "Faridabad": 51,
+    "Ghaziabad": 29,
+    "Gali": 50
+  },
+  "2026-06-03": {
+    "Desawar": 48,
+    "Faridabad": 65,
+    "Ghaziabad": 85,
+    "Gali": 2
+  },
+  "2026-06-04": {
+    "Desawar": 47,
+    "Faridabad": 4,
+    "Ghaziabad": 78,
+    "Gali": 16
+  },
+  "2026-06-05": {
+    "Desawar": 78,
+    "Faridabad": 72,
+    "Ghaziabad": 72,
+    "Gali": 16
+  },
+  "2026-06-06": {
+    "Desawar": 10,
+    "Faridabad": 32,
+    "Ghaziabad": 66,
+    "Gali": 55
+  },
+  "2026-06-07": {
+    "Desawar": 28,
+    "Faridabad": 88,
+    "Ghaziabad": 32,
+    "Gali": 78
+  },
+  "2026-06-08": {
+    "Desawar": 62,
+    "Faridabad": 39,
+    "Ghaziabad": 70,
+    "Gali": 66
+  },
+  "2026-06-09": {
+    "Desawar": 26,
+    "Faridabad": 35,
+    "Ghaziabad": 21,
+    "Gali": 0
+  },
+  "2026-06-10": {
+    "Desawar": 65,
+    "Faridabad": 85,
+    "Ghaziabad": 33,
+    "Gali": 31
+  },
+  "2026-06-11": {
+    "Desawar": 31,
+    "Faridabad": 75,
+    "Ghaziabad": 0,
+    "Gali": 7
+  },
+  "2026-06-12": {
+    "Desawar": 52,
+    "Faridabad": 79,
+    "Ghaziabad": 20,
+    "Gali": 59
+  },
+  "2026-06-13": {
+    "Desawar": 71,
+    "Faridabad": 58,
+    "Ghaziabad": 91,
+    "Gali": 10
+  },
+  "2026-06-14": {
+    "Desawar": 40,
+    "Faridabad": 77,
+    "Ghaziabad": 59,
+    "Gali": 96
+  },
+  "2026-06-19": {
+    "Desawar": 37,
+    "Faridabad": 1,
+    "Ghaziabad": 23,
+    "Gali": 93
+  },
+  "2026-06-15": {
+    "Desawar": 5,
+    "Faridabad": 31,
+    "Ghaziabad": 49,
+    "Gali": 60
+  },
+  "2026-06-16": {
+    "Desawar": 86,
+    "Faridabad": 57,
+    "Ghaziabad": 49,
+    "Gali": 70
+  },
+  "2026-06-17": {
+    "Desawar": 3,
+    "Faridabad": 13,
+    "Ghaziabad": 32,
+    "Gali": 75
+  },
+  "2026-06-18": {
+    "Desawar": 43,
+    "Faridabad": 77,
+    "Ghaziabad": 59,
+    "Gali": 96
+  },
+  "2026-06-20": {
+    "Desawar": 36,
+    "Faridabad": 56,
+    "Ghaziabad": 84,
+    "Gali": 56
+  },
+  "2026-06-21": {
+    "Desawar": 56,
+    "Faridabad": 59,
+    "Ghaziabad": 83,
+    "Gali": 61
+  },
+  "2026-06-22": {
+    "Desawar": 76,
+    "Faridabad": 19,
+    "Ghaziabad": 37,
+    "Gali": 86
+  },
+  "2026-06-23": {
+    "Desawar": 70,
+    "Faridabad": 77,
+    "Ghaziabad": 70,
+    "Gali": 40
+  },
+  "2026-06-24": {
+    "Desawar": 97,
+    "Faridabad": 14,
+    "Ghaziabad": 19,
+    "Gali": 13
+  },
+  "2026-06-25": {
+    "Desawar": 46,
+    "Faridabad": 66,
+    "Ghaziabad": 30,
+    "Gali": 54
+  },
+  "2026-06-26": {
+    "Desawar": 85,
+    "Faridabad": 8,
+    "Ghaziabad": 48,
+    "Gali": 61
+  },
+  "2026-06-27": {
+    "Desawar": 60,
+    "Faridabad": 67,
+    "Ghaziabad": 85,
+    "Gali": 0
+  },
+  "2026-06-28": {
+    "Desawar": 17,
+    "Faridabad": 6,
+    "Ghaziabad": 40,
+    "Gali": 66
+  },
+  "2026-06-29": {
+    "Desawar": 53,
+    "Faridabad": 41,
+    "Ghaziabad": 77,
+    "Gali": 97
+  },
+  "2026-06-30": {
+    "Desawar": 40,
+    "Faridabad": 97
+  },
+  "2026-07-02": {
+    "Desawar": 24,
+    "Faridabad": 69,
+    "Ghaziabad": 11,
+    "Gali": 33
+  },
+  "2026-07-03": {
+    "Desawar": 39,
+    "Faridabad": 73,
+    "Ghaziabad": 31,
+    "Gali": 49
+  },
+  "2026-07-04": {
+    "Desawar": 91,
+    "Faridabad": 34,
+    "Ghaziabad": 72,
+    "Gali": 39
+  },
+  "2026-07-05": {
+    "Desawar": 23,
+    "Faridabad": 92,
+    "Ghaziabad": 91,
+    "Gali": 36
+  },
+  "2026-07-06": {
+    "Desawar": 6,
+    "Faridabad": 19,
+    "Ghaziabad": 54,
+    "Gali": 50
+  },
+  "2026-07-07": {
+    "Desawar": 19,
+    "Faridabad": 4,
+    "Ghaziabad": 48,
+    "Gali": 41
+  },
+  "2026-07-08": {
+    "Desawar": 53,
+    "Faridabad": 41,
+    "Ghaziabad": 71,
+    "Gali": 21
+  },
+  "2026-07-09": {
+    "Desawar": 2,
+    "Faridabad": 88,
+    "Ghaziabad": 29,
+    "Gali": 75
+  },
+  "2026-07-10": {
+    "Desawar": 26,
+    "Faridabad": 74,
+    "Ghaziabad": 42,
+    "Gali": 35
+  },
+  "2026-07-11": {
+    "Desawar": 53,
+    "Faridabad": 32,
+    "Ghaziabad": 4,
+    "Gali": 4
+  },
+  "2026-07-12": {
+    "Desawar": 26,
+    "Faridabad": 91,
+    "Ghaziabad": 15,
+    "Gali": 77
+  },
+  "2026-07-13": {
+    "Desawar": 66,
+    "Faridabad": 5,
+    "Ghaziabad": 87,
+    "Gali": 45
+  },
+  "2026-07-14": {
+    "Desawar": 73,
+    "Faridabad": 93,
+    "Ghaziabad": 75,
+    "Gali": 52
+  },
+  "2026-07-15": {
+    "Desawar": 16,
+    "Faridabad": 60,
+    "Ghaziabad": 77,
+    "Gali": 8
+  },
+  "2026-07-16": {
+    "Desawar": 28,
+    "Faridabad": 15,
+    "Ghaziabad": 5,
+    "Gali": 90
+  },
+  "2026-07-17": {
+    "Desawar": 32,
+    "Faridabad": 30,
+    "Ghaziabad": 30,
+    "Gali": 14
+  },
+  "2026-07-18": {
+    "Desawar": 85,
+    "Faridabad": 7,
+    "Ghaziabad": 51,
+    "Gali": 80
+  },
+  "2026-07-19": {
+    "Desawar": 16,
+    "Faridabad": 83,
+    "Ghaziabad": 45,
+    "Gali": 57
+  },
+  "2026-07-20": {
+    "Desawar": 83,
+    "Faridabad": 47,
+    "Ghaziabad": 32,
+    "Gali": 54
+  },
+  "2026-07-21": {
+    "Desawar": 73,
+    "Faridabad": 6,
+    "Ghaziabad": 82,
+    "Gali": 11
+  },
+  "2026-07-22": {
+    "Desawar": 5,
+    "Faridabad": 34,
+    "Ghaziabad": 9,
+    "Gali": 40
+  },
+  "2026-07-23": {
+    "Desawar": 20,
+    "Faridabad": 39,
+    "Ghaziabad": 54,
+    "Gali": 43
+  },
+  "2026-07-24": {
+    "Desawar": 69,
+    "Faridabad": 76,
+    "Ghaziabad": 73,
+    "Gali": 72
+  },
+  "2026-07-25": {
+    "Desawar": 89,
+    "Faridabad": 32,
+    "Ghaziabad": 70,
+    "Gali": 58
+  },
+  "2026-07-26": {
+    "Desawar": 65,
+    "Faridabad": 22,
+    "Ghaziabad": 84,
+    "Gali": 39
+  },
+  "2026-07-27": {
+    "Desawar": 6,
+    "Faridabad": 74,
+    "Ghaziabad": 7,
+    "Gali": 72
+  },
+  "2026-07-28": {
+    "Desawar": 75,
+    "Faridabad": 27,
+    "Ghaziabad": 67,
+    "Gali": 2
+  },
+  "2026-07-29": {
+    "Desawar": 16,
+    "Faridabad": 60,
+    "Ghaziabad": 9,
+    "Gali": 16
+  },
+  "2026-07-30": {
+    "Desawar": 67,
+    "Faridabad": 40,
+    "Ghaziabad": 52,
+    "Gali": 86
+  },
+  "2026-07-31": {
+    "Desawar": 5
+  },
+  "2026-08-02": {
+    "Desawar": 31,
+    "Faridabad": 6,
+    "Ghaziabad": 15,
+    "Gali": 31,
+    "Shree Ganesh": 58
+  },
+  "2026-08-03": {
+    "Desawar": 74,
+    "Faridabad": 95,
+    "Ghaziabad": 60,
+    "Gali": 59,
+    "Shree Ganesh": 31
+  },
+  "2026-08-04": {
+    "Desawar": 31,
+    "Faridabad": 12,
+    "Ghaziabad": 24,
+    "Gali": 27,
+    "Shree Ganesh": 10
+  },
+  "2026-08-05": {
+    "Desawar": 93,
+    "Faridabad": 57,
+    "Ghaziabad": 22,
+    "Gali": 85,
+    "Shree Ganesh": 75
+  },
+  "2026-08-06": {
+    "Desawar": 51,
+    "Faridabad": 22,
+    "Ghaziabad": 89,
+    "Gali": 80,
+    "Shree Ganesh": 97
+  },
+  "2026-08-07": {
+    "Desawar": 83,
+    "Faridabad": 26,
+    "Ghaziabad": 60,
+    "Gali": 35,
+    "Shree Ganesh": 80
+  },
+  "2026-08-08": {
+    "Desawar": 96,
+    "Faridabad": 81,
+    "Ghaziabad": 99,
+    "Gali": 93,
+    "Delhi": 91,
+    "Shree Ganesh": 93
+  },
+  "2026-08-09": {
+    "Desawar": 16,
+    "Faridabad": 63,
+    "Ghaziabad": 53,
+    "Gali": 97,
+    "Delhi": 89,
+    "Shree Ganesh": 74
+  },
+  "2026-08-10": {
+    "Desawar": 64,
+    "Faridabad": 58,
+    "Ghaziabad": 69,
+    "Gali": 57,
+    "Delhi": 85,
+    "Shree Ganesh": 64
+  },
+  "2026-08-11": {
+    "Desawar": 88,
+    "Faridabad": 58,
+    "Ghaziabad": 31,
+    "Gali": 92,
+    "Delhi": 78,
+    "Shree Ganesh": 30
+  },
+  "2026-08-12": {
+    "Desawar": 19,
+    "Faridabad": 75,
+    "Ghaziabad": 63,
+    "Shree Ganesh": 41,
+    "Gali": 36,
+    "Delhi": 94
+  },
+  "2026-05-01": {
+    "Faridabad": 63,
+    "Ghaziabad": 15,
+    "Gali": 54
+  },
+  "2026-06-01": {
+    "Faridabad": 3,
+    "Ghaziabad": 52,
+    "Gali": 53
+  },
+  "2026-07-01": {
+    "Faridabad": 97,
+    "Ghaziabad": 69,
+    "Gali": 78
+  },
+  "2026-08-01": {
+    "Faridabad": 57,
+    "Ghaziabad": 23,
+    "Gali": 92,
+    "Shree Ganesh": 26
+  },
+  "2026-08-13": {
+    "Desawar": 79,
+    "Faridabad": 54,
+    "Ghaziabad": 79,
+    "Gali": 61,
+    "Shree Ganesh": 34,
+    "Delhi": 69
+  },
+  "2026-08-14": {
+    "Desawar": 12,
+    "Faridabad": 49,
+    "Ghaziabad": 38,
+    "Gali": 71,
+    "Shree Ganesh": 2,
+    "Delhi": 69
+  },
+  "2026-08-15": {
+    "Desawar": 49,
+    "Faridabad": 58,
+    "Ghaziabad": 40,
+    "Gali": 71,
+    "Shree Ganesh": 23,
+    "Delhi": 10
+  },
+  "2026-08-16": {
+    "Desawar": 57,
+    "Faridabad": 90,
+    "Ghaziabad": 99,
+    "Gali": 59,
+    "Shree Ganesh": 53,
+    "Delhi": 34
+  },
+  "2026-08-17": {
+    "Desawar": 40
+  }
 }
