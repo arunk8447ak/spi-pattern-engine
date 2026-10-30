@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """
-V7.2 MODEL - standalone reference implementation (pure Python 3, no extra packages).
+V7.3 MODEL - standalone reference implementation (pure Python 3, no extra packages).
+
+V7.3 = V7.2 + Desawar no longer uses the SAME NIGHT's Gali result (Gali lag-0 rules and Gali in the "same-day earlier
+       markets" habit set are removed for Desawar). Walk-forward 2017-2026 on cleaned data: more hits (+~20 / 10 years),
+       and the Desawar slate is final right after Ghaziabad (~10 pm) instead of after Gali (~11:30 pm).
+       Also: load_json() trains straight from the tool's spi_results.json (2013+), so no spreadsheet is needed.
 
 V7.2 = V7.1 + one fix: on the FIRST draw after a market holiday (Faridabad/Ghaziabad/Gali on the 1st, Desawar on the 2nd)
        yesterday is a closed day, so V7.1 lost most of its inputs (2015-2026: 39 hits instead of ~57).  V7.2 then uses the
@@ -17,7 +22,7 @@ What it does
   check       : verify that this script reproduces v7_logic.json (the logic embedded in "SPI V7 Engine.html")
 
 Usage
-  python3 v7_reference.py train       --xlsx Master_All_6_Markets.xlsx
+  python3 v7_reference.py train       --json spi_results.json          (or --xlsx Master_All_6_Markets.xlsx)
   python3 v7_reference.py predict     --xlsx Master_All_6_Markets.xlsx --extra recent_results.csv --date 2026-10-18
   python3 v7_reference.py walkforward --xlsx Master_All_6_Markets.xlsx --extra recent_results.csv
   python3 v7_reference.py check       --xlsx Master_All_6_Markets.xlsx --logic v7_logic.json
@@ -44,9 +49,10 @@ Model summary (see the handover prompt for the full explanation)
 """
 import argparse, collections, datetime, json, math, re, sys, zipfile
 
-VERSION = "7.2"
+VERSION = "7.3"
 MARKETS4 = ["Faridabad", "Ghaziabad", "Gali", "Desawar"]          # order matters (lag-0 rule + rule order + habit sets)
 TARGETS = ["Desawar", "Faridabad", "Ghaziabad", "Gali"]
+EXCLUDE_SAME_DAY = {"Desawar": {"Gali"}}                             # V7.3: target -> same-game-day sources NOT used (lag 0 + habit set)
 PROD_TRAIN = (datetime.date(2013, 1, 1), datetime.date(2019, 6, 30), datetime.date(2025, 12, 31))   # A, M, B
 ADJ_Z = 2.0                                                          # habit set must be |z| >= 2 on training data
 D1 = datetime.timedelta(days=1)
@@ -69,6 +75,20 @@ def load_xlsx(path):
             continue
         d = datetime.date(1899, 12, 30) + datetime.timedelta(days=int(float(cell['A'])))
         data[cell['C']][d] = int(float(cell['B'])) % 100
+    drop_closed(data)
+    return data
+
+def load_json(path):
+    """Read the tool's spi_results.json ({market: {"YYYY-MM-DD": result}}; other keys ignored). Closed days dropped."""
+    raw = json.load(open(path, encoding='utf-8-sig'))
+    data = collections.defaultdict(dict)
+    for mk in MARKETS4:
+        for ds, v in (raw.get(mk) or {}).items():
+            try:
+                d = datetime.date.fromisoformat(ds); n = int(str(v).strip())
+            except (TypeError, ValueError):
+                continue
+            if 0 <= n <= 99: data[mk][d] = n
     drop_closed(data)
     return data
 
@@ -116,7 +136,8 @@ class V7:
 
     # ---- rules (unchanged from V7)
     def learn_rules(self, target, A, M, B):
-        sources = [(X, lag) for lag in (0, 1, 2) for X in MARKETS4 if not (lag == 0 and MARKETS4.index(X) >= MARKETS4.index(target))]
+        sources = [(X, lag) for lag in (0, 1, 2) for X in MARKETS4
+                   if not (lag == 0 and (MARKETS4.index(X) >= MARKETS4.index(target) or X in EXCLUDE_SAME_DAY.get(target, ())))]
         def pairs(X, lag, a, b):
             """Pairs indexed by the TARGET game day G in [a, b]: input = X on day G - lag. No target result outside [a, b] is used."""
             P = []; G = a
@@ -158,7 +179,8 @@ class V7:
             x = val("Desawar", G - D1)                                  # this morning's Desawar
             if x is not None: add("Desawar morning", [x]); add("Desawar morning family", fam(x) - {x})
         add("other markets yesterday", [val(X, G - D1) for X in MARKETS4 if X not in (target, "Desawar")])
-        add("same-day earlier markets", [val(X, G) for X in MARKETS4 if MARKETS4.index(X) < MARKETS4.index(target)])
+        add("same-day earlier markets", [val(X, G) for X in MARKETS4
+                                         if MARKETS4.index(X) < MARKETS4.index(target) and X not in EXCLUDE_SAME_DAY.get(target, ())])
         return S
     def learn_adjust(self, target, A, B):
         h = collections.Counter(); e = collections.Counter(); n = collections.Counter(); G = A
@@ -246,10 +268,11 @@ def cmd_check(m, logic_path):
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('cmd', choices=['train', 'predict', 'walkforward', 'check'])
-    ap.add_argument('--xlsx', required=True); ap.add_argument('--extra'); ap.add_argument('--logic', default='v7_logic.json')
+    ap.add_argument('--xlsx'); ap.add_argument('--json', help='spi_results.json (alternative to --xlsx)'); ap.add_argument('--extra'); ap.add_argument('--logic', default='v7_logic.json')
     ap.add_argument('--date'); ap.add_argument('--out', default='v7_logic.json'); ap.add_argument('--last-year', type=int, default=2026)
     a = ap.parse_args()
-    data = load_xlsx(a.xlsx); load_extra(data, a.extra); m = V7(data)
+    if not a.xlsx and not a.json: ap.error('give --xlsx or --json')
+    data = load_json(a.json) if a.json else load_xlsx(a.xlsx); load_extra(data, a.extra); m = V7(data)
     if a.cmd == 'train': cmd_train(m, a.out)
     elif a.cmd == 'predict':
         logic = json.load(open(a.logic)); cmd_predict(m, logic, datetime.date.fromisoformat(a.date) if a.date else datetime.date.today())
