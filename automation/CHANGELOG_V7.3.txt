@@ -1,0 +1,17 @@
+V7.3  (2026-10-30)
+1. DATA: poori 2015-2026 history result website se milayi. 2015 ki Desawar column (poora saal) aur Faridabad (Jan-Jul) ek din
+   peeche likhi thi - theek ki. 37 pakki galtiyan (do websites sehmat) aur 84 missing results bhare. Kul 660 cells.
+   spi_results.json mein yahi saaf data hai; model isi par train hua (2013-2025).
+2. MODEL: Desawar ab usi raat ke Gali result ko nahi dekhta (Gali lag-0 rules hataye, Gali 'same-day earlier markets'
+   habit set se bahar). Walk-forward 2017-2026 (saaf data): Desawar 392 vs 386 hit - barabar/thoda behtar, par Desawar ke
+   numbers ab Ghaziabad ke turant baad (~10 pm) final ho jaate hain. Baaki markets ke rules V7.2 jaise hi (saaf data par
+   dobara seekhe). Logic: v7_logic.json (version 7.3, exclude_same_day = {Desawar: [Gali]}).
+3. PLAN (v7_plan.json, tool + Telegram bot dono padhte hain): Gali = rank #2-8 (MAIN chhod kar, 7 jodi) x Rs125 + BAHAR
+   haruf Rs200; Desawar = 8 jodi x Rs75 + ANDAR haruf Rs150; Ghaziabad = 8 jodi x Rs40; Faridabad nahi. Roz ~Rs1,800 + haruf.
+   Walk-forward 2015-2026: Gali #2-8 har saal (12/12) profit, 8/10 saal 'sab 8' se behtar. Ghaziabad/Desawar mein rank
+   chhodna fayda nahi deta, isliye wahan 8.
+4. TOOL: har card mein 'AAJ KA PLAN' box (khelne ke numbers, stake, haruf, kul), 'Copy (khaiwale ke liye)' button,
+   SKIP badge rank #1 par (Gali), LAAL WARNING jab zaroori pichhla result nahi daala (jaise Gali bina aaj ke Ghaziabad),
+   'Is mahine plan ka hisaab' (5% commission ke saath). Tool v7_plan.json aur v7_logic.json GitHub se khud uthata hai
+   (har saal 1 Jan ko bot naya model train karke v7_logic.json likhega).
+5. Labels: V7.3 ENGINE / V7.3 Top-8 Vote Slate. Update banner v7_version.json se.
