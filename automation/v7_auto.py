@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 """
-V7.2 AUTO - results apne aap + agle market ke 8 jodi Telegram par.
+V7.3 AUTO - results apne aap + agle market ke numbers (plan ke hisaab se) Telegram par.
 Chalta hai GitHub Actions par (.github/workflows/v7_auto.yml). Koi extra package nahi chahiye.
 
 Har run mein:
   1. Is mahine ka chart 2 websites se laata hai (satta-king-fast.com + satta-no-fast.com).
   2. spi_results.json mein sirf MISSING results bharta hai. Purana result kabhi nahi badalta.
      Dono websites alag result dikhayein to kuch nahi bharta, sirf warning bhejta hai.
-  3. Jis market se pehle wala result aa gaya ho, uske V7.2 wale 8 jodi Telegram par bhejta hai
-     (Gali ke saath BAHAR haruf). Har market aur har din ke liye sirf ek baar.
-  4. Subah Desawar ke baad kal ka hisaab (PASS/FAIL, Rs) bhejta hai.
+  3. Jis market se pehle wala result aa gaya ho, uske V7.3 numbers (v7_plan.json: Gali rank 2-8, Desawar 8, Ghaziabad 8,
+     + haruf) Telegram par bhejta hai. Desawar ke numbers Ghaziabad ke baad hi final hain (V7.3). Har market/din ek baar.
+  4. Subah Desawar ke baad kal ka hisaab (PASS/FAIL, Rs, 5% commission ke saath) bhejta hai.
+  5. 'bhaari 12 34 56 78 90' jaise reply padh kar bhaari-number prayog ka data rakhta hai; 1 Jan ko model dobara train karta hai.
 
 Usage : python3 automation/v7_auto.py [normal|test]
 Env   : GITHUB_TOKEN, GITHUB_REPOSITORY, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
@@ -20,7 +21,7 @@ import base64, collections, datetime, html, json, os, re, sys, time, urllib.erro
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import v7_reference as V  # noqa: E402  (V7.2 model, same as the tool)
+import v7_reference as V  # noqa: E402  (V7.3 model, same as the tool)
 
 IST = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
 D1 = datetime.timedelta(days=1)
@@ -37,7 +38,7 @@ DRAW_TEXT = {"Desawar": "subah ~5:00", "Faridabad": "~6:00 PM", "Ghaziabad": "~9
 # No slate is sent after this time (IST, on the target's result date).
 CUTOFF = {"Desawar": (4, 40), "Faridabad": (17, 45), "Ghaziabad": (21, 30), "Gali": (23, 10)}
 # Result that must be in before a market's slate is final: (market, day offset from the target's result date).
-PREREQ = {"Desawar": ("Gali", -1), "Faridabad": ("Desawar", 0), "Ghaziabad": ("Faridabad", 0), "Gali": ("Ghaziabad", 0)}
+PREREQ = {"Desawar": ("Ghaziabad", -1), "Faridabad": ("Desawar", 0), "Ghaziabad": ("Faridabad", 0), "Gali": ("Ghaziabad", 0)}   # V7.3: Desawar after Ghaziabad
 REPORT_FOR = datetime.timedelta(hours=6)       # PASS/FAIL report only for results younger than this
 
 ENV = os.environ.get
@@ -257,9 +258,52 @@ def merge_results(results, web, today):
     return added, mismatch
 
 
+# ------------------------------------------------------------------ plan (v7_plan.json: tool + bot dono yahi padhte hain)
+DEFAULT_PLAN = {"version": "7.3", "payout": 90, "commission_pct": 5, "heavy_experiment": True,
+                "markets": {"Gali": {"play": True, "skip_ranks": [1], "stake": 125, "haruf": {"type": "bahar", "stake": 200}},
+                            "Desawar": {"play": True, "skip_ranks": [], "stake": 75, "haruf": {"type": "andar", "stake": 150}},
+                            "Ghaziabad": {"play": True, "skip_ranks": [], "stake": 40, "haruf": None},
+                            "Faridabad": {"play": False, "skip_ranks": [], "stake": 0, "haruf": None}}}
+
+
+def load_plan():
+    for p in ([os.path.join(ENV("LOCAL_DIR") or ".", "v7_plan.json")] if DRY else [os.path.join(HERE, "..", "v7_plan.json")]):
+        try:
+            j = json.load(open(p, encoding="utf-8-sig"))
+            if j.get("markets"):
+                return j
+        except (OSError, ValueError):
+            pass
+    try:                                                   # fallback: GitHub raw
+        j = json.loads(http(f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/v7_plan.json?t={int(time.time())}", headers=UA).decode("utf-8-sig"))
+        if j.get("markets"):
+            return j
+    except Exception:  # noqa: BLE001
+        pass
+    return DEFAULT_PLAN
+
+
+def mplan(plan, T):
+    p = (plan.get("markets") or {}).get(T)
+    return p if p and p.get("play", True) and p.get("stake", 0) > 0 else None
+
+
+def plan_nums(p, slate8):
+    skip = set(p.get("skip_ranks") or [])
+    return [n for i, n in enumerate(slate8) if (i + 1) not in skip]
+
+
+def haruf_of(p, units, tens):
+    """-> (label, digit, stake) or None"""
+    h = p.get("haruf") if p else None
+    if not h or not h.get("stake"):
+        return None
+    return ("ANDAR (pehla ank)", tens, h["stake"]) if h.get("type") == "andar" else ("BAHAR (aakhri ank)", units, h["stake"])
+
+
 # ------------------------------------------------------------------ model
 class Engine:
-    def __init__(self, results):
+    def __init__(self, results, logic=None):
         self.data = collections.defaultdict(dict)
         for mk in MARKETS:
             for ds, v in (results.get(mk) or {}).items():
@@ -271,7 +315,12 @@ class Engine:
                 if n is not None and not V.closed(mk, d):
                     self.data[mk][d] = n
         self.m = V.V7(self.data)
-        self.logic = json.load(open(os.path.join(HERE, "v7_logic.json"), encoding="utf-8"))["markets"]
+        L = logic or json.load(open(os.path.join(HERE, "v7_logic.json"), encoding="utf-8"))
+        self.logic = L["markets"]
+        self.version = L.get("version", "?")
+        ex = L.get("exclude_same_day") or {}
+        V.EXCLUDE_SAME_DAY.clear()
+        V.EXCLUDE_SAME_DAY.update({k: set(v) for k, v in ex.items()})
 
     def get(self, mk, d):
         return self.data[mk].get(d)
@@ -279,14 +328,28 @@ class Engine:
     def slate(self, T, td):
         return self.m.slate(T, td, self.logic[T])          # (8 numbers, units digit, tens digit)
 
+    def needs(self, T, td):
+        """Same-day inputs a market's slate depends on: [(market, result date)]."""
+        ex = V.EXCLUDE_SAME_DAY.get(T, set())
+        if T == "Desawar":
+            return [(X, td - D1) for X in ("Faridabad", "Ghaziabad", "Gali") if X not in ex]
+        if T == "Faridabad":
+            return [("Desawar", td)]
+        if T == "Ghaziabad":
+            return [("Faridabad", td)]
+        if T == "Gali":
+            return [("Faridabad", td), ("Ghaziabad", td)]
+        return []
+
     def missing_inputs(self, T, td):
-        """Results the V7.2 rules read (last 3 game days) that are not closed but missing."""
+        """Results the rules read (last 3 game days) that are not closed but missing."""
         G = td - D1 if T == "Desawar" else td
+        order = ["Faridabad", "Ghaziabad", "Gali", "Desawar"]
+        ex = V.EXCLUDE_SAME_DAY.get(T, set())
         miss = []
         for lag in (0, 1, 2):
             for X in MARKETS:
-                order = ["Faridabad", "Ghaziabad", "Gali", "Desawar"]
-                if lag == 0 and order.index(X) >= order.index(T):
+                if lag == 0 and (order.index(X) >= order.index(T) or X in ex):
                     continue
                 rd = G - datetime.timedelta(days=lag) + (D1 if X == "Desawar" else datetime.timedelta(0))
                 if not V.closed(X, rd) and self.get(X, rd) is None:
@@ -299,89 +362,105 @@ def esc(s):
     return html.escape(str(s), quote=False)
 
 
-def forward_text(T, td, nums, units, cfg):
-    stake = cfg["stake_per_jodi"]
-    lines = [f"{T.upper()} {fmt_day(td)}", "  ".join(f"{n:02d}" for n in nums), f"har jodi ₹{stake} (8 jodi = ₹{inr(8 * stake)})"]
-    if T == "Gali" and cfg.get("gali_haruf_stake", 0) > 0:
-        lines.append(f"Bahar (aakhri ank) {units} – ₹{cfg['gali_haruf_stake']}")
+def forward_text(T, td, p, slate8, units, tens):
+    nums = plan_nums(p, slate8)
+    st = p["stake"]
+    lines = [f"{T.upper()} {fmt_day(td)}" + (" (subah)" if T == "Desawar" else ""), "  ".join(f"{n:02d}" for n in nums),
+             f"har jodi ₹{st} ({len(nums)} jodi = ₹{inr(len(nums) * st)})"]
+    h = haruf_of(p, units, tens)
+    if h:
+        lines.append(f"{h[0].split(' ')[0].title()} ({h[0].split('(')[1]} {h[1]} – ₹{h[2]}")
     return "<pre>" + esc("\n".join(lines)) + "</pre>"
 
 
-def verdict(eng, T, d):
-    v = eng.get(T, d)
-    nums, units, _ = eng.slate(T, d)
-    return v, v in nums, v % 10 == units
+def day_pnl(eng, plan, T, rd):
+    """(played?, jodi hit?, haruf hit or None, rupees incl. commission) for one market-day under the plan."""
+    p = mplan(plan, T)
+    v = eng.get(T, rd)
+    if not p or v is None:
+        return False, False, None, 0
+    slate8, units, tens = eng.slate(T, rd)
+    nums = plan_nums(p, slate8)
+    comm = (plan.get("commission_pct") or 0) / 100
+    pay = plan.get("payout") or 90
+    stake = len(nums) * p["stake"]
+    r = (pay * p["stake"] if v in nums else 0) - stake + comm * stake
+    hh = None
+    h = haruf_of(p, units, tens)
+    if h:
+        dig = v // 10 if h[0].startswith("ANDAR") else v % 10
+        hh = dig == h[1]
+        r += (9 * h[2] if hh else 0) - h[2] + comm * h[2]
+    return True, v in nums, hh, r
 
 
-def result_line(eng, mk, d, played, cfg):
+def result_line(eng, plan, mk, d):
     v = eng.get(mk, d)
     if v is None:
         return f"{mk} ({fmt_day(d)}) band tha." if V.closed(mk, d) else f"{mk} ({fmt_day(d)}) ka result abhi nahi mila."
     s = f"{mk} ({fmt_day(d)}) aaya: <b>{v:02d}</b>"
-    if mk in played:
-        _, hit, hh = verdict(eng, mk, d)
-        s += "  ✅ PASS (V7.2 ke 8 mein tha)" if hit else "  ❌ (V7.2 ke 8 mein nahi tha)"
-        if mk == "Gali" and cfg.get("gali_haruf_stake", 0) > 0:
+    played, hit, hh, r = day_pnl(eng, plan, mk, d)
+    if played:
+        s += "  ✅ PASS" if hit else "  ❌"
+        if hh is not None:
             s += " · haruf " + ("✅" if hh else "❌")
+        s += f" ({signed_inr(r)})"
     return s
 
 
-def day_pnl(eng, T, rd, cfg):
-    """(played?, hit?, rupees) for one market-day with the configured stake."""
-    v = eng.get(T, rd)
-    if v is None:
-        return False, False, 0
-    nums, units, _ = eng.slate(T, rd)
-    s = cfg["stake_per_jodi"]
-    r = (90 * s if v in nums else 0) - 8 * s
-    if T == "Gali" and cfg.get("gali_haruf_stake", 0) > 0:
-        h = cfg["gali_haruf_stake"]
-        r += (9 * h if v % 10 == units else 0) - h
-    return True, v in nums, r
+def heavy_stats(eng, state):
+    """Heavy-number experiment: how often did the khaiwala's 'bhaari' numbers come?"""
+    n = h = 0; e = 0.0
+    for k, nums in (state.get("heavy") or {}).items():
+        ds, mk = k.split(":")
+        v = eng.get(mk, datetime.date.fromisoformat(ds))
+        if v is None or not nums:
+            continue
+        n += 1; e += len(set(nums)) / 100; h += v in nums
+    return n, h, e
 
 
-def morning_report(eng, td, played, cfg):
-    """After Desawar (result date td): yesterday's game day + month so far."""
+def morning_report(eng, plan, td, played, state):
+    """After Desawar (result date td): yesterday's game day + month so far (plan + commission)."""
     G = td - D1
     parts, tot = [], 0
     for T in played:
         rd = td if T == "Desawar" else G
-        ok, hit, r = day_pnl(eng, T, rd, cfg)
+        ok, hit, hh, r = day_pnl(eng, plan, T, rd)
         if ok:
-            parts.append(f"{T} {'✅' if hit else '❌'}")
+            parts.append(f"{T} {'✅' if hit else '❌'}" + ("" if hh is None else ("✅" if hh else "❌")))
             tot += r
-    lines = [f"🌅 {result_line(eng, 'Desawar', td, played, cfg)}"]
+    lines = [f"🌅 {result_line(eng, plan, 'Desawar', td)}"]
     if parts:
-        lines.append(f"{fmt_day(G)} ka hisaab (₹{cfg['stake_per_jodi']}/jodi): " + " · ".join(parts) + f" → <b>{signed_inr(tot)}</b>")
-    hits = n = 0
-    mt = 0
+        lines.append(f"{fmt_day(G)} ka hisaab: " + " · ".join(parts) + f" → <b>{signed_inr(tot)}</b>")
+    hits = n = 0; mt = 0
     g = G.replace(day=1)
     while g <= G:
         for T in played:
-            ok, hit, r = day_pnl(eng, T, g + D1 if T == "Desawar" else g, cfg)
+            ok, hit, hh, r = day_pnl(eng, plan, T, g + D1 if T == "Desawar" else g)
             if ok:
-                n += 1
-                hits += hit
-                mt += r
+                n += 1; hits += hit; mt += r
         g += D1
     if n:
         span = fmt_day(G) if G.day == 1 else f"1–{fmt_day(G)}"
-        lines.append(f"Is mahine ({span}): {hits} hit / {n} khel → <b>{signed_inr(mt)}</b>")
-    today = td
-    shut = [mk for mk in ("Faridabad", "Ghaziabad", "Gali") if V.closed(mk, today)]
+        lines.append(f"Is mahine ({span}): {hits} hit / {n} khel → <b>{signed_inr(mt)}</b> ({plan.get('commission_pct', 0)}% commission ke saath)")
+    hn, hh_, he = heavy_stats(eng, state)
+    if hn:
+        lines.append(f"🧪 Bhaari-number prayog: {hn} din, bhaari numbers {hh_} baar aaye (andaaze se {he:.1f})")
+    shut = [mk for mk in ("Faridabad", "Ghaziabad", "Gali") if V.closed(mk, td)]
     if shut:
         lines.append("Aaj " + ", ".join(shut) + " band hain (mahine ka aakhri din).")
-    if V.closed("Desawar", today + D1):
+    if V.closed("Desawar", td + D1):
         lines.append("Kal subah Desawar band hai (1 tarikh), to aaj raat Desawar ke numbers nahi aayenge.")
-    lines.append("<i>Ye V7.2 ke hisaab se hai (agar har din yahi 8 jodi khele).</i>")
+    lines.append(f"<i>V{eng.version} plan ke hisaab se.</i>")
     return "\n".join(lines)
 
 
 # ------------------------------------------------------------------ one run
-def plan_messages(now, eng, state, cfg, mismatch, conflicts, web_ok, mode):
-    """Decide what to send. Returns list of (state_key or None, [messages])."""
+def plan_messages(now, eng, plan, state, mismatch, conflicts, web_ok, mode):
+    """Decide what to send. Returns list of (state_keys or None, [messages])."""
     today = now.date()
-    played = [T for T in ["Ghaziabad", "Gali", "Desawar", "Faridabad"] if T in cfg["markets"]]
+    played = [T for T in ["Ghaziabad", "Gali", "Desawar", "Faridabad"] if mplan(plan, T)]
     sent = state.setdefault("sent", {})
     out = []
 
@@ -402,6 +481,7 @@ def plan_messages(now, eng, state, cfg, mismatch, conflicts, web_ok, mode):
 
     # B. slates
     for T in played:
+        p = mplan(plan, T)
         for td in ([today, today + D1] if T == "Desawar" else [today]):
             if V.closed(T, td) or eng.get(T, td) is not None:
                 continue
@@ -410,18 +490,16 @@ def plan_messages(now, eng, state, cfg, mismatch, conflicts, web_ok, mode):
                 continue
             pm, off = PREREQ[T]
             pd = td + datetime.timedelta(days=off)
-            have_pre = eng.get(pm, pd) is not None or V.closed(pm, pd)
+            have_pre = all(eng.get(X, xd) is not None or V.closed(X, xd) for X, xd in eng.needs(T, td))
             cutoff = at(td, CUTOFF[T])
             if mode == "test":
-                if not have_pre:                              # not final yet -> no numbers, so nobody plays them by mistake
+                if not have_pre:
                     out.append((None, [f"⏳ {T} ({fmt_day(td)}): {pm} ka result aate hi numbers aayenge ({pm} result {DRAW_TEXT[pm]})."]))
                     break
-                nums, units, _ = eng.slate(T, td)
+                slate8, units, tens = eng.slate(T, td)
                 pv = eng.get(pm, pd)
                 info = f"🎯 <b>{T.upper()} ({fmt_day(td)})</b> – final numbers ({pm} {'band tha' if pv is None else f'aaya {pv:02d}'})"
-                if T == "Gali":
-                    info += f"\nHaruf: BAHAR {units} (aakhri ank)"
-                out.append((None, [info, forward_text(T, td, nums, units, cfg)]))
+                out.append((None, [info, forward_text(T, td, p, slate8, units, tens)]))
                 break
             if not have_pre:
                 ak = f"alert:{pm}:{pd}"
@@ -432,22 +510,29 @@ def plan_messages(now, eng, state, cfg, mismatch, conflicts, web_ok, mode):
                 continue
             if now > cutoff:
                 continue
-            nums, units, _ = eng.slate(T, td)
-            when = "subah" if T == "Desawar" else ""
-            info = [f"🎯 <b>{T.upper()} ({fmt_day(td)}{' ' + when if when else ''})</b> – V7.2",
-                    result_line(eng, pm, pd, played, cfg)]
+            slate8, units, tens = eng.slate(T, td)
+            nums = plan_nums(p, slate8)
+            info = [f"🎯 <b>{T.upper()} ({fmt_day(td)}{' subah' if T == 'Desawar' else ''})</b> – V{eng.version}",
+                    result_line(eng, plan, pm, pd)]
             keys = [key]
             if pm in played and eng.get(pm, pd) is not None:
                 keys.append(f"res:{pm}:{pd}")
-            if T == "Gali":
-                hs = cfg.get("gali_haruf_stake", 0)
-                info.append(f"Haruf: <b>BAHAR {units}</b> (aakhri ank)" + ("" if hs > 0 else " – chaho to ₹200–300"))
+            skipped = [n for n in slate8 if n not in nums]
+            if skipped:
+                info.append("✕ MAIN " + " ".join(f"{n:02d}" for n in skipped) + " nahi khelna (rank 1 kamzor hai), baaki " + str(len(nums)) + " khelo")
+            h = haruf_of(p, units, tens)
+            if h:
+                info.append(f"Haruf: <b>{h[0]} {h[1]}</b> ₹{h[2]}")
             miss = [x for x in eng.missing_inputs(T, td) if x != (pm, pd)]
             if miss:
                 info.append("⚠️ Ye results data mein nahi hain, numbers tool se thode alag ho sakte hain: " +
                             ", ".join(f"{x} {fmt_day(d)}" for x, d in miss))
             info.append(f"Neeche wala message khaiwale ko bhejo (tap karke copy). {T} result {DRAW_TEXT[T]}.")
-            out.append((keys, ["\n".join(info), forward_text(T, td, nums, units, cfg)]))
+            msgs = ["\n".join(info), forward_text(T, td, p, slate8, units, tens)]
+            if T == "Gali" and plan.get("heavy_experiment", True):
+                msgs.append("🧪 Prayog: khaiwale se poochho aaj Gali mein sabse BHAARI 5 number kaunse hain (jahan sabse zyada paisa laga hai), "
+                            "aur mujhe reply karo:\n<code>bhaari 12 34 56 78 90</code>\nMain jaanchunga ki operator unhe bachata hai ya nahi.")
+            out.append((keys, msgs))
 
     if mode == "test":
         return out
@@ -461,11 +546,27 @@ def plan_messages(now, eng, state, cfg, mismatch, conflicts, web_ok, mode):
                 continue
             if not (at(d, RESULT_WINDOW[T][0]) <= now <= at(d, RESULT_WINDOW[T][1]) + REPORT_FOR):
                 continue
-            if T == "Desawar" and cfg.get("send_morning_report", True):
-                out.append(([k], [morning_report(eng, d, played, cfg)]))
+            if T == "Desawar":
+                out.append(([k], [morning_report(eng, plan, d, played, state)]))
             else:
-                out.append(([k], ["📢 " + result_line(eng, T, d, played, cfg)]))
+                out.append(([k], ["📢 " + result_line(eng, plan, T, d)]))
     return out
+
+
+# ------------------------------------------------------------------ telegram
+def tg_api(method, body):
+    tok = (ENV("TELEGRAM_BOT_TOKEN") or "").strip()
+    if not tok:
+        return None
+    try:
+        j = json.loads(http(f"https://api.telegram.org/bot{tok}/{method}", json.dumps(body).encode(), {"Content-Type": "application/json"}).decode())
+        return j if j.get("ok") else False
+    except urllib.error.HTTPError as e:
+        log(f"  telegram {method} HTTP {e.code}")          # never print the token / URL
+        return False
+    except Exception as e:  # noqa: BLE001
+        log(f"  telegram {method} error {type(e).__name__}")
+        return False
 
 
 def tg_send(text):
@@ -475,20 +576,84 @@ def tg_send(text):
         return True
     if not tok or not chat:
         return None                                   # not set up yet
-    body = json.dumps({"chat_id": chat, "text": text, "parse_mode": "HTML", "disable_web_page_preview": True}).encode()
     for _ in range(3):
-        try:
-            j = json.loads(http(f"https://api.telegram.org/bot{tok}/sendMessage", body, {"Content-Type": "application/json"}).decode())
-            if j.get("ok"):
-                return True
-        except urllib.error.HTTPError as e:
-            log(f"  telegram HTTP {e.code}")          # never print the token / URL
-            if e.code in (400, 401, 403, 404):
-                return False
-        except Exception as e:  # noqa: BLE001
-            log(f"  telegram error {type(e).__name__}")
+        r = tg_api("sendMessage", {"chat_id": chat, "text": text, "parse_mode": "HTML", "disable_web_page_preview": True})
+        if r:
+            return True
         time.sleep(3)
     return False
+
+
+HEAVY_RE = re.compile(r"^\s*(?:bhaari|bhari|heavy|भारी)\s*(gali|desawar|ghaziabad|faridabad)?\s*[:\-]?\s*([\d][\d\s,./]*)$", re.I)
+
+
+def read_heavy_replies(state, now):
+    """Poll Telegram for 'bhaari 12 34 56 78 90' replies from the user; store under result date + market."""
+    chat = (ENV("TELEGRAM_CHAT_ID") or "").strip()
+    if DRY or not chat:
+        return []
+    body = {"timeout": 0, "allowed_updates": ["message"]}
+    if state.get("tg_offset"):
+        body["offset"] = state["tg_offset"]
+    r = tg_api("getUpdates", body)
+    if not r:
+        return []
+    acks = []
+    for u in r.get("result", []):
+        state["tg_offset"] = max(state.get("tg_offset") or 0, u["update_id"] + 1)
+        msg = u.get("message") or {}
+        if str((msg.get("chat") or {}).get("id")) != chat:
+            continue
+        m = HEAVY_RE.match(msg.get("text") or "")
+        if not m:
+            continue
+        nums = sorted({int(x) for x in re.findall(r"\d{1,2}", m.group(2)) if 0 <= int(x) <= 99})
+        if not nums:
+            continue
+        mk = (m.group(1) or "Gali").capitalize()
+        t = datetime.datetime.fromtimestamp(msg.get("date", now.timestamp()), IST)
+        rd = t.date()
+        if mk == "Desawar" and t.hour >= 12:
+            rd += D1                                   # evening reply is about next morning's Desawar
+        state.setdefault("heavy", {})[f"{rd}:{mk}"] = nums
+        acks.append(f"✅ Note kar liya: {mk} {fmt_day(rd)} bhaari = " + " ".join(f"{n:02d}" for n in nums))
+    return acks
+
+
+# ------------------------------------------------------------------ yearly retrain (1 Jan)
+def retrain(results, year, state):
+    """Train V7 on 2013..(year-1) from spi_results.json, write automation/v7_logic.json + v7_logic.json (root)."""
+    eng = Engine(results)
+    A, B = datetime.date(2013, 1, 1), datetime.date(year - 1, 12, 31)
+    M = A + (B - A) / 2
+    new = {"version": eng.version, "trained_on": f"{A}..{B} (spi_results.json, auto {year}-01-01)",
+           "engine_note": "auto-retrained; same V7.3 method", "exclude_same_day": {k: sorted(v) for k, v in V.EXCLUDE_SAME_DAY.items()},
+           "markets": {T: eng.m.learn(T, A, M, B) for T in V.TARGETS}}
+    ok = all(20 <= len(new["markets"][T]["rules"]) <= 400 and new["markets"][T]["adjust"] for T in V.TARGETS)
+    # last year: old vs new logic (new is in-sample for that year, so only a sanity check)
+    old_h = new_h = n = 0
+    for T in V.TARGETS:
+        d = datetime.date(year - 1, 1, 1)
+        while d <= B:
+            a = eng.get(T, d)
+            if a is not None and not V.closed(T, d):
+                n += 1
+                old_h += a in eng.m.slate(T, d, eng.logic[T])[0]
+                new_h += a in eng.m.slate(T, d, new["markets"][T])[0]
+            d += D1
+    summary = (f"🧠 <b>Saal {year}: V7 dobara train</b>\nData 2013–{year - 1}. Rules: " +
+               ", ".join(f"{T[:3]} {len(new['markets'][T]['rules'])}" for T in V.TARGETS) +
+               f"\n{year - 1} par: purana logic {old_h}/{n} hit, naya {new_h}/{n} (naya usi saal par seekha hai, isliye thoda zyada dikhega).")
+    if not ok:
+        return summary + "\n❌ Sanity check fail – purana logic hi rahega."
+    text = json.dumps(new)
+    for path in ("automation/v7_logic.json", "v7_logic.json"):
+        for attempt in range(3):
+            _, sha = load_file(path, {})
+            if save_file(path, new, sha, f"V7 auto: yearly retrain {year}"):
+                break
+            time.sleep(2)
+    return summary + "\n✅ Naya logic GitHub par likh diya; tool aur bot ab yahi use karenge."
 
 
 def now_ist():
@@ -508,8 +673,9 @@ def prune(sent, today):
 def main(mode="normal"):
     now = now_ist()
     today = now.date()
-    cfg = json.load(open(os.path.join(HERE, "config.json"), encoding="utf-8"))
-    log(f"V7.2 auto | mode={mode} | {now:%Y-%m-%d %H:%M} IST | markets={','.join(cfg['markets'])}")
+    plan = load_plan()
+    log(f"V7 auto | mode={mode} | {now:%Y-%m-%d %H:%M} IST | plan v{plan.get('version')} markets=" +
+        ",".join(T for T in MARKETS if mplan(plan, T)))
 
     a, b = fetch_web(today)
     web, conflicts = combine(a, b, now)
@@ -531,10 +697,18 @@ def main(mode="normal"):
     else:
         raise RuntimeError("could not save spi_results.json")
 
-    # 2. decide + send messages
-    eng = Engine(results)
+    # 2. state + yearly retrain + heavy replies
     state, ssha = load_file(STATE_PATH, {"sent": {}})
     sent = state.setdefault("sent", {})
+    changed = False
+    if mode == "normal" and today.month == 1 and today.day == 1 and f"retrain:{today.year}" not in sent:
+        try:
+            msg = retrain(results, today.year, state)
+        except Exception as e:  # noqa: BLE001
+            msg = f"🧠 Saal {today.year} retrain fail: {type(e).__name__}. Purana logic chalta rahega."
+        if tg_send(msg):
+            sent[f"retrain:{today.year}"] = now.isoformat(timespec="minutes"); changed = True
+    eng = Engine(results)
     init_now = "init" not in state and mode != "test"
     if init_now:                                         # first run ever: don't flood old PASS/FAIL reports
         state["init"] = now.isoformat(timespec="minutes")
@@ -542,32 +716,35 @@ def main(mode="normal"):
             for d in (today - D1, today):
                 if eng.get(T, d) is not None:
                     sent[f"res:{T}:{d}"] = "init"
-    plan = plan_messages(now, eng, state, cfg, mismatch, conflicts, web_ok, mode)
+    acks = read_heavy_replies(state, now)
+    if acks:
+        changed = True
+        for t in acks:
+            tg_send(t)
+    plan_ = plan_messages(now, eng, plan, state, mismatch, conflicts, web_ok, mode)
     if mode == "test":
-        head = ("✅ <b>V7.2 Auto chal raha hai!</b>\nTelegram connect ho gaya. Ab har din numbers apne aap aayenge:\n"
-                "• Faridabad ke baad → Ghaziabad\n• Ghaziabad ke baad → Gali (+ BAHAR haruf)\n• Gali ke baad → Desawar\n"
-                "• Subah → kal ka hisaab\nNeeche abhi ki sthiti hai.")
-        waiting = [m[0] for k, m in plan if k is None and len(m) == 1 and m[0].startswith("⏳")]
-        plan = [p for p in plan if not (p[0] is None and len(p[1]) == 1 and p[1][0].startswith("⏳"))]
-        plan.insert(0, (None, [head + ("\n\n" + "\n".join(waiting) if waiting else "")]))
-    changed, failed, not_setup = False, 0, False
-    for keys, msgs in plan:
+        head = (f"✅ <b>V{eng.version} Auto chal raha hai!</b>\nTelegram connect ho gaya. Ab har din numbers apne aap aayenge:\n"
+                "• Faridabad ke baad → Ghaziabad\n• Ghaziabad ke baad → Gali (+ BAHAR haruf) aur Desawar (+ ANDAR haruf)\n"
+                "• Subah → kal ka hisaab\nPlan: Gali 7 jodi × ₹125 (MAIN chhod kar), Desawar 8 × ₹75, Ghaziabad 8 × ₹40.\nNeeche abhi ki sthiti hai.")
+        waiting = [m[0] for k, m in plan_ if k is None and len(m) == 1 and m[0].startswith("⏳")]
+        plan_ = [p for p in plan_ if not (p[0] is None and len(p[1]) == 1 and p[1][0].startswith("⏳"))]
+        plan_.insert(0, (None, [head + ("\n\n" + "\n".join(waiting) if waiting else "")]))
+    failed, not_setup = 0, False
+    for keys, msgs in plan_:
         ok = True
         for t in msgs:
             r = tg_send(t)
             if r is None:
-                not_setup = True
-                ok = False
+                not_setup = True; ok = False
                 break
             if not r:
-                ok = False
-                failed += 1
+                ok = False; failed += 1
                 break
         if ok and keys:
             for k in keys:
                 sent[k] = now.isoformat(timespec="minutes")
             changed = True
-    log(f"  messages: {len(plan)} planned, {'Telegram not set up yet' if not_setup else f'{failed} failed'}")
+    log(f"  messages: {len(plan_)} planned, {'Telegram not set up yet' if not_setup else f'{failed} failed'}")
 
     # 3. state
     prune(sent, today)
@@ -577,11 +754,15 @@ def main(mode="normal"):
                 break
             fresh, ssha = load_file(STATE_PATH, {"sent": {}})
             fresh.setdefault("sent", {}).update(sent)
-            fresh.setdefault("init", state.get("init"))
+            for k in ("init", "tg_offset", "heavy"):
+                if k in state and k not in fresh:
+                    fresh[k] = state[k]
+            if "heavy" in state:
+                fresh.setdefault("heavy", {}).update(state["heavy"])
             state, sent = fresh, fresh["sent"]
         else:
             log("  could not save sent_state.json (will retry next run)")
-    if failed or (mode == "test" and (not_setup or not plan)):
+    if failed or (mode == "test" and (not_setup or not plan_)):
         log("  Telegram problem: check TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID secrets and send /start to your bot")
         sys.exit(1)
 
