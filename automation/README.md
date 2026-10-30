@@ -1,12 +1,15 @@
-# V7.2 Auto – numbers apne aap Telegram par
+# V7.3 Auto – numbers apne aap Telegram par
 
 ## Ye kya karta hai
 - **Result apne aap:** har shaam/raat result website se khud uthata hai aur `spi_results.json` mein bharta hai. Isliye dono laptop ke tool mein bhi dikh jaata hai.
-- **Numbers apne aap (V7.2):**
-  - Faridabad ke baad → **Ghaziabad** ke 8 jodi
-  - Ghaziabad ke baad → **Gali** ke 8 jodi + BAHAR haruf
-  - Gali ke baad → **Desawar** ke 8 jodi
-- **Subah:** Desawar ke baad kal ka hisaab (PASS/FAIL, ₹) aur is mahine ka total.
+- **Numbers apne aap (V7.3, plan `v7_plan.json` se):**
+  - Faridabad ke baad → **Ghaziabad** ke 8 jodi (₹40)
+  - Ghaziabad ke baad → **Gali** ke 7 jodi (MAIN chhod kar, ₹125) + BAHAR haruf (₹200) **aur** **Desawar** ke 8 jodi (₹75) + ANDAR haruf (₹150)
+  - (V7.3 mein Desawar ko raat ke Gali result ki zaroorat nahi, isliye dono saath aate hain)
+- **Subah:** Desawar ke baad kal ka hisaab (PASS/FAIL, ₹, 5% commission ke saath) aur is mahine ka total.
+- **Bhaari-number prayog:** Gali se pehle khaiwale se "sabse bhaari 5 number" poochh kar bot ko reply karo: `bhaari 12 34 56 78 90`
+  (Desawar ke liye `bhaari desawar 12 34 ...`). Subah ki report mein dikhega ki operator unhe bachata hai ya nahi.
+- **Har saal 1 Jan:** bot model dobara train karke `v7_logic.json` likhta hai; tool aur bot dono naya logic khud utha lete hain.
 - **Laptop on rakhna zaroori nahi.** Ye GitHub par chalta hai.
 
 ## Ek baar ka setup (phone se ~5 minute)
@@ -30,19 +33,21 @@ Wahi steps yahan bhi:
 5. Test karo:
    - Repo ka **Actions** tab kholo → left mein **V7.2 Auto (results + Telegram)** chuno.
    - **Run workflow** dabao, mode `test` rehne do, phir hare **Run workflow** button par dabao.
-   - 1–2 minute mein Telegram par "✅ V7.2 Auto chal raha hai!" aana chahiye.
+   - 1–2 minute mein Telegram par "✅ V7.3 Auto chal raha hai!" aana chahiye.
 
 ## Roz ka kaam
 - Har market ke liye 2 message aayenge. Pehle mein jaankari hogi. Doosra (sirf numbers wala) tap karke copy karo aur khaiwale ko bhej do.
 - Website par result late ho to "⚠️" alert aayega. Tab tool khud khol kar dekh lo.
 
-## Settings (`automation/config.json`)
+## Settings (`v7_plan.json`, repo root – tool aur bot dono yahi padhte hain)
 | Setting | Matlab |
 |---|---|
-| `markets` | Kin markets ke numbers bhejne hain (abhi Ghaziabad, Gali, Desawar) |
-| `stake_per_jodi` | ₹ per jodi (abhi 75) |
-| `gali_haruf_stake` | 0 = haruf sirf jaankari mein. 200 jaisa number = khaiwale wale message mein bhi haruf |
-| `send_morning_report` | Subah ka hisaab bhejna hai ya nahi |
+| `markets.<Market>.play` | Ye market khelna hai ya nahi |
+| `markets.<Market>.skip_ranks` | V7 slate ke kaunse rank nahi khelne (1 = MAIN). Gali: [1] |
+| `markets.<Market>.stake` | ₹ per jodi |
+| `markets.<Market>.haruf` | `{"type": "bahar"/"andar", "stake": ₹}` ya `null` |
+| `commission_pct`, `payout` | Hisaab ke liye (5, 90) |
+| `heavy_experiment` | Gali message ke saath bhaari-number prayog ki line |
 
 ## Dhyan rahe
 - GitHub ka timer kabhi-kabhi 5–15 minute late chalta hai.
