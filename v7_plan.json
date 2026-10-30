@@ -1,0 +1,57 @@
+{
+ "version": "7.3",
+ "updated": "2026-10-30",
+ "payout": 90,
+ "commission_pct": 5,
+ "note": "V7.3 plan. skip_ranks = V7 slate ke kaunse rank nahi khelne (1 = MAIN). Stake = Rs per jodi. haruf type bahar = aakhri ank, andar = pehla ank.",
+ "markets": {
+  "Gali": {
+   "play": true,
+   "skip_ranks": [
+    1
+   ],
+   "stake": 125,
+   "haruf": {
+    "type": "bahar",
+    "stake": 200
+   }
+  },
+  "Desawar": {
+   "play": true,
+   "skip_ranks": [],
+   "stake": 75,
+   "haruf": {
+    "type": "andar",
+    "stake": 150
+   }
+  },
+  "Ghaziabad": {
+   "play": true,
+   "skip_ranks": [],
+   "stake": 40,
+   "haruf": null
+  },
+  "Faridabad": {
+   "play": false,
+   "skip_ranks": [],
+   "stake": 0,
+   "haruf": null
+  }
+ },
+ "backup_ladder": [
+  {
+   "below": 150000,
+   "scale": 0.67
+  },
+  {
+   "below": 250000,
+   "scale": 1.0
+  },
+  {
+   "below": 400000,
+   "scale": 1.33
+  }
+ ],
+ "stop_below": 80000,
+ "heavy_experiment": true
+}
