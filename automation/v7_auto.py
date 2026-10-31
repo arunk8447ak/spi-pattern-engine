@@ -283,6 +283,27 @@ def load_plan():
     return DEFAULT_PLAN
 
 
+def resolve_plan(plan, today):
+    """Apply a dated override (plan["overrides"]) for today's date, if any."""
+    for o in plan.get("overrides") or []:
+        try:
+            if o.get("markets") and o["from"] <= today.isoformat() <= o["to"]:
+                q = dict(plan); q["markets"] = o["markets"]; q["label"] = o.get("label"); return q
+        except (KeyError, TypeError):
+            continue
+    return plan
+
+
+def plan_text(plan):
+    parts = []
+    for T in ("Gali", "Desawar", "Ghaziabad", "Faridabad"):
+        p = mplan(plan, T)
+        if p:
+            k = 8 - len(set(p.get("skip_ranks") or []))
+            parts.append(f"{T} {k} jodi × ₹{p['stake']}" + (" (MAIN chhod kar)" if 1 in (p.get("skip_ranks") or []) else ""))
+    return ", ".join(parts) + (f" [{plan['label']}]" if plan.get("label") else "")
+
+
 def mplan(plan, T):
     p = (plan.get("markets") or {}).get(T)
     return p if p and p.get("play", True) and p.get("stake", 0) > 0 else None
@@ -673,8 +694,8 @@ def prune(sent, today):
 def main(mode="normal"):
     now = now_ist()
     today = now.date()
-    plan = load_plan()
-    log(f"V7 auto | mode={mode} | {now:%Y-%m-%d %H:%M} IST | plan v{plan.get('version')} markets=" +
+    plan = resolve_plan(load_plan(), today)
+    log(f"V7 auto | mode={mode} | {now:%Y-%m-%d %H:%M} IST | plan v{plan.get('version')} {plan.get('label') or ''} markets=" +
         ",".join(T for T in MARKETS if mplan(plan, T)))
 
     a, b = fetch_web(today)
@@ -725,7 +746,7 @@ def main(mode="normal"):
     if mode == "test":
         head = (f"✅ <b>V{eng.version} Auto chal raha hai!</b>\nTelegram connect ho gaya. Ab har din numbers apne aap aayenge:\n"
                 "• Faridabad ke baad → Ghaziabad\n• Ghaziabad ke baad → Gali (+ BAHAR haruf) aur Desawar (+ ANDAR haruf)\n"
-                "• Subah → kal ka hisaab\nPlan: Gali 7 jodi × ₹125 (MAIN chhod kar), Desawar 8 × ₹75, Ghaziabad 8 × ₹40.\nNeeche abhi ki sthiti hai.")
+                "• Subah → kal ka hisaab\nPlan: " + plan_text(plan) + ".\nNeeche abhi ki sthiti hai.")
         waiting = [m[0] for k, m in plan_ if k is None and len(m) == 1 and m[0].startswith("⏳")]
         plan_ = [p for p in plan_ if not (p[0] is None and len(p[1]) == 1 and p[1][0].startswith("⏳"))]
         plan_.insert(0, (None, [head + ("\n\n" + "\n".join(waiting) if waiting else "")]))
