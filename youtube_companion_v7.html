@@ -899,10 +899,7 @@ function buildACT() {
     for (var d2 in RD[mk]) {
       if (d2 <= curToday && !isMarketClosed(mk, d2)) {
         var sv2 = sanitizeVal(RD[mk][d2]);
-        if (sv2 !== null) {
-          ACT[mk][d2] = sv2;
-          TK[mk][d2] = sv2;
-        }
+        if (sv2 !== null && ACT[mk][d2] === undefined) ACT[mk][d2] = sv2;   // V7.3 fix: embedded data only FILLS GAPS; GitHub/saved values win
       }
     }
   });
