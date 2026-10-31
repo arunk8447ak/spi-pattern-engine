@@ -48,6 +48,7 @@ Wahi steps yahan bhi:
 | `markets.<Market>.haruf` | `{"type": "bahar"/"andar", "stake": ₹}` ya `null` |
 | `commission_pct`, `payout` | Hisaab ke liye (5, 90) |
 | `heavy_experiment` | Gali message ke saath bhaari-number prayog ki line |
+| `overrides` | Tay tarikhon (`from`–`to`) ke liye alag `markets` plan (jaise November high-stake). Tool aur bot aaj ki tarikh dekh kar khud chunte hain; tarikh nikalte hi normal plan wapas |
 
 ## Dhyan rahe
 - GitHub ka timer kabhi-kabhi 5–15 minute late chalta hai.
