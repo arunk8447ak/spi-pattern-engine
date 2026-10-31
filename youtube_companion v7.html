@@ -1012,8 +1012,10 @@ var V7_PLAN = {"version": "7.3", "updated": "2026-10-30", "payout": 90, "commiss
   if(!ok) return;
   if(parseFloat(j.version)>=parseFloat(V7_LOGIC.version||'0')&&JSON.stringify(j)!==JSON.stringify(V7_LOGIC)){ V7_LOGIC=j; _PRED_CACHE={}; if(typeof renderAll==='function') renderAll(); if(typeof showAutoFetchToast==='function') showAutoFetchToast('V7 logic updated (trained '+(j.trained_on||'')+')'); }
 }).catch(function(){}); }catch(e){} })();
-function v7PlanFor(mkt){ var p=V7_PLAN&&V7_PLAN.markets?V7_PLAN.markets[mkt]:null; return (p&&p.play!==false)?p:null; }
-function v7Skip(mkt){ var p=V7_PLAN&&V7_PLAN.markets?V7_PLAN.markets[mkt]:null; return (p&&p.skip_ranks)||[]; }
+function v7PlanActive(){ var t=today(); var o=((V7_PLAN&&V7_PLAN.overrides)||[]).filter(function(x){ return x&&x.markets&&x.from<=t&&t<=x.to; })[0]; return o||null; }
+function v7PlanMkts(){ var o=v7PlanActive(); return (o?o.markets:(V7_PLAN&&V7_PLAN.markets))||{}; }
+function v7PlanFor(mkt){ var p=v7PlanMkts()[mkt]; return (p&&p.play!==false&&p.stake>0)?p:null; }
+function v7Skip(mkt){ var p=v7PlanMkts()[mkt]; return (p&&p.skip_ranks)||[]; }
 function v7IsV7(pred){ return !!(pred&&pred.cluster&&pred.cluster.length===8&&('v3' in pred)); }
 function v7PlanNums(mkt,pred){ var p=v7PlanFor(mkt); if(!p||!v7IsV7(pred)) return null; var sk=p.skip_ranks||[], out=[]; pred.cluster.forEach(function(n,i){ if(sk.indexOf(i+1)<0) out.push(n); }); return out; }
 function v7Needs(mkt,d){ var ex=(V7_LOGIC.exclude_same_day&&V7_LOGIC.exclude_same_day[mkt])||[]; if(mkt==='Desawar'){ var g=addD(d,-1); return ['Faridabad','Ghaziabad','Gali'].filter(function(X){return ex.indexOf(X)<0;}).map(function(X){return [X,g];}); } if(mkt==='Faridabad') return [['Desawar',d]]; if(mkt==='Ghaziabad') return [['Faridabad',d]]; if(mkt==='Gali') return [['Faridabad',d],['Ghaziabad',d]]; return []; }
@@ -1028,9 +1030,10 @@ function v7MonthPnl(mkt,d){ var p=v7PlanFor(mkt); if(!p) return null; var ym=d.s
   return {n:n,h:h,pnl:pnl}; }
 function v7PlanBox(mkt,d,pred,col){ var p=v7PlanFor(mkt); var html=''; var miss=v7Missing(mkt,d);
   if(miss.length){ html+='<div style="margin-top:8px;padding:8px 10px;border-radius:8px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.45);color:#fca5a5;font-size:11px;font-weight:700;line-height:1.5">&#9888; '+miss.map(function(x){ return x[0]+' ('+fmtS(x[1])+')'; }).join(', ')+' ka result abhi nahi daala &mdash; ye numbers ADHURE hain. Pehle wo result daalo, phir khelo.</div>'; }
-  if(!p||!v7IsV7(pred)) return html;
+  if(!p){ var pm=v7PlanMkts()[mkt]; if(pm&&pm.play===false) html+='<div style="margin-top:8px;font-size:10px;color:var(--mut)">Plan ke hisaab se aaj ye market <b>nahi khelna</b>.</div>'; return html; }
+  if(!v7IsV7(pred)) return html;
   var nums=v7PlanNums(mkt,pred)||[]; var hd=v7HarufDigit(p,pred); var txt=v7KhaiwalaText(mkt,d,pred); var sk=p.skip_ranks||[]; var tot=nums.length*p.stake+(hd!==null?p.haruf.stake:0);
-  html+='<div class="box" style="margin-top:8px;border-color:rgba(34,197,94,.35)"><div class="boxt" style="color:#22c55e">&#10003; AAJ KA PLAN (V7.3) <span style="color:var(--mut);font-weight:400">&bull; '+nums.length+' jodi &times; '+v7Rs(p.stake)+(sk.length?' &bull; rank '+sk.join(',')+' (MAIN) nahi khelna':'')+'</span></div>'
+  html+='<div class="box" style="margin-top:8px;border-color:rgba(34,197,94,.35)"><div class="boxt" style="color:#22c55e">&#10003; AAJ KA PLAN (V7.3)'+(v7PlanActive()&&v7PlanActive().label?' &bull; <span style="color:#fbbf24">'+v7PlanActive().label+'</span>':'')+' <span style="color:var(--mut);font-weight:400">&bull; '+nums.length+' jodi &times; '+v7Rs(p.stake)+(sk.length?' &bull; rank '+sk.join(',')+' (MAIN) nahi khelna':'')+'</span></div>'
     +'<div style="font-family:\'JetBrains Mono\',monospace;font-size:17px;letter-spacing:2px;color:#e6edf3;margin:4px 0 6px;word-spacing:6px">'+nums.map(p2).join(' ')+'</div>'
     +'<div style="font-size:10px;color:var(--mut)">Jodi '+v7Rs(nums.length*p.stake)+(hd!==null?' &nbsp;&bull;&nbsp; '+(p.haruf.type==='andar'?'ANDAR (pehla ank) ':'BAHAR (aakhri ank) ')+'<b style="color:#e6edf3;font-size:12px">'+hd+'</b> '+v7Rs(p.haruf.stake):'')+' &nbsp;&bull;&nbsp; kul <b style="color:#e6edf3">'+v7Rs(tot)+'</b></div>'
     +'<button onclick="v7Copy(this)" data-txt="'+encodeURIComponent(txt)+'" style="margin-top:8px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.5);color:#22c55e;border-radius:6px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">Copy (khaiwale ke liye)</button>';
