@@ -383,14 +383,15 @@ def esc(s):
     return html.escape(str(s), quote=False)
 
 
-def forward_text(T, td, p, slate8, units, tens):
+def forward_text(T, td, p, slate8, units, tens, amounts=True):
     nums = plan_nums(p, slate8)
     st = p["stake"]
-    lines = [f"{T.upper()} {fmt_day(td)}" + (" (subah)" if T == "Desawar" else ""), "  ".join(f"{n:02d}" for n in nums),
-             f"har jodi ₹{st} ({len(nums)} jodi = ₹{inr(len(nums) * st)})"]
+    lines = [f"{T.upper()} {fmt_day(td)}" + (" (subah)" if T == "Desawar" else ""), "  ".join(f"{n:02d}" for n in nums)]
+    if amounts:
+        lines.append(f"har jodi ₹{st} ({len(nums)} jodi = ₹{inr(len(nums) * st)})")
     h = haruf_of(p, units, tens)
     if h:
-        lines.append(f"{h[0].split(' ')[0].title()} ({h[0].split('(')[1]} {h[1]} – ₹{h[2]}")
+        lines.append(f"{h[0].split(' ')[0].title()} ({h[0].split('(')[1]} {h[1]}" + (f" – ₹{h[2]}" if amounts else ""))
     return "<pre>" + esc("\n".join(lines)) + "</pre>"
 
 
@@ -520,7 +521,7 @@ def plan_messages(now, eng, plan, state, mismatch, conflicts, web_ok, mode):
                 slate8, units, tens = eng.slate(T, td)
                 pv = eng.get(pm, pd)
                 info = f"🎯 <b>{T.upper()} ({fmt_day(td)})</b> – final numbers ({pm} {'band tha' if pv is None else f'aaya {pv:02d}'})"
-                out.append((None, [info, forward_text(T, td, p, slate8, units, tens)]))
+                out.append((None, [info, forward_text(T, td, p, slate8, units, tens, plan.get('copy_amounts', True) is not False)]))
                 break
             if not have_pre:
                 ak = f"alert:{pm}:{pd}"
@@ -549,7 +550,7 @@ def plan_messages(now, eng, plan, state, mismatch, conflicts, web_ok, mode):
                 info.append("⚠️ Ye results data mein nahi hain, numbers tool se thode alag ho sakte hain: " +
                             ", ".join(f"{x} {fmt_day(d)}" for x, d in miss))
             info.append(f"Neeche wala message khaiwale ko bhejo (tap karke copy). {T} result {DRAW_TEXT[T]}.")
-            msgs = ["\n".join(info), forward_text(T, td, p, slate8, units, tens)]
+            msgs = ["\n".join(info), forward_text(T, td, p, slate8, units, tens, plan.get('copy_amounts', True) is not False)]
             if T == "Gali" and plan.get("heavy_experiment", True):
                 msgs.append("🧪 Prayog: khaiwale se poochho aaj Gali mein sabse BHAARI 5 number kaunse hain (jahan sabse zyada paisa laga hai), "
                             "aur mujhe reply karo:\n<code>bhaari 12 34 56 78 90</code>\nMain jaanchunga ki operator unhe bachata hai ya nahi.")
