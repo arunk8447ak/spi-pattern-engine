@@ -3,7 +3,7 @@
  "updated": "2026-10-31",
  "payout": 90,
  "commission_pct": 5,
- "note": "V7.3 plan. skip_ranks = V7 slate ke kaunse rank nahi khelne (1 = MAIN). Stake = Rs per jodi. haruf type bahar = aakhri ank, andar = pehla ank. 'overrides' = tay tarikhon ke liye alag plan (tool aur bot dono aaj ki tarikh dekh kar chunte hain); baaki dino ke liye 'markets'.",
+ "note": "V7.3 plan. skip_ranks = V7 slate ke kaunse rank nahi khelne (1 = MAIN). Stake = Rs per jodi. haruf type bahar = aakhri ank, andar = pehla ank. 'overrides' = tay tarikhon ke liye alag plan (tool aur bot dono aaj ki tarikh dekh kar chunte hain); baaki dino ke liye 'markets'. copy_amounts=false: copy/Telegram message mein sirf numbers (rupaye nahi).",
  "markets": {
   "Gali": {
    "play": true,
@@ -95,5 +95,6 @@
    },
    "rules": "Backup Rs3 lakh alag. Mahine ka ghaata Rs1.5 lakh par stake Rs400; Rs2 lakh par normal plan. 1 Dec se apne aap normal plan."
   }
- ]
+ ],
+ "copy_amounts": false
 }
