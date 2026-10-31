@@ -1,9 +1,9 @@
 {
  "version": "7.3",
- "updated": "2026-10-30",
+ "updated": "2026-10-31",
  "payout": 90,
  "commission_pct": 5,
- "note": "V7.3 plan. skip_ranks = V7 slate ke kaunse rank nahi khelne (1 = MAIN). Stake = Rs per jodi. haruf type bahar = aakhri ank, andar = pehla ank.",
+ "note": "V7.3 plan. skip_ranks = V7 slate ke kaunse rank nahi khelne (1 = MAIN). Stake = Rs per jodi. haruf type bahar = aakhri ank, andar = pehla ank. 'overrides' = tay tarikhon ke liye alag plan (tool aur bot dono aaj ki tarikh dekh kar chunte hain); baaki dino ke liye 'markets'.",
  "markets": {
   "Gali": {
    "play": true,
@@ -53,5 +53,47 @@
   }
  ],
  "stop_below": 80000,
- "heavy_experiment": true
+ "heavy_experiment": true,
+ "overrides": [
+  {
+   "label": "NOVEMBER HIGH-STAKE PLAN (1-30 Nov)",
+   "from": "2026-11-01",
+   "to": "2026-11-30",
+   "markets": {
+    "Gali": {
+     "play": true,
+     "skip_ranks": [
+      1
+     ],
+     "stake": 750,
+     "haruf": {
+      "type": "bahar",
+      "stake": 500
+     }
+    },
+    "Desawar": {
+     "play": true,
+     "skip_ranks": [],
+     "stake": 750,
+     "haruf": {
+      "type": "andar",
+      "stake": 400
+     }
+    },
+    "Ghaziabad": {
+     "play": false,
+     "skip_ranks": [],
+     "stake": 0,
+     "haruf": null
+    },
+    "Faridabad": {
+     "play": false,
+     "skip_ranks": [],
+     "stake": 0,
+     "haruf": null
+    }
+   },
+   "rules": "Backup Rs3 lakh alag. Mahine ka ghaata Rs1.5 lakh par stake Rs400; Rs2 lakh par normal plan. 1 Dec se apne aap normal plan."
+  }
+ ]
 }
