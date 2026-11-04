@@ -1156,7 +1156,7 @@ function updateDateBar(){
   }
   if(dp) dp.value=selDate;
 }
-function setSel(s){ if(s>today()) s=today(); selDate=s; updateDateBar(); renderAll(); }
+function setSel(s){ var mx=addD(today(),1); if(s>mx) s=mx; selDate=s; updateDateBar(); renderAll(); }   // kal (tomorrow) tak dekh sakte hain
 function shiftDay(n){ setSel(addD(selDate,n)); }
 function pickDate(v){ if(v) setSel(v); }
 function gotoToday(){ setSel(today()); }
@@ -1210,6 +1210,13 @@ function showPage(p){
 }
 
 // ─── RENDER CARD ────────────────────────────────────────────────────────────
+
+// ─── COPY NUMBERS + kal ke numbers (4 Nov 2026) ──────────────────────────────
+function spiCopyText(mkt,d,nums){ return mkt.toUpperCase()+' '+fmtS(d)+(mkt==='Desawar'?' (subah)':'')+'\n'+nums.map(p2).join('  '); }
+function spiCopyFallback(t){ var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); }catch(e){} document.body.removeChild(ta); }
+function spiCopy(btn){ var t=decodeURIComponent(btn.getAttribute('data-txt')); var o=btn.textContent; function done(){ btn.textContent='Copied!'; setTimeout(function(){ btn.textContent=o; },1800); } if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(done,function(){ spiCopyFallback(t); done(); }); } else { spiCopyFallback(t); done(); } }
+function spiCopyBtn(mkt,d,nums,label){ if(!nums||!nums.length) return ''; return '<button onclick="spiCopy(this)" data-txt="'+encodeURIComponent(spiCopyText(mkt,d,nums))+'" style="margin-top:8px;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.4);color:#00d4ff;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">'+(label||'Copy numbers')+'</button>'; }
+
 function renderCard(m){
   var id=m.id, col=m.col, r=hexRgb(col);
   var el=document.getElementById('card-'+id);
@@ -1358,7 +1365,7 @@ function renderCard(m){
       content='<div class="box"><div class="boxt" style="color:'+col+'">'+(v7IsV7(pred)?'&#9733; V7.3 Top-8 Vote Slate ':'&#9888; V3 FALLBACK (V7 ke liye data nahi) ')+'<span style="color:var(--mut);font-weight:400">&bull; '+clusterSize+' numbers</span></div>'
         +'<div class="numrow">'+jodis+'</div>'
         +'<div style="font-size:8px;color:var(--mut);margin:8px 0 4px 6px;letter-spacing:1px">EXTENDED CLUSTER</div>'
-        +'<div class="numrow">'+famRow+'</div>'+v3Cmp+'</div>'
+        +'<div class="numrow">'+famRow+'</div>'+spiCopyBtn(id,selDate,cluster,'Copy 8 numbers')+v3Cmp+'</div>'
         +'<div class="abgrid">'
         +'<div class="box"><div class="boxt" style="color:'+col+'">Bahar <span style="color:var(--mut);font-weight:400">aakhri ank (units) &bull; 9:1</span></div>'
         +'<div style="font-size:9px;color:var(--mut);margin-bottom:6px">Result ka AAKHRI ank (47 mein 7) &bull; khaiwala ko &#39;BAHAR&#39; bolein</div>'
