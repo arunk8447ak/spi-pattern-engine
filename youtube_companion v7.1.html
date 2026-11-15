@@ -1469,7 +1469,7 @@ setInterval(function(){
   var el=document.getElementById('clk');
   if(el) el.textContent=new Date().toLocaleTimeString('en-IN',{hour12:false});
   var curT = today();
-  if (curT !== _lastTodayCheck || selDate > curT) {
+  if (curT !== _lastTodayCheck || selDate > addD(curT,1)) {   // kal (tomorrow) allowed; date badalne par hi reset
     _lastTodayCheck = curT;
     selDate = curT;
     buildACT();
