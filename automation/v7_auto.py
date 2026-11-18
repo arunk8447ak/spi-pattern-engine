@@ -17,7 +17,7 @@ Env   : GITHUB_TOKEN, GITHUB_REPOSITORY, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
 Local : DRY_RUN=1 LOCAL_DIR=<folder with spi_results.json + automation/sent_state.json> [NOW_IST=2026-10-25T18:30]
         Isme kuch bhi bheja ya GitHub par likha nahi jaata; messages sirf print hote hain.
 """
-import base64, collections, datetime, html, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
+import base64, collections, datetime, html, json, math, os, re, sys, time, urllib.error, urllib.parse, urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -288,7 +288,7 @@ def resolve_plan(plan, today):
     for o in plan.get("overrides") or []:
         try:
             if o.get("markets") and o["from"] <= today.isoformat() <= o["to"]:
-                q = dict(plan); q["markets"] = o["markets"]; q["label"] = o.get("label"); return q
+                q = dict(plan); q["markets"] = o["markets"]; q["label"] = o.get("label"); q["ignore_month_mult"] = bool(o.get("ignore_month_mult")); return q
         except (KeyError, TypeError):
             continue
     return plan
@@ -299,8 +299,10 @@ def plan_text(plan):
     for T in ("Gali", "Desawar", "Ghaziabad", "Faridabad"):
         p = mplan(plan, T)
         if p:
-            k = 8 - len(set(p.get("skip_ranks") or []))
+            k = plan_count(p) - len(set(p.get("skip_ranks") or []))
             parts.append(f"{T} {k} jodi × ₹{p['stake']}" + (" (MAIN chhod kar)" if 1 in (p.get("skip_ranks") or []) else ""))
+    if plan.get("calendar"):
+        parts.append("din/mahine/cool-down ke hisaab se stake 0.5x-1.5x")
     return ", ".join(parts) + (f" [{plan['label']}]" if plan.get("label") else "")
 
 
@@ -309,9 +311,72 @@ def mplan(plan, T):
     return p if p and p.get("play", True) and p.get("stake", 0) > 0 else None
 
 
-def plan_nums(p, slate8):
+def plan_count(p):
+    try:
+        c = int(p.get("count") or 8)
+    except (TypeError, ValueError):
+        c = 8
+    return max(1, min(12, c))
+
+
+def plan_nums(p, slate12):
     skip = set(p.get("skip_ranks") or [])
-    return [n for i, n in enumerate(slate8) if (i + 1) not in skip]
+    return [n for i, n in enumerate(slate12[:plan_count(p)]) if (i + 1) not in skip]
+
+
+DN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+MN = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+
+def hit8(eng, mk, rd):
+    """Was the result of mk on result-date rd inside that day's V7 top-8?  True/False/None (no result yet)."""
+    v = eng.get(mk, rd)
+    if v is None or V.closed(mk, rd):
+        return None
+    return v in eng.slate(mk, rd)[0]
+
+
+def stake_mult(eng, plan, T, rd):
+    """-> (mult, why list, skip?) for market T on result-date rd: weekday x month x cool-down, capped. Jodi only; haruf flat."""
+    cal = plan.get("calendar") or {}
+    mult, why, skip = 1.0, [], False
+    if not cal:
+        return mult, why, skip
+    wm = ((cal.get("weekday_mult") or {}).get(T) or {}).get(DN[rd.weekday()])
+    if wm and wm != 1:
+        mult *= wm; why.append(f"{DN[rd.weekday()]} {wm}x")
+    if not plan.get("ignore_month_mult"):
+        mm = ((cal.get("month_mult") or {}).get(T) or {}).get(MN[rd.month - 1])
+        if mm and mm != 1:
+            mult *= mm; why.append(f"{MN[rd.month - 1]} {mm}x")
+    cd = cal.get("cooldown")
+    if cd and T in ("Gali", "Desawar"):
+        tD = rd if T == "Gali" else rd - D1                       # the Desawar morning that would make this draw 'thanda'
+        rb = int(cd.get("rebound_after_days") or 2)
+        sm = cd.get("same_day_mult", 0.5); rm = cd.get("rebound_mult") or 1.5
+        if hit8(eng, "Desawar", tD) is True:
+            mult *= sm; why.append(f"thanda din (Desawar {fmt_day(tD)} hit tha) {sm}x")
+            if T == "Desawar" and cd.get("double_payout_skip_desawar"):
+                pg = mplan(plan, "Gali"); vg = eng.get("Gali", tD)
+                if pg and vg is not None and not V.closed("Gali", tD) and vg in plan_nums(pg, eng.slate12("Gali", tD)[0]):
+                    skip = True; why.append("double payout (Gali bhi hit) - SKIP")
+        if hit8(eng, "Desawar", tD - datetime.timedelta(days=rb)) is True:
+            mult *= rm; why.append(f"garam din (Desawar {fmt_day(tD - datetime.timedelta(days=rb))} hit ke {rb} din baad) {rm}x")
+    lo, hi = (cal.get("cap") or [0.5, 1.5])[:2]
+    mult = round(max(lo, min(hi, mult)), 3)
+    return mult, why, skip
+
+
+def eff_stake(eng, plan, T, rd):
+    """Rupees per jodi today (0 = skip)."""
+    p = mplan(plan, T)
+    if not p:
+        return 0
+    mult, why, skip = stake_mult(eng, plan, T, rd)
+    if skip:
+        return 0
+    rt = (plan.get("calendar") or {}).get("round_to") or 5
+    return int(math.floor(p["stake"] * mult / rt + 0.5) * rt)          # half-up, same as the tool's Math.round
 
 
 def haruf_of(p, units, tens):
@@ -349,6 +414,16 @@ class Engine:
     def slate(self, T, td):
         return self.m.slate(T, td, self.logic[T])          # (8 numbers, units digit, tens digit)
 
+    def slate12(self, T, td):
+        """(ranks 1-12, units digit, tens digit) - same order as slate(); ranks 9-12 for plans with count > 8."""
+        G = td - D1 if T == "Desawar" else td
+        s = self.m.scores(T, G, self.logic[T])
+        order = sorted(range(100), key=lambda n: -s.get(n, 0))
+        tens = [0.0] * 10; units = [0.0] * 10
+        for n in range(100):
+            tens[n // 10] += s.get(n, 0); units[n % 10] += s.get(n, 0)
+        return order[:12], max(range(10), key=lambda i: units[i]), max(range(10), key=lambda i: tens[i])
+
     def needs(self, T, td):
         """Same-day inputs a market's slate depends on: [(market, result date)]."""
         ex = V.EXCLUDE_SAME_DAY.get(T, set())
@@ -383,10 +458,14 @@ def esc(s):
     return html.escape(str(s), quote=False)
 
 
-def forward_text(T, td, p, slate8, units, tens, amounts=True):
-    nums = plan_nums(p, slate8)
-    st = p["stake"]
-    lines = [f"{T.upper()} {fmt_day(td)}" + (" (subah)" if T == "Desawar" else ""), "  ".join(f"{n:02d}" for n in nums)]
+def forward_text(T, td, p, slate12, units, tens, amounts=True, st=None, skip_why=None):
+    nums = plan_nums(p, slate12)
+    st = p["stake"] if st is None else st
+    lines = [f"{T.upper()} {fmt_day(td)}" + (" (subah)" if T == "Desawar" else "")]
+    if skip_why:
+        lines.append("AAJ SKIP - kuch mat lagao (" + ", ".join(skip_why) + ")")
+        return "<pre>" + esc("\n".join(lines)) + "</pre>"
+    lines.append("  ".join(f"{n:02d}" for n in nums))
     if amounts:
         lines.append(f"har jodi ₹{st} ({len(nums)} jodi = ₹{inr(len(nums) * st)})")
     h = haruf_of(p, units, tens)
@@ -401,12 +480,15 @@ def day_pnl(eng, plan, T, rd):
     v = eng.get(T, rd)
     if not p or v is None:
         return False, False, None, 0
-    slate8, units, tens = eng.slate(T, rd)
-    nums = plan_nums(p, slate8)
+    slate12, units, tens = eng.slate12(T, rd)
+    nums = plan_nums(p, slate12)
     comm = (plan.get("commission_pct") or 0) / 100
     pay = plan.get("payout") or 90
-    stake = len(nums) * p["stake"]
-    r = (pay * p["stake"] if v in nums else 0) - stake + comm * stake
+    st = eff_stake(eng, plan, T, rd)
+    if st <= 0:
+        return False, False, None, 0                       # skip day (double payout) - nothing played
+    stake = len(nums) * st
+    r = (pay * st if v in nums else 0) - stake + comm * stake
     hh = None
     h = haruf_of(p, units, tens)
     if h:
@@ -518,10 +600,12 @@ def plan_messages(now, eng, plan, state, mismatch, conflicts, web_ok, mode):
                 if not have_pre:
                     out.append((None, [f"⏳ {T} ({fmt_day(td)}): {pm} ka result aate hi numbers aayenge ({pm} result {DRAW_TEXT[pm]})."]))
                     break
-                slate8, units, tens = eng.slate(T, td)
+                slate8, units, tens = eng.slate12(T, td)
                 pv = eng.get(pm, pd)
+                mult, why, skip = stake_mult(eng, plan, T, td); st = eff_stake(eng, plan, T, td)
                 info = f"🎯 <b>{T.upper()} ({fmt_day(td)})</b> – final numbers ({pm} {'band tha' if pv is None else f'aaya {pv:02d}'})"
-                out.append((None, [info, forward_text(T, td, p, slate8, units, tens, plan.get('copy_amounts', True) is not False)]))
+                info += f"\n💰 Aaj: {len(plan_nums(p, slate8))} jodi × ₹{st}" + (f" ({' · '.join(why)})" if why else "") + (" → SKIP" if skip else "")
+                out.append((None, [info, forward_text(T, td, p, slate8, units, tens, plan.get('copy_amounts', True) is not False, st, why if skip else None)]))
                 break
             if not have_pre:
                 ak = f"alert:{pm}:{pd}"
@@ -532,14 +616,19 @@ def plan_messages(now, eng, plan, state, mismatch, conflicts, web_ok, mode):
                 continue
             if now > cutoff:
                 continue
-            slate8, units, tens = eng.slate(T, td)
+            slate8, units, tens = eng.slate12(T, td)
             nums = plan_nums(p, slate8)
+            mult, why, skip = stake_mult(eng, plan, T, td); st = eff_stake(eng, plan, T, td)
             info = [f"🎯 <b>{T.upper()} ({fmt_day(td)}{' subah' if T == 'Desawar' else ''})</b> – V{eng.version}",
                     result_line(eng, plan, pm, pd)]
+            if skip:
+                info.append("⛔ <b>AAJ SKIP</b> – " + " · ".join(why) + ". Aaj " + T + " mein kuch mat lagao.")
+            else:
+                info.append(f"💰 Aaj: <b>{len(nums)} jodi × ₹{st}</b>" + (f" ({' · '.join(why)} → ₹{p['stake']} × {mult})" if why else " (normal din)"))
             keys = [key]
             if pm in played and eng.get(pm, pd) is not None:
                 keys.append(f"res:{pm}:{pd}")
-            skipped = [n for n in slate8 if n not in nums]
+            skipped = [n for n in slate8[:plan_count(p)] if n not in nums]
             if skipped:
                 info.append("✕ MAIN " + " ".join(f"{n:02d}" for n in skipped) + " nahi khelna (rank 1 kamzor hai), baaki " + str(len(nums)) + " khelo")
             h = haruf_of(p, units, tens)
@@ -550,7 +639,7 @@ def plan_messages(now, eng, plan, state, mismatch, conflicts, web_ok, mode):
                 info.append("⚠️ Ye results data mein nahi hain, numbers tool se thode alag ho sakte hain: " +
                             ", ".join(f"{x} {fmt_day(d)}" for x, d in miss))
             info.append(f"Neeche wala message khaiwale ko bhejo (tap karke copy). {T} result {DRAW_TEXT[T]}.")
-            msgs = ["\n".join(info), forward_text(T, td, p, slate8, units, tens, plan.get('copy_amounts', True) is not False)]
+            msgs = ["\n".join(info), forward_text(T, td, p, slate8, units, tens, plan.get('copy_amounts', True) is not False, st, why if skip else None)]
             if T == "Gali" and plan.get("heavy_experiment", True):
                 msgs.append("🧪 Prayog: khaiwale se poochho aaj Gali mein sabse BHAARI 5 number kaunse hain (jahan sabse zyada paisa laga hai), "
                             "aur mujhe reply karo:\n<code>bhaari 12 34 56 78 90</code>\nMain jaanchunga ki operator unhe bachata hai ya nahi.")
