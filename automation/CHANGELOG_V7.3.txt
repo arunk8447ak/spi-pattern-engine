@@ -15,3 +15,11 @@ V7.3  (2026-10-30)
    'Is mahine plan ka hisaab' (5% commission ke saath). Tool v7_plan.json aur v7_logic.json GitHub se khud uthata hai
    (har saal 1 Jan ko bot naya model train karke v7_logic.json likhega).
 5. Labels: V7.3 ENGINE / V7.3 Top-8 Vote Slate. Update banner v7_version.json se.
+
+18 Nov 2026 - CALENDAR PLAN (stake multipliers; numbers unchanged; model unchanged)
+  v7_plan.json: "calendar" (weekday_mult, month_mult, cooldown, cap, round_to) + per-market "count" (Desawar 10 from 1 Dec).
+  Tool + bot: stake = base x weekday x month x cool-down (cap 0.5-1.5), rounded to Rs5. Haruf stays flat.
+  Cool-down: Desawar result in that day's V7 top-8 -> that night Gali 0.5x, next morning Desawar 0.5x; if Gali (plan numbers)
+  also hit that night -> next morning Desawar SKIP. 2 game-days after the thanda day -> Gali / Desawar 1.5x.
+  Evidence (walk-forward 2015-2026, 90x + 5% commission): Gali ROI +35.5% -> +42.7% (8/10 years better),
+  Desawar +32.0% -> +38.0% (10/10 years better). November override: month multiplier off (Rs750 already raised).
