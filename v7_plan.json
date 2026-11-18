@@ -1,9 +1,9 @@
 {
  "version": "7.3",
- "updated": "2026-10-31",
+ "updated": "2026-11-18",
  "payout": 90,
  "commission_pct": 5,
- "note": "V7.3 plan. skip_ranks = V7 slate ke kaunse rank nahi khelne (1 = MAIN). Stake = Rs per jodi. haruf type bahar = aakhri ank, andar = pehla ank. 'overrides' = tay tarikhon ke liye alag plan (tool aur bot dono aaj ki tarikh dekh kar chunte hain); baaki dino ke liye 'markets'. copy_amounts=false: copy/Telegram message mein sirf numbers (rupaye nahi).",
+ "note": "V7.3 plan. skip_ranks = V7 slate ke kaunse rank nahi khelne (1 = MAIN). Stake = Rs per jodi. haruf type bahar = aakhri ank, andar = pehla ank. 'overrides' = tay tarikhon ke liye alag plan (tool aur bot dono aaj ki tarikh dekh kar chunte hain); baaki dino ke liye 'markets'. copy_amounts=false: copy/Telegram message mein sirf numbers (rupaye nahi). count = kitne rank khelne (default 8; Desawar 10 = rank 9-10 bhi). calendar = din/mahine/cool-down ke stake multipliers.",
  "markets": {
   "Gali": {
    "play": true,
@@ -14,7 +14,8 @@
    "haruf": {
     "type": "bahar",
     "stake": 200
-   }
+   },
+   "count": 8
   },
   "Desawar": {
    "play": true,
@@ -23,7 +24,8 @@
    "haruf": {
     "type": "andar",
     "stake": 150
-   }
+   },
+   "count": 10
   },
   "Ghaziabad": {
    "play": true,
@@ -69,16 +71,18 @@
      "haruf": {
       "type": "bahar",
       "stake": 500
-     }
+     },
+     "count": 8
     },
     "Desawar": {
      "play": true,
      "skip_ranks": [],
-     "stake": 750,
+     "stake": 500,
      "haruf": {
       "type": "andar",
       "stake": 400
-     }
+     },
+     "count": 8
     },
     "Ghaziabad": {
      "play": false,
@@ -93,8 +97,40 @@
      "haruf": null
     }
    },
-   "rules": "Backup Rs3 lakh alag. Mahine ka ghaata Rs1.5 lakh par stake Rs400; Rs2 lakh par normal plan. 1 Dec se apne aap normal plan."
+   "rules": "Backup Rs3 lakh alag. Mahine ka ghaata Rs1.5 lakh par stake Rs400; Rs2 lakh par normal plan. 1 Dec se apne aap normal plan. Desawar base Rs500 x Nov 1.5 = Rs750 (thanda din Rs375, garam din cap par Rs750). Gali Rs750 base: Sun/Fri Rs1,125, Tue/Wed Rs375, thanda Rs375, garam Rs1,125. Desawar 10 number 1 Dec se."
   }
  ],
- "copy_amounts": false
+ "copy_amounts": false,
+ "calendar": {
+  "note": "Stake multipliers (sirf jodi par; haruf flat). mult = weekday x month x cool-down, phir cap. Cool-down trigger = Desawar ka result us din ki V7 top-8 list mein tha (hamara hit): us raat Gali aur agli subah Desawar same_day_mult; agar us raat Gali (plan numbers) bhi hit -> agli subah Desawar SKIP. rebound_after_days game-day baad Gali/Desawar rebound_mult. Walk-forward 2015-2026: Gali +35.5% -> +42.7% ROI, Desawar +32% -> +38%.",
+  "cap": [
+   0.5,
+   1.5
+  ],
+  "round_to": 5,
+  "weekday_mult": {
+   "Gali": {
+    "Sun": 1.5,
+    "Fri": 1.5,
+    "Tue": 0.5,
+    "Wed": 0.5
+   }
+  },
+  "month_mult": {
+   "Desawar": {
+    "Jul": 1.5,
+    "Nov": 1.5,
+    "Jan": 1.5,
+    "Apr": 0.5,
+    "Oct": 0.5
+   }
+  },
+  "cooldown": {
+   "trigger": "Desawar result in that day's V7 top-8",
+   "same_day_mult": 0.5,
+   "rebound_after_days": 2,
+   "rebound_mult": 1.5,
+   "double_payout_skip_desawar": true
+  }
+ }
 }
