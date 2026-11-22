@@ -319,9 +319,36 @@ def plan_count(p):
     return max(1, min(12, c))
 
 
-def plan_nums(p, slate12):
+def date_drop(plan, T, rd, eng=None):
+    """Numbers removed by the date rule (plan['date_rule']): the result date's day, its palti, and (kind 'own_palti') the palti of the market's previous result."""
+    dr = (plan or {}).get("date_rule") or {}
+    if not dr or rd is None or (dr.get("from") and rd.isoformat() < dr["from"]):
+        return []
+    kinds = (dr.get("markets") or {}).get(T) or []
+    out = []
+    if "day" in kinds:
+        out.append(rd.day)
+    if "palti" in kinds:
+        pl = (rd.day % 10) * 10 + rd.day // 10
+        if pl not in out:
+            out.append(pl)
+    if "own_palti" in kinds and eng is not None:
+        pv = None
+        for k in (1, 2, 3):
+            pv = eng.get(T, rd - datetime.timedelta(days=k))
+            if pv is not None:
+                break
+        if pv is not None:
+            op = (pv % 10) * 10 + pv // 10
+            if op != pv and op not in out:
+                out.append(op)
+    return out
+
+
+def plan_nums(p, slate12, plan=None, T=None, rd=None, eng=None):
     skip = set(p.get("skip_ranks") or [])
-    return [n for i, n in enumerate(slate12[:plan_count(p)]) if (i + 1) not in skip]
+    drop = set(date_drop(plan, T, rd, eng)) if plan is not None and T else set()
+    return [n for i, n in enumerate(slate12[:plan_count(p)]) if (i + 1) not in skip and n not in drop]
 
 
 DN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
@@ -358,7 +385,7 @@ def stake_mult(eng, plan, T, rd):
             mult *= sm; why.append(f"thanda din (Desawar {fmt_day(tD)} hit tha) {sm}x")
             if T == "Desawar" and cd.get("double_payout_skip_desawar"):
                 pg = mplan(plan, "Gali"); vg = eng.get("Gali", tD)
-                if pg and vg is not None and not V.closed("Gali", tD) and vg in plan_nums(pg, eng.slate12("Gali", tD)[0]):
+                if pg and vg is not None and not V.closed("Gali", tD) and vg in plan_nums(pg, eng.slate12("Gali", tD)[0], plan, "Gali", tD, eng):
                     skip = True; why.append("double payout (Gali bhi hit) - SKIP")
         if hit8(eng, "Desawar", tD - datetime.timedelta(days=rb)) is True:
             mult *= rm; why.append(f"garam din (Desawar {fmt_day(tD - datetime.timedelta(days=rb))} hit ke {rb} din baad) {rm}x")
@@ -458,8 +485,8 @@ def esc(s):
     return html.escape(str(s), quote=False)
 
 
-def forward_text(T, td, p, slate12, units, tens, amounts=True, st=None, skip_why=None):
-    nums = plan_nums(p, slate12)
+def forward_text(T, td, p, slate12, units, tens, amounts=True, st=None, skip_why=None, plan=None, eng=None):
+    nums = plan_nums(p, slate12, plan, T, td, eng)
     st = p["stake"] if st is None else st
     lines = [f"{T.upper()} {fmt_day(td)}" + (" (subah)" if T == "Desawar" else "")]
     if skip_why:
@@ -481,7 +508,7 @@ def day_pnl(eng, plan, T, rd):
     if not p or v is None:
         return False, False, None, 0
     slate12, units, tens = eng.slate12(T, rd)
-    nums = plan_nums(p, slate12)
+    nums = plan_nums(p, slate12, plan, T, rd, eng)
     comm = (plan.get("commission_pct") or 0) / 100
     pay = plan.get("payout") or 90
     st = eff_stake(eng, plan, T, rd)
@@ -604,8 +631,8 @@ def plan_messages(now, eng, plan, state, mismatch, conflicts, web_ok, mode):
                 pv = eng.get(pm, pd)
                 mult, why, skip = stake_mult(eng, plan, T, td); st = eff_stake(eng, plan, T, td)
                 info = f"🎯 <b>{T.upper()} ({fmt_day(td)})</b> – final numbers ({pm} {'band tha' if pv is None else f'aaya {pv:02d}'})"
-                info += f"\n💰 Aaj: {len(plan_nums(p, slate8))} jodi × ₹{st}" + (f" ({' · '.join(why)})" if why else "") + (" → SKIP" if skip else "")
-                out.append((None, [info, forward_text(T, td, p, slate8, units, tens, plan.get('copy_amounts', True) is not False, st, why if skip else None)]))
+                info += f"\n💰 Aaj: {len(plan_nums(p, slate8, plan, T, td, eng))} jodi × ₹{st}" + (f" ({' · '.join(why)})" if why else "") + (" → SKIP" if skip else "")
+                out.append((None, [info, forward_text(T, td, p, slate8, units, tens, plan.get('copy_amounts', True) is not False, st, why if skip else None, plan, eng)]))
                 break
             if not have_pre:
                 ak = f"alert:{pm}:{pd}"
@@ -617,7 +644,7 @@ def plan_messages(now, eng, plan, state, mismatch, conflicts, web_ok, mode):
             if now > cutoff:
                 continue
             slate8, units, tens = eng.slate12(T, td)
-            nums = plan_nums(p, slate8)
+            nums = plan_nums(p, slate8, plan, T, td, eng)
             mult, why, skip = stake_mult(eng, plan, T, td); st = eff_stake(eng, plan, T, td)
             info = [f"🎯 <b>{T.upper()} ({fmt_day(td)}{' subah' if T == 'Desawar' else ''})</b> – V{eng.version}",
                     result_line(eng, plan, pm, pd)]
@@ -628,9 +655,10 @@ def plan_messages(now, eng, plan, state, mismatch, conflicts, web_ok, mode):
             keys = [key]
             if pm in played and eng.get(pm, pd) is not None:
                 keys.append(f"res:{pm}:{pd}")
-            skipped = [n for n in slate8[:plan_count(p)] if n not in nums]
-            if skipped:
-                info.append("✕ MAIN " + " ".join(f"{n:02d}" for n in skipped) + " nahi khelna (rank 1 kamzor hai), baaki " + str(len(nums)) + " khelo")
+            dd = date_drop(plan, T, td, eng)
+            dropped = [n for n in plan_nums(p, slate8) if n in dd]
+            if dropped:
+                info.append("📅 " + " ".join(f"{n:02d}" for n in dropped) + " list se hataya (tarikh / kal ke number ka palti - operator ise kam kholta hai)")
             h = haruf_of(p, units, tens)
             if h:
                 info.append(f"Haruf: <b>{h[0]} {h[1]}</b> ₹{h[2]}")
@@ -639,7 +667,7 @@ def plan_messages(now, eng, plan, state, mismatch, conflicts, web_ok, mode):
                 info.append("⚠️ Ye results data mein nahi hain, numbers tool se thode alag ho sakte hain: " +
                             ", ".join(f"{x} {fmt_day(d)}" for x, d in miss))
             info.append(f"Neeche wala message khaiwale ko bhejo (tap karke copy). {T} result {DRAW_TEXT[T]}.")
-            msgs = ["\n".join(info), forward_text(T, td, p, slate8, units, tens, plan.get('copy_amounts', True) is not False, st, why if skip else None)]
+            msgs = ["\n".join(info), forward_text(T, td, p, slate8, units, tens, plan.get('copy_amounts', True) is not False, st, why if skip else None, plan, eng)]
             if T == "Gali" and plan.get("heavy_experiment", True):
                 msgs.append("🧪 Prayog: khaiwale se poochho aaj Gali mein sabse BHAARI 5 number kaunse hain (jahan sabse zyada paisa laga hai), "
                             "aur mujhe reply karo:\n<code>bhaari 12 34 56 78 90</code>\nMain jaanchunga ki operator unhe bachata hai ya nahi.")
