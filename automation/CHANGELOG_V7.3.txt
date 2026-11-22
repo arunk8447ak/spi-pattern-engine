@@ -23,3 +23,10 @@ V7.3  (2026-10-30)
   also hit that night -> next morning Desawar SKIP. 2 game-days after the thanda day -> Gali / Desawar 1.5x.
   Evidence (walk-forward 2015-2026, 90x + 5% commission): Gali ROI +35.5% -> +42.7% (8/10 years better),
   Desawar +32.0% -> +38.0% (10/10 years better). November override: month multiplier off (Rs750 already raised).
+
+22 Nov 2026 - TARIKH NIYAM + EK HI LIST (numbers of the model unchanged)
+  v7_plan.json: "date_rule" (from 2026-11-22): plan numbers equal to the result date's day, or its palti, are removed (no replacement).
+  Evidence 2013-2026, six markets: number = date 0.50% (132/26,357), palti of date 0.66% (chance 1%); inside the walk-forward V7 lists
+  such numbers hit 0.92% (Gali) / 0.47% (Desawar) vs 1.47% / 1.37% for the rest. ROI: Gali +31.0% -> +31.9%, Desawar +21.3% -> +22.9% (no commission).
+  Tool: the card now shows only the numbers that are played (no MAIN / SKIP badge; Gali shows 7, Desawar 8 or 10); hit tag follows the same list.
+  Tool: nav button 'TOKEN' stores a new GitHub token in this browser only (localStorage). Bot: same date rule (plan_nums / date_drop).
