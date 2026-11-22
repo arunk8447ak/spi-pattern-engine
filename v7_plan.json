@@ -1,9 +1,9 @@
 {
  "version": "7.3",
- "updated": "2026-11-18",
+ "updated": "2026-11-22",
  "payout": 90,
  "commission_pct": 5,
- "note": "V7.3 plan. skip_ranks = V7 slate ke kaunse rank nahi khelne (1 = MAIN). Stake = Rs per jodi. haruf type bahar = aakhri ank, andar = pehla ank. 'overrides' = tay tarikhon ke liye alag plan (tool aur bot dono aaj ki tarikh dekh kar chunte hain); baaki dino ke liye 'markets'. copy_amounts=false: copy/Telegram message mein sirf numbers (rupaye nahi). count = kitne rank khelne (default 8; Desawar 10 = rank 9-10 bhi). calendar = din/mahine/cool-down ke stake multipliers.",
+ "note": "V7.3 plan. skip_ranks = V7 slate ke kaunse rank nahi khelne (1 = MAIN). Stake = Rs per jodi. haruf type bahar = aakhri ank, andar = pehla ank. 'overrides' = tay tarikhon ke liye alag plan (tool aur bot dono aaj ki tarikh dekh kar chunte hain); baaki dino ke liye 'markets'. copy_amounts=false: copy/Telegram message mein sirf numbers (rupaye nahi). count = kitne rank khelne (default 8; Desawar 10 = rank 9-10 bhi). calendar = din/mahine/cool-down ke stake multipliers. date_rule = aaj ki tarikh wala number (aur uska palti) plan ke numbers se hata do.",
  "markets": {
   "Gali": {
    "play": true,
@@ -131,6 +131,27 @@
    "rebound_after_days": 2,
    "rebound_mult": 1.5,
    "double_payout_skip_desawar": true
+  }
+ },
+ "date_rule": {
+  "note": "Operator aaj ki tarikh wala number (jaise 22 tarikh ko 22) aur uska palti kam kholta hai: sab 6 market mein 0.50% / 0.66% (tukka 1%), 2013-2026. Plan ke numbers mein aisa number ho to hata do; uski jagah naya number nahi. Desawar ke liye tarikh = jis subah result aata hai. 'from' se pehle ke dino par lagu nahi (purana hisaab waisa hi rahe).",
+  "from": "2026-11-22",
+  "markets": {
+   "Gali": [
+    "day",
+    "palti"
+   ],
+   "Desawar": [
+    "day",
+    "palti"
+   ],
+   "Faridabad": [
+    "day",
+    "palti"
+   ],
+   "Ghaziabad": [
+    "day"
+   ]
   }
  }
 }
