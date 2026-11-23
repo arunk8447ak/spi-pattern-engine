@@ -26,6 +26,8 @@ import v7_reference as V  # noqa: E402  (V7.3 model, same as the tool)
 IST = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
 D1 = datetime.timedelta(days=1)
 MARKETS = ["Desawar", "Faridabad", "Ghaziabad", "Gali"]
+EXTRA_MARKETS = ["Delhi", "Shree Ganesh"]                       # sirf data (thanda niyam ke liye); inke numbers nahi bante
+DAY_ORDER = ["Desawar", "Delhi", "Shree Ganesh", "Faridabad", "Ghaziabad", "Gali"]   # ek hi tarikh ke andar result ka kram
 MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 RESULTS_PATH, STATE_PATH = "spi_results.json", "automation/sent_state.json"
 
@@ -345,10 +347,47 @@ def date_drop(plan, T, rd, eng=None):
     return out
 
 
+def cold_seen(plan, T, rd, eng):
+    """Thanda niyam (plan['cold_rule']): numbers seen in any source market in the last `days` calendar days, or earlier on the result date itself.
+    None = rule not active for this market/date.  A plan number that is NOT in this set is 'thanda' and is removed."""
+    cr = (plan or {}).get("cold_rule") or {}
+    if not cr or rd is None or eng is None or (cr.get("from") and rd.isoformat() < cr["from"]) or T not in (cr.get("markets") or []):
+        return None
+    try:
+        w = int(cr.get("days") or 0)
+    except (TypeError, ValueError):
+        return None
+    if w < 1:
+        return None
+    src = cr.get("sources") or DAY_ORDER
+    seen = set()
+    for k in range(1, min(60, w) + 1):
+        for m in src:
+            v = eng.get_any(m, rd - datetime.timedelta(days=k))
+            if v is not None:
+                seen.add(v)
+    pos = DAY_ORDER.index(T) if T in DAY_ORDER else -1
+    for m in src:
+        if m in DAY_ORDER and DAY_ORDER.index(m) < pos:
+            v = eng.get_any(m, rd)
+            if v is not None:
+                seen.add(v)
+    return seen
+
+
 def plan_nums(p, slate12, plan=None, T=None, rd=None, eng=None):
     skip = set(p.get("skip_ranks") or [])
     drop = set(date_drop(plan, T, rd, eng)) if plan is not None and T else set()
-    return [n for i, n in enumerate(slate12[:plan_count(p)]) if (i + 1) not in skip and n not in drop]
+    seen = cold_seen(plan, T, rd, eng) if plan is not None and T else None
+    return [n for i, n in enumerate(slate12[:plan_count(p)]) if (i + 1) not in skip and n not in drop and (seen is None or n in seen)]
+
+
+def plan_dropped(p, slate12, plan, T, rd, eng):
+    """-> (numbers removed by the date rule, numbers removed as thanda), in list order."""
+    raw = plan_nums(p, slate12)
+    dd = date_drop(plan, T, rd, eng)
+    keep = plan_nums(p, slate12, plan, T, rd, eng)
+    return [n for n in raw if n in dd], [n for n in raw if n not in dd and n not in keep]
 
 
 DN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
@@ -407,11 +446,56 @@ def eff_stake(eng, plan, T, rd):
 
 
 def haruf_of(p, units, tens):
-    """-> (label, digit, stake) or None"""
+    """V7's own haruf digit -> (label, digit, stake) or None.  (Plan rule: see haruf_pick.)"""
     h = p.get("haruf") if p else None
     if not h or not h.get("stake"):
         return None
     return ("ANDAR (pehla ank)", tens, h["stake"]) if h.get("type") == "andar" else ("BAHAR (aakhri ank)", units, h["stake"])
+
+
+def prev_open(T, d):
+    """Last date before d on which market T is not closed."""
+    x = d - D1
+    g = 0
+    while V.closed(T, x) and g < 5:
+        x -= D1
+        g += 1
+    return x
+
+
+def haruf_pick(plan, T, rd, eng, p, units, tens):
+    """Haruf to play under the plan (plan['haruf_rule']) -> None, or dict(label, type, digit, stake, v7, why, rule).  digit None = aaj haruf nahi.
+    pick 'prev2': digit of the market's result two draws back ('parson wala'), when the last draw's digit differs; if both are the same digit ->
+    V7's digit, unless that is the same digit too -> no haruf.  Missing results -> V7's digit.  Same logic as v7HarufPick in the tool."""
+    base = haruf_of(p, units, tens)
+    if not base:
+        return None
+    typ = "andar" if base[0].startswith("ANDAR") else "bahar"
+    r = {"label": base[0], "type": typ, "digit": base[1], "stake": base[2], "v7": base[1], "why": "", "rule": False}
+    hr = (plan or {}).get("haruf_rule") or {}
+    cfg = None
+    if hr and rd is not None and eng is not None and not (hr.get("from") and rd.isoformat() < hr["from"]):
+        cfg = (hr.get("markets") or {}).get(T)
+    if not cfg or cfg.get("type") != typ or cfg.get("pick") != "prev2":
+        return r
+    d1 = prev_open(T, rd)
+    d2 = prev_open(T, d1)
+    a1, a2 = eng.get(T, d1), eng.get(T, d2)
+    if a1 is None or a2 is None:
+        r["why"] = f"{T} ka {fmt_day(d1 if a1 is None else d2)} wala result nahi mila, isliye V7 ka ank"
+        return r
+    k1, k2 = (a1 // 10, a2 // 10) if typ == "andar" else (a1 % 10, a2 % 10)
+    r["rule"] = True
+    if k2 != k1:
+        r["digit"] = k2
+        r["why"] = f"parson wala ank ({fmt_day(d2)}: {a2:02d})" + (f"; V7 ka ank {base[1]}" if base[1] != k2 else "; V7 ka bhi yahi")
+        return r
+    if base[1] != k1:
+        r["why"] = f"kal aur parson dono ka {typ} {k1} tha, isliye V7 ka ank"
+        return r
+    r["digit"] = None
+    r["why"] = f"kal aur parson dono ka {typ} {k1} tha aur V7 ka ank bhi {k1} hai: aaj {typ} haruf nahi"
+    return r
 
 
 # ------------------------------------------------------------------ model
@@ -427,6 +511,16 @@ class Engine:
                 n = to_int(v)
                 if n is not None and not V.closed(mk, d):
                     self.data[mk][d] = n
+        self.extra = {mk: {} for mk in EXTRA_MARKETS}       # Delhi / Shree Ganesh: sirf thanda niyam ke liye
+        for mk in EXTRA_MARKETS:
+            for ds, v in (results.get(mk) or {}).items():
+                try:
+                    d = datetime.date.fromisoformat(ds)
+                except (TypeError, ValueError):
+                    continue
+                n = to_int(v)
+                if n is not None:
+                    self.extra[mk][d] = n
         self.m = V.V7(self.data)
         L = logic or json.load(open(os.path.join(HERE, "v7_logic.json"), encoding="utf-8"))
         self.logic = L["markets"]
@@ -437,6 +531,12 @@ class Engine:
 
     def get(self, mk, d):
         return self.data[mk].get(d)
+
+    def get_any(self, mk, d):
+        """Result of any of the six markets (the four model markets + Delhi / Shree Ganesh)."""
+        if mk in self.extra:
+            return self.extra[mk].get(d)
+        return self.data[mk].get(d) if mk in MARKETS else None
 
     def slate(self, T, td):
         return self.m.slate(T, td, self.logic[T])          # (8 numbers, units digit, tens digit)
@@ -492,12 +592,13 @@ def forward_text(T, td, p, slate12, units, tens, amounts=True, st=None, skip_why
     if skip_why:
         lines.append("AAJ SKIP - kuch mat lagao (" + ", ".join(skip_why) + ")")
         return "<pre>" + esc("\n".join(lines)) + "</pre>"
-    lines.append("  ".join(f"{n:02d}" for n in nums))
-    if amounts:
+    if nums:
+        lines.append("  ".join(f"{n:02d}" for n in nums))
+    if amounts and nums:
         lines.append(f"har jodi ₹{st} ({len(nums)} jodi = ₹{inr(len(nums) * st)})")
-    h = haruf_of(p, units, tens)
-    if h:
-        lines.append(f"{h[0].split(' ')[0].title()} ({h[0].split('(')[1]} {h[1]}" + (f" – ₹{h[2]}" if amounts else ""))
+    h = haruf_pick(plan, T, td, eng, p, units, tens)
+    if h and h["digit"] is not None:
+        lines.append(f"{h['label'].split(' ')[0].title()} ({h['label'].split('(')[1]} {h['digit']}" + (f" – ₹{h['stake']}" if amounts else ""))
     return "<pre>" + esc("\n".join(lines)) + "</pre>"
 
 
@@ -517,11 +618,11 @@ def day_pnl(eng, plan, T, rd):
     stake = len(nums) * st
     r = (pay * st if v in nums else 0) - stake + comm * stake
     hh = None
-    h = haruf_of(p, units, tens)
-    if h:
-        dig = v // 10 if h[0].startswith("ANDAR") else v % 10
-        hh = dig == h[1]
-        r += (9 * h[2] if hh else 0) - h[2] + comm * h[2]
+    h = haruf_pick(plan, T, rd, eng, p, units, tens)
+    if h and h["digit"] is not None:
+        dig = v // 10 if h["type"] == "andar" else v % 10
+        hh = dig == h["digit"]
+        r += (9 * h["stake"] if hh else 0) - h["stake"] + comm * h["stake"]
     return True, v in nums, hh, r
 
 
@@ -655,13 +756,16 @@ def plan_messages(now, eng, plan, state, mismatch, conflicts, web_ok, mode):
             keys = [key]
             if pm in played and eng.get(pm, pd) is not None:
                 keys.append(f"res:{pm}:{pd}")
-            dd = date_drop(plan, T, td, eng)
-            dropped = [n for n in plan_nums(p, slate8) if n in dd]
+            dropped, thanda = plan_dropped(p, slate8, plan, T, td, eng)
             if dropped:
                 info.append("📅 " + " ".join(f"{n:02d}" for n in dropped) + " list se hataya (tarikh / kal ke number ka palti - operator ise kam kholta hai)")
-            h = haruf_of(p, units, tens)
-            if h:
-                info.append(f"Haruf: <b>{h[0]} {h[1]}</b> ₹{h[2]}")
+            if thanda:
+                info.append("❄ " + " ".join(f"{n:02d}" for n in thanda) + f" thanda ({(plan.get('cold_rule') or {}).get('days', 14)} din se kisi market mein nahi aaya) - list se hataya")
+            h = haruf_pick(plan, T, td, eng, p, units, tens)
+            if h and h["digit"] is not None:
+                info.append(f"Haruf: <b>{h['label']} {h['digit']}</b> ₹{h['stake']}" + (f" ({h['why']})" if h["why"] else ""))
+            elif h:
+                info.append(f"Haruf: aaj nahi ({h['why']})")
             miss = [x for x in eng.missing_inputs(T, td) if x != (pm, pd)]
             if miss:
                 info.append("⚠️ Ye results data mein nahi hain, numbers tool se thode alag ho sakte hain: " +

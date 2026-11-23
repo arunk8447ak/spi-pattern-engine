@@ -1,9 +1,9 @@
 {
- "version": "7.3",
- "updated": "2026-11-22",
+ "version": "7.4",
+ "updated": "2026-11-24",
  "payout": 90,
  "commission_pct": 5,
- "note": "V7.3 plan. skip_ranks = V7 slate ke kaunse rank nahi khelne (1 = MAIN). Stake = Rs per jodi. haruf type bahar = aakhri ank, andar = pehla ank. 'overrides' = tay tarikhon ke liye alag plan (tool aur bot dono aaj ki tarikh dekh kar chunte hain); baaki dino ke liye 'markets'. copy_amounts=false: copy/Telegram message mein sirf numbers (rupaye nahi). count = kitne rank khelne (default 8; Desawar 10 = rank 9-10 bhi). calendar = din/mahine/cool-down ke stake multipliers. date_rule = aaj ki tarikh wala number (aur uska palti) plan ke numbers se hata do.",
+ "note": "V7.3 plan. skip_ranks = V7 slate ke kaunse rank nahi khelne (1 = MAIN). Stake = Rs per jodi. haruf type bahar = aakhri ank, andar = pehla ank. 'overrides' = tay tarikhon ke liye alag plan (tool aur bot dono aaj ki tarikh dekh kar chunte hain); baaki dino ke liye 'markets'. copy_amounts=false: copy/Telegram message mein sirf numbers (rupaye nahi). count = kitne rank khelne (default 8; Desawar 10 = rank 9-10 bhi). calendar = din/mahine/cool-down ke stake multipliers. date_rule = aaj ki tarikh wala number (aur uska palti) plan ke numbers se hata do. cold_rule = thanda number (jo 'days' din se kisi market mein nahi aaya) plan ke numbers se hata do. haruf_rule = haruf ka ank kis niyam se (prev2 = us market ke do draw pehle wala ank).",
  "markets": {
   "Gali": {
    "play": true,
@@ -152,6 +152,24 @@
    "Ghaziabad": [
     "day"
    ]
+  }
+ },
+ "cold_rule": {
+  "note": "Thanda number: plan ka jo number pichhle 'days' din mein (aur aaj ab tak) chhe mein se kisi bhi market mein nahi aaya, use hata do; uski jagah naya number nahi. 'Due' wali soch ka ulta. Walk-forward 2015-2026 (Gali rank 2-8, tarikh niyam ke upar): aise number 1.06% aaye (80/7,542; tukka 1%, barabar 1.11%), baaki list-number 1.61%. ROI 2015-22 +36.7% -> +51.8%, 2023-26 +21.9% -> +31.0% (12/12 saal behtar); roz ~7 ki jagah ~5 number, hit wale din 9.3% -> 7.7%. Desawar par fayda nahi, isliye sirf Gali. 'from' se pehle ke dino par lagu nahi.",
+  "from": "2026-11-24",
+  "days": 14,
+  "markets": [
+   "Gali"
+  ]
+ },
+ "haruf_rule": {
+  "note": "prev2 = haruf ka ank us market ke do draw pehle ('parson wale') result se, jab pichhle draw ka wahi ank us se alag ho. Desawar andar 2015-2026: 12.7% (487/3,835; barabar 11.1%), dono daur mein same (12.7% / 12.6%); V7 ka ank 11.8%; jab dono alag hon to parson wala 12.2%, V7 wala 10.8%. Kal wala andar dobara sirf 8.7% aata hai. Jab kal aur parson ka ank ek hi ho to V7 ka ank; agar V7 ka ank bhi wahi ho to us din haruf nahi. Result adhura ho to V7 ka ank. 'from' se pehle ke dino par lagu nahi.",
+  "from": "2026-11-24",
+  "markets": {
+   "Desawar": {
+    "type": "andar",
+    "pick": "prev2"
+   }
   }
  }
 }

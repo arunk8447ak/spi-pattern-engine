@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>SPI - V7.3 ENGINE</title>
+<title>SPI - V7.4 ENGINE</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -422,7 +422,7 @@ table.ht tr:hover td{background:rgba(255,255,255,.04)}
 </head>
 <body>
 <nav class="nav">
-  <div class="brand">SPI<em> &bull; V7.3 ENGINE</em> <span style="margin-left:8px;background:rgba(0,212,255,0.12);border:1px solid #00d4ff;color:#00d4ff;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:900;letter-spacing:1px;">V7.1 VOTE ENGINE</span></div>
+  <div class="brand">SPI<em> &bull; V7.4 ENGINE</em> <span style="margin-left:8px;background:rgba(0,212,255,0.12);border:1px solid #00d4ff;color:#00d4ff;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:900;letter-spacing:1px;">V7.1 VOTE ENGINE</span></div>
   <div class="nl">
     <button class="nb on" id="nl-p" onclick="showPage('p')">&#127919; Predictions</button>
     <button class="nb" id="nl-d" onclick="showPage('d')">&#128203; 210-Day History</button>
@@ -469,6 +469,10 @@ table.ht tr:hover td{background:rgba(255,255,255,.04)}
       <button class="dbnavbtn" onclick="shiftDay(1)">&#9654;</button>
       <button class="todaybtn" onclick="gotoToday()">Today</button>
     </div>
+  </div>
+  <div id="v7-nightbar" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px">
+    <button id="v7-night-btn" onclick="v7CopyNight()" style="background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.5);color:#22c55e;border-radius:8px;padding:9px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit">&#128203; Is raat ka poora message copy karo (Gali + agli subah Desawar)</button>
+    <span id="v7-night-msg" style="font-size:11px;color:var(--mut);line-height:1.5">Ghaziabad ka result daalne ke baad dabao; phir khaiwale ko paste kar do.</span>
   </div>
   <div class="mgrid" id="mgrid"></div>
 </div>
@@ -1005,7 +1009,7 @@ function v7Pred(mkt, tdate, data, v3p){
 }
 
 // ─── V7.3 PLAN (kya khelna hai) + auto-updated logic ──────────────────────────
-var V7_PLAN = {"version": "7.3", "updated": "2026-11-22", "payout": 90, "commission_pct": 5, "note": "V7.3 plan. skip_ranks = V7 slate ke kaunse rank nahi khelne (1 = MAIN). Stake = Rs per jodi. haruf type bahar = aakhri ank, andar = pehla ank. 'overrides' = tay tarikhon ke liye alag plan (tool aur bot dono aaj ki tarikh dekh kar chunte hain); baaki dino ke liye 'markets'. copy_amounts=false: copy/Telegram message mein sirf numbers (rupaye nahi). count = kitne rank khelne (default 8; Desawar 10 = rank 9-10 bhi). calendar = din/mahine/cool-down ke stake multipliers. date_rule = aaj ki tarikh wala number (aur uska palti) plan ke numbers se hata do.", "markets": {"Gali": {"play": true, "skip_ranks": [1], "stake": 125, "haruf": {"type": "bahar", "stake": 200}, "count": 8}, "Desawar": {"play": true, "skip_ranks": [], "stake": 75, "haruf": {"type": "andar", "stake": 150}, "count": 10}, "Ghaziabad": {"play": true, "skip_ranks": [], "stake": 40, "haruf": null}, "Faridabad": {"play": false, "skip_ranks": [], "stake": 0, "haruf": null}}, "backup_ladder": [{"below": 150000, "scale": 0.67}, {"below": 250000, "scale": 1.0}, {"below": 400000, "scale": 1.33}], "stop_below": 80000, "heavy_experiment": true, "overrides": [{"label": "NOVEMBER HIGH-STAKE PLAN (1-30 Nov)", "from": "2026-11-01", "to": "2026-11-30", "markets": {"Gali": {"play": true, "skip_ranks": [1], "stake": 750, "haruf": {"type": "bahar", "stake": 500}, "count": 8}, "Desawar": {"play": true, "skip_ranks": [], "stake": 500, "haruf": {"type": "andar", "stake": 400}, "count": 8}, "Ghaziabad": {"play": false, "skip_ranks": [], "stake": 0, "haruf": null}, "Faridabad": {"play": false, "skip_ranks": [], "stake": 0, "haruf": null}}, "rules": "Backup Rs3 lakh alag. Mahine ka ghaata Rs1.5 lakh par stake Rs400; Rs2 lakh par normal plan. 1 Dec se apne aap normal plan. Desawar base Rs500 x Nov 1.5 = Rs750 (thanda din Rs375, garam din cap par Rs750). Gali Rs750 base: Sun/Fri Rs1,125, Tue/Wed Rs375, thanda Rs375, garam Rs1,125. Desawar 10 number 1 Dec se."}], "copy_amounts": false, "calendar": {"note": "Stake multipliers (sirf jodi par; haruf flat). mult = weekday x month x cool-down, phir cap. Cool-down trigger = Desawar ka result us din ki V7 top-8 list mein tha (hamara hit): us raat Gali aur agli subah Desawar same_day_mult; agar us raat Gali (plan numbers) bhi hit -> agli subah Desawar SKIP. rebound_after_days game-day baad Gali/Desawar rebound_mult. Walk-forward 2015-2026: Gali +35.5% -> +42.7% ROI, Desawar +32% -> +38%.", "cap": [0.5, 1.5], "round_to": 5, "weekday_mult": {"Gali": {"Sun": 1.5, "Fri": 1.5, "Tue": 0.5, "Wed": 0.5}}, "month_mult": {"Desawar": {"Jul": 1.5, "Nov": 1.5, "Jan": 1.5, "Apr": 0.5, "Oct": 0.5}}, "cooldown": {"trigger": "Desawar result in that day's V7 top-8", "same_day_mult": 0.5, "rebound_after_days": 2, "rebound_mult": 1.5, "double_payout_skip_desawar": true}}, "date_rule": {"note": "Operator aaj ki tarikh wala number (jaise 22 tarikh ko 22) aur uska palti kam kholta hai: sab 6 market mein 0.50% / 0.66% (tukka 1%), 2013-2026. Plan ke numbers mein aisa number ho to hata do; uski jagah naya number nahi. Desawar ke liye tarikh = jis subah result aata hai. 'from' se pehle ke dino par lagu nahi (purana hisaab waisa hi rahe).", "from": "2026-11-22", "markets": {"Gali": ["day", "palti"], "Desawar": ["day", "palti"], "Faridabad": ["day", "palti"], "Ghaziabad": ["day"]}}};
+var V7_PLAN = {"version": "7.4", "updated": "2026-11-24", "payout": 90, "commission_pct": 5, "note": "V7.3 plan. skip_ranks = V7 slate ke kaunse rank nahi khelne (1 = MAIN). Stake = Rs per jodi. haruf type bahar = aakhri ank, andar = pehla ank. 'overrides' = tay tarikhon ke liye alag plan (tool aur bot dono aaj ki tarikh dekh kar chunte hain); baaki dino ke liye 'markets'. copy_amounts=false: copy/Telegram message mein sirf numbers (rupaye nahi). count = kitne rank khelne (default 8; Desawar 10 = rank 9-10 bhi). calendar = din/mahine/cool-down ke stake multipliers. date_rule = aaj ki tarikh wala number (aur uska palti) plan ke numbers se hata do. cold_rule = thanda number (jo 'days' din se kisi market mein nahi aaya) plan ke numbers se hata do. haruf_rule = haruf ka ank kis niyam se (prev2 = us market ke do draw pehle wala ank).", "markets": {"Gali": {"play": true, "skip_ranks": [1], "stake": 125, "haruf": {"type": "bahar", "stake": 200}, "count": 8}, "Desawar": {"play": true, "skip_ranks": [], "stake": 75, "haruf": {"type": "andar", "stake": 150}, "count": 10}, "Ghaziabad": {"play": true, "skip_ranks": [], "stake": 40, "haruf": null}, "Faridabad": {"play": false, "skip_ranks": [], "stake": 0, "haruf": null}}, "backup_ladder": [{"below": 150000, "scale": 0.67}, {"below": 250000, "scale": 1.0}, {"below": 400000, "scale": 1.33}], "stop_below": 80000, "heavy_experiment": true, "overrides": [{"label": "NOVEMBER HIGH-STAKE PLAN (1-30 Nov)", "from": "2026-11-01", "to": "2026-11-30", "markets": {"Gali": {"play": true, "skip_ranks": [1], "stake": 750, "haruf": {"type": "bahar", "stake": 500}, "count": 8}, "Desawar": {"play": true, "skip_ranks": [], "stake": 500, "haruf": {"type": "andar", "stake": 400}, "count": 8}, "Ghaziabad": {"play": false, "skip_ranks": [], "stake": 0, "haruf": null}, "Faridabad": {"play": false, "skip_ranks": [], "stake": 0, "haruf": null}}, "rules": "Backup Rs3 lakh alag. Mahine ka ghaata Rs1.5 lakh par stake Rs400; Rs2 lakh par normal plan. 1 Dec se apne aap normal plan. Desawar base Rs500 x Nov 1.5 = Rs750 (thanda din Rs375, garam din cap par Rs750). Gali Rs750 base: Sun/Fri Rs1,125, Tue/Wed Rs375, thanda Rs375, garam Rs1,125. Desawar 10 number 1 Dec se."}], "copy_amounts": false, "calendar": {"note": "Stake multipliers (sirf jodi par; haruf flat). mult = weekday x month x cool-down, phir cap. Cool-down trigger = Desawar ka result us din ki V7 top-8 list mein tha (hamara hit): us raat Gali aur agli subah Desawar same_day_mult; agar us raat Gali (plan numbers) bhi hit -> agli subah Desawar SKIP. rebound_after_days game-day baad Gali/Desawar rebound_mult. Walk-forward 2015-2026: Gali +35.5% -> +42.7% ROI, Desawar +32% -> +38%.", "cap": [0.5, 1.5], "round_to": 5, "weekday_mult": {"Gali": {"Sun": 1.5, "Fri": 1.5, "Tue": 0.5, "Wed": 0.5}}, "month_mult": {"Desawar": {"Jul": 1.5, "Nov": 1.5, "Jan": 1.5, "Apr": 0.5, "Oct": 0.5}}, "cooldown": {"trigger": "Desawar result in that day's V7 top-8", "same_day_mult": 0.5, "rebound_after_days": 2, "rebound_mult": 1.5, "double_payout_skip_desawar": true}}, "date_rule": {"note": "Operator aaj ki tarikh wala number (jaise 22 tarikh ko 22) aur uska palti kam kholta hai: sab 6 market mein 0.50% / 0.66% (tukka 1%), 2013-2026. Plan ke numbers mein aisa number ho to hata do; uski jagah naya number nahi. Desawar ke liye tarikh = jis subah result aata hai. 'from' se pehle ke dino par lagu nahi (purana hisaab waisa hi rahe).", "from": "2026-11-22", "markets": {"Gali": ["day", "palti"], "Desawar": ["day", "palti"], "Faridabad": ["day", "palti"], "Ghaziabad": ["day"]}}, "cold_rule": {"note": "Thanda number: plan ka jo number pichhle 'days' din mein (aur aaj ab tak) chhe mein se kisi bhi market mein nahi aaya, use hata do; uski jagah naya number nahi. 'Due' wali soch ka ulta. Walk-forward 2015-2026 (Gali rank 2-8, tarikh niyam ke upar): aise number 1.06% aaye (80/7,542; tukka 1%, barabar 1.11%), baaki list-number 1.61%. ROI 2015-22 +36.7% -> +51.8%, 2023-26 +21.9% -> +31.0% (12/12 saal behtar); roz ~7 ki jagah ~5 number, hit wale din 9.3% -> 7.7%. Desawar par fayda nahi, isliye sirf Gali. 'from' se pehle ke dino par lagu nahi.", "from": "2026-11-24", "days": 14, "markets": ["Gali"]}, "haruf_rule": {"note": "prev2 = haruf ka ank us market ke do draw pehle ('parson wale') result se, jab pichhle draw ka wahi ank us se alag ho. Desawar andar 2015-2026: 12.7% (487/3,835; barabar 11.1%), dono daur mein same (12.7% / 12.6%); V7 ka ank 11.8%; jab dono alag hon to parson wala 12.2%, V7 wala 10.8%. Kal wala andar dobara sirf 8.7% aata hai. Jab kal aur parson ka ank ek hi ho to V7 ka ank; agar V7 ka ank bhi wahi ho to us din haruf nahi. Result adhura ho to V7 ka ank. 'from' se pehle ke dino par lagu nahi.", "from": "2026-11-24", "markets": {"Desawar": {"type": "andar", "pick": "prev2"}}}};
 (function loadPlan(){ try{ fetch('https://raw.githubusercontent.com/arunk8447ak/spi-pattern-engine/main/v7_plan.json?t='+Date.now()).then(function(r){return r.ok?r.json():null;}).then(function(j){ if(j&&j.markets&&JSON.stringify(j)!==JSON.stringify(V7_PLAN)){ V7_PLAN=j; if(typeof renderAll==='function') renderAll(); } }).catch(function(){}); }catch(e){} })();
 (function loadLogic(){ try{ fetch('https://raw.githubusercontent.com/arunk8447ak/spi-pattern-engine/main/v7_logic.json?t='+Date.now()).then(function(r){return r.ok?r.json():null;}).then(function(j){
   if(!j||!j.markets||!j.version) return;
@@ -1021,13 +1025,19 @@ function v7IsV7(pred){ return !!(pred&&pred.cluster&&pred.cluster.length===8&&('
 function v7Cal(){ return (V7_PLAN&&V7_PLAN.calendar)||null; }
 function v7Count(mkt){ var p=v7PlanMkts()[mkt]; var c=parseInt(p&&p.count,10); if(!(c>=1)) c=8; return Math.min(12,c); }
 function v7DateDrop(mkt,d){ var dr=V7_PLAN&&V7_PLAN.date_rule; if(!dr||!d||(dr.from&&d<dr.from)) return []; var k=dr.markets&&dr.markets[mkt]; if(!k) return []; var day=parseInt(String(d).slice(8,10),10); if(!(day>=1)) return []; var out=[]; if(k.indexOf('day')>=0) out.push(day); if(k.indexOf('palti')>=0){ var pl=palti(day); if(out.indexOf(pl)<0) out.push(pl); } if(k.indexOf('own_palti')>=0){ var pv=null; for(var i=1;i<=3&&pv===null;i++){ pv=v7ActOf(mkt,addD(d,-i)); } if(pv!==null){ var op=palti(pv); if(op!==pv&&out.indexOf(op)<0) out.push(op); } } return out; }
-function v7DropWhy(mkt,d,n){ var day=parseInt(String(d).slice(8,10),10); return (n===day||n===palti(day))?'tarikh wala':'kal ke number ka palti'; }
+function v7DropWhy(mkt,d,n){ if(v7DateDrop(mkt,d).indexOf(n)>=0){ var day=parseInt(String(d).slice(8,10),10); return (n===day||n===palti(day))?'tarikh wala':'kal ke number ka palti'; } return 'thanda'; }
 function v7DropTxt(mkt,d,arr){ return arr.map(function(n){ return p2(n)+' ('+v7DropWhy(mkt,d,n)+')'; }).join(', '); }
+// 24 Nov 2026: thanda niyam (plan.cold_rule). Thanda = number pichhle 'days' din mein (aur aaj ab tak) chhe mein se kisi market mein nahi aaya.
+var V7_DAY_ORDER=['Desawar','Delhi','Shree Ganesh','Faridabad','Ghaziabad','Gali'];   // ek hi tarikh ke andar result ka kram
+function v7ColdCfg(mkt,d){ var cr=V7_PLAN&&V7_PLAN.cold_rule; if(!cr||!d||(cr.from&&d<cr.from)) return null; if(!cr.markets||cr.markets.indexOf(mkt)<0) return null; var W=parseInt(cr.days,10); if(!(W>=1)) return null; return {days:Math.min(60,W), src:(cr.sources&&cr.sources.length)?cr.sources:V7_DAY_ORDER}; }
+function v7Seen(mkt,d){ var c=v7ColdCfg(mkt,d); if(!c) return null; var S={}; for(var k=1;k<=c.days;k++){ var dd=addD(d,-k); for(var i=0;i<c.src.length;i++){ var v=v7ActOf(c.src[i],dd); if(v!==null) S[v]=true; } } var pos=V7_DAY_ORDER.indexOf(mkt); for(var j=0;j<c.src.length;j++){ var q=V7_DAY_ORDER.indexOf(c.src[j]); if(q>=0&&q<pos){ var w=v7ActOf(c.src[j],d); if(w!==null) S[w]=true; } } return S; }
+function v7ColdMissing(mkt,d){ var c=v7ColdCfg(mkt,d); if(!c) return []; var pos=V7_DAY_ORDER.indexOf(mkt), out=[]; c.src.forEach(function(m){ var q=V7_DAY_ORDER.indexOf(m); if(q<0||q>=pos) return; if(isMarketClosed(m,d)) return; if((m==='Delhi'||m==='Shree Ganesh')&&isLastDayOfMonth(d)) return; if(v7ActOf(m,d)===null) out.push(m); }); return out; }
+function v7DropHtml(mkt,d,arr,brief){ if(!arr||!arr.length) return ''; var dt=[], cold=[]; arr.forEach(function(n){ if(v7DropWhy(mkt,d,n)==='thanda') cold.push(n); else dt.push(n); }); var st='font-size:10px;color:#93c5fd;'+(brief?'margin:6px 0 0 4px':'margin-top:4px'); var o=''; if(dt.length) o+='<div style="'+st+'">&#128197; '+v7DropTxt(mkt,d,dt)+(brief?' hataya':' list se hataya (operator ise kam kholta hai)')+'</div>'; if(cold.length){ var c=v7ColdCfg(mkt,d); o+='<div style="'+st+'">&#10052; '+cold.map(p2).join(', ')+(brief?' thanda, hataya':' thanda ('+(c?c.days:14)+' din se kisi market mein nahi aaya) &mdash; list se hataya')+'</div>'; } return o; }
 function v7PlanRaw(mkt,pred){ var p=v7PlanFor(mkt); if(!p||!v7IsV7(pred)) return null; var sk=p.skip_ranks||[], out=[]; var src=(pred.order12&&pred.order12.length>=8)?pred.order12.slice(0,v7Count(mkt)):pred.cluster; src.forEach(function(n,i){ if(sk.indexOf(i+1)<0) out.push(n); }); return out; }
-function v7PlanNums(mkt,pred,d){ var raw=v7PlanRaw(mkt,pred); if(!raw) return null; var dd=v7DateDrop(mkt,d); if(!dd.length) return raw; return raw.filter(function(n){ return dd.indexOf(n)<0; }); }
-function v7PlanDropped(mkt,pred,d){ var raw=v7PlanRaw(mkt,pred); if(!raw) return []; var dd=v7DateDrop(mkt,d); return raw.filter(function(n){ return dd.indexOf(n)>=0; }); }
+function v7PlanNums(mkt,pred,d){ var raw=v7PlanRaw(mkt,pred); if(!raw) return null; var dd=v7DateDrop(mkt,d); var S=v7Seen(mkt,d); if(!dd.length&&!S) return raw; return raw.filter(function(n){ return dd.indexOf(n)<0&&(!S||S[n]===true); }); }
+function v7PlanDropped(mkt,pred,d){ var raw=v7PlanRaw(mkt,pred); if(!raw) return []; var keep=v7PlanNums(mkt,pred,d)||[]; return raw.filter(function(n){ return keep.indexOf(n)<0; }); }
 function v7ShowNums(mkt,d,pred){ var pn=(pred&&v7PlanFor(mkt)&&v7IsV7(pred))?v7PlanNums(mkt,pred,d):null; return pn||pred.cluster||[pred.j1,pred.j2]; }
-function v7Cls(mkt,d,pred,actual){ if(!pred||actual===null||actual===undefined) return null; var pn=(v7PlanFor(mkt)&&v7IsV7(pred))?v7PlanNums(mkt,pred,d):null; if(!pn) return cls(pred,actual); var i=pn.indexOf(actual); if(i>=0) return i<2?'j1j2':'ext'; if(pred.units.indexOf(actual%10)>=0) return 'andar'; if(pred.tens.indexOf(Math.floor(actual/10))>=0) return 'bahar'; return 'miss'; }
+function v7Cls(mkt,d,pred,actual){ if(!pred||actual===null||actual===undefined) return null; var pn=(v7PlanFor(mkt)&&v7IsV7(pred))?v7PlanNums(mkt,pred,d):null; if(!pn) return cls(pred,actual); var i=pn.indexOf(actual); if(i>=0) return i<2?'j1j2':'ext'; var hs=v7HarufShow(mkt,d,pred); if(hs.units.indexOf(actual%10)>=0) return 'andar'; if(hs.tens.indexOf(Math.floor(actual/10))>=0) return 'bahar'; return 'miss'; }
 function v7ActOf(mkt,d){ if(isMarketClosed(mkt,d)) return null; var a=ACT[mkt]?ACT[mkt][d]:undefined; if(a===undefined||a===null||a==='') return null; a=parseInt(a,10); return isNaN(a)?null:a; }
 function v7Hit8(mkt,d){ var a=v7ActOf(mkt,d); if(a===null) return null; var pr=ypePred(mkt,d); if(!v7IsV7(pr)) return null; return pr.cluster.indexOf(a)>=0; }
 function v7PlanHit(mkt,d){ var a=v7ActOf(mkt,d); if(a===null) return null; var nums=v7PlanNums(mkt,ypePred(mkt,d),d); if(!nums) return null; return nums.indexOf(a)>=0; }
@@ -1042,26 +1052,36 @@ function v7Mult(mkt,d){ var r={mult:1,why:[],skip:false}; var cal=v7Cal(); if(!c
 function v7Stake(mkt,d){ var p=v7PlanFor(mkt); if(!p) return 0; var m=v7Mult(mkt,d); if(m.skip) return 0; var rt=(v7Cal()&&v7Cal().round_to)||5; return Math.round(p.stake*m.mult/rt)*rt; }
 function v7Needs(mkt,d){ var ex=(V7_LOGIC.exclude_same_day&&V7_LOGIC.exclude_same_day[mkt])||[]; if(mkt==='Desawar'){ var g=addD(d,-1); return ['Faridabad','Ghaziabad','Gali'].filter(function(X){return ex.indexOf(X)<0;}).map(function(X){return [X,g];}); } if(mkt==='Faridabad') return [['Desawar',d]]; if(mkt==='Ghaziabad') return [['Faridabad',d]]; if(mkt==='Gali') return [['Faridabad',d],['Ghaziabad',d]]; return []; }
 function v7Missing(mkt,d){ return v7Needs(mkt,d).filter(function(x){ if(isMarketClosed(x[0],x[1])) return false; var v=ACT[x[0]]?ACT[x[0]][x[1]]:undefined; return v===undefined||v===null||v===''; }); }
-function v7HarufDigit(p,pred){ if(!p||!p.haruf||!p.haruf.stake||!v7IsV7(pred)) return null; return p.haruf.type==='andar'?pred.tens[0]:pred.units[0]; }
+// 24 Nov 2026: haruf niyam (plan.haruf_rule). prev2 = us market ke do draw pehle ('parson wale') result ka ank, jab pichhle draw ka ank us se alag ho.
+function v7PrevOpen(mkt,d){ var x=addD(d,-1), g=0; while(isMarketClosed(mkt,x)&&g<5){ x=addD(x,-1); g++; } return x; }
+function v7HarufPick(mkt,d,pred){ var p=v7PlanFor(mkt); if(!p||!p.haruf||!p.haruf.stake||!v7IsV7(pred)) return null; var type=(p.haruf.type==='andar')?'andar':'bahar'; var v7d=(type==='andar')?pred.tens[0]:pred.units[0]; var r={digit:v7d,type:type,v7:v7d,why:'',rule:false}; var hr=V7_PLAN&&V7_PLAN.haruf_rule; var cfg=(hr&&hr.markets&&d&&!(hr.from&&d<hr.from))?hr.markets[mkt]:null; if(!cfg||cfg.type!==type||cfg.pick!=='prev2') return r; var d1=v7PrevOpen(mkt,d), d2=v7PrevOpen(mkt,d1); var a1=v7ActOf(mkt,d1), a2=v7ActOf(mkt,d2); if(a1===null||a2===null){ r.why=mkt+' ka '+fmtS(a1===null?d1:d2)+' wala result nahi daala, isliye V7 ka ank'; return r; } var k1=(type==='andar')?Math.floor(a1/10):a1%10, k2=(type==='andar')?Math.floor(a2/10):a2%10; r.rule=true; if(k2!==k1){ r.digit=k2; r.why='parson wala ank ('+fmtS(d2)+': '+p2(a2)+')'+(v7d!==k2?'; V7 ka ank '+v7d:'; V7 ka bhi yahi'); return r; } if(v7d!==k1){ r.why='kal aur parson dono ka '+type+' '+k1+' tha, isliye V7 ka ank'; return r; } r.digit=null; r.why='kal aur parson dono ka '+type+' '+k1+' tha aur V7 ka ank bhi '+k1+' hai: aaj '+type+' haruf nahi'; return r; }
+function v7HarufDigit(p,pred,mkt,d){ var hp=v7HarufPick(mkt,d,pred); return (hp&&hp.digit!==null)?hp.digit:null; }
+function v7HarufShow(mkt,d,pred){ var u=pred.units||[], t=pred.tens||[]; var hp=(v7PlanFor(mkt)&&v7IsV7(pred))?v7HarufPick(mkt,d,pred):null; if(hp&&hp.rule){ var arr=(hp.digit===null)?[]:[hp.digit]; if(hp.type==='andar') t=arr; else u=arr; } return {units:u,tens:t,hp:hp}; }
 function v7Rs(n){ n=Math.round(n); var s=String(Math.abs(n)); if(s.length>3){ s=s.slice(0,-3).replace(/\B(?=(\d\d)+(?!\d))/g,',')+','+s.slice(-3); } return (n<0?'-':'')+'Rs'+s; }
-function v7KhaiwalaText(mkt,d,pred){ var p=v7PlanFor(mkt), nums=v7PlanNums(mkt,pred,d); if(!p||!nums) return ''; var amt=V7_PLAN.copy_amounts!==false; var mu=v7Mult(mkt,d), st=v7Stake(mkt,d); var lines=[mkt.toUpperCase()+' '+fmtS(d)+(mkt==='Desawar'?' (subah)':'')]; if(mu.skip){ lines.push('AAJ SKIP - kuch mat lagao ('+mu.why.join(', ')+')'); return lines.join('\n'); } lines.push(nums.map(p2).join('  ')); if(amt) lines.push('har jodi '+v7Rs(st)+' ('+nums.length+' jodi = '+v7Rs(nums.length*st)+')'); var hd=v7HarufDigit(p,pred); if(hd!==null) lines.push((p.haruf.type==='andar'?'Andar (pehla ank) ':'Bahar (aakhri ank) ')+hd+(amt?' - '+v7Rs(p.haruf.stake):'')); return lines.join('\n'); }
+function v7KhaiwalaText(mkt,d,pred){ var p=v7PlanFor(mkt), nums=v7PlanNums(mkt,pred,d); if(!p||!nums) return ''; var amt=V7_PLAN.copy_amounts!==false; var mu=v7Mult(mkt,d), st=v7Stake(mkt,d); var lines=[mkt.toUpperCase()+' '+fmtS(d)+(mkt==='Desawar'?' (subah)':'')]; if(mu.skip){ lines.push('AAJ SKIP - kuch mat lagao ('+mu.why.join(', ')+')'); return lines.join('\n'); } if(nums.length) lines.push(nums.map(p2).join('  ')); if(amt&&nums.length) lines.push('har jodi '+v7Rs(st)+' ('+nums.length+' jodi = '+v7Rs(nums.length*st)+')'); var hd=v7HarufDigit(p,pred,mkt,d); if(hd!==null) lines.push((p.haruf.type==='andar'?'Andar (pehla ank) ':'Bahar (aakhri ank) ')+hd+(amt?' - '+v7Rs(p.haruf.stake):'')); return lines.join('\n'); }
 function v7CopyFallback(t){ var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); }catch(e){} document.body.removeChild(ta); }
 function v7Copy(btn){ var t=decodeURIComponent(btn.getAttribute('data-txt')); function done(){ btn.textContent='Copied!'; setTimeout(function(){ btn.textContent='Copy numbers'; },1800); } if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(done,function(){ v7CopyFallback(t); done(); }); } else { v7CopyFallback(t); done(); } }
+// 24 Nov 2026: ek button se raat ka poora message = chuni hui tarikh ki Gali + agli subah ka Desawar (sirf wahi jo final hai aur jiska result abhi nahi aaya)
+function v7NowMin(){ var n=new Date(); return n.getHours()*60+n.getMinutes(); }
+function v7DrawOver(T,d){ var t=today(); if(d<t) return true; if(d>t) return false; var cut=(T==='Desawar')?330:(T==='Gali')?1410:1440; return v7NowMin()>=cut; }   // Desawar 5:30 subah, Gali 11:30 raat ke baad us din ka khel khatam
+function v7NightParts(g){ var out=[], warn=[]; [['Gali',g],['Desawar',addD(g,1)]].forEach(function(x){ var T=x[0], d=x[1]; if(!v7PlanFor(T)) return; if(isMarketClosed(T,d)){ warn.push(T+' '+fmtS(d)+' band hai'); return; } if(v7ActOf(T,d)!==null){ warn.push(T+' '+fmtS(d)+' ka result aa chuka hai'); return; } if(v7DrawOver(T,d)){ warn.push(T+' '+fmtS(d)+' ka time nikal chuka hai'); return; } var pr=ypePred(T,d); if(!v7IsV7(pr)){ warn.push(T+' '+fmtS(d)+': data kam hai'); return; } var miss=v7Missing(T,d); if(miss.length){ warn.push(T+' '+fmtS(d)+': pehle '+miss.map(function(m){ return m[0]; }).join(', ')+' ka result daalo'); return; } if(v7Mult(T,d).skip){ warn.push(T+' '+fmtS(d)+': aaj SKIP hai, message mein nahi daala'); return; } var nums=v7PlanNums(T,pr,d)||[]; out.push({mkt:T,d:d,n:nums.length,txt:v7KhaiwalaText(T,d,pr)}); }); return {parts:out,warn:warn}; }
+function v7CopyNight(){ var r=v7NightParts(selDate); if(!r.parts.length&&selDate===today()){ var r2=v7NightParts(addD(selDate,-1)); if(r2.parts.length) r=r2; }   // aadhi raat ke baad: kal ki raat ka message
+  var msg=document.getElementById('v7-night-msg'); var t=r.parts.map(function(p){ return p.txt; }).join('\n\n'); if(!t){ if(msg){ msg.style.color='#fca5a5'; msg.textContent='Kuch copy nahi hua: '+(r.warn.join(' | ')||'plan mein koi market nahi'); } return; } function done(){ if(msg){ msg.style.color=r.warn.length?'#fbbf24':'#22c55e'; msg.textContent='Copy ho gaya: '+r.parts.map(function(p){ return p.mkt+' '+fmtS(p.d)+' ('+p.n+' number)'; }).join(' + ')+(r.warn.length?' | Dhyan: '+r.warn.join(' | '):''); } } if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(done,function(){ v7CopyFallback(t); done(); }); } else { v7CopyFallback(t); done(); } }
 function v7MonthPnl(mkt,d){ var p=v7PlanFor(mkt); if(!p) return null; var ym=d.slice(0,7), day=ym+'-01', n=0, h=0, pnl=0, comm=(V7_PLAN.commission_pct||0)/100, pay=V7_PLAN.payout||90, guard=0, skipped=0;
-  while(day<=d&&day.slice(0,7)===ym&&guard++<40){ var a=v7ActOf(mkt,day); if(a!==null){ var pr=ypePred(mkt,day); var nums=v7PlanNums(mkt,pr,day); if(nums){ var st1=v7Stake(mkt,day); if(st1>0){ n++; var st=nums.length*st1; var ret=nums.indexOf(a)>=0?pay*st1:0; if(ret) h++; pnl+=ret-st+comm*st; var hd=v7HarufDigit(p,pr); if(hd!==null){ var dig=p.haruf.type==='andar'?Math.floor(a/10):a%10; pnl+=(dig===hd?9*p.haruf.stake:0)-p.haruf.stake+comm*p.haruf.stake; } } else skipped++; } } day=addD(day,1); }
+  while(day<=d&&day.slice(0,7)===ym&&guard++<40){ var a=v7ActOf(mkt,day); if(a!==null){ var pr=ypePred(mkt,day); var nums=v7PlanNums(mkt,pr,day); if(nums){ var st1=v7Stake(mkt,day); if(st1>0){ n++; var st=nums.length*st1; var ret=nums.indexOf(a)>=0?pay*st1:0; if(ret) h++; pnl+=ret-st+comm*st; var hd=v7HarufDigit(p,pr,mkt,day); if(hd!==null){ var dig=p.haruf.type==='andar'?Math.floor(a/10):a%10; pnl+=(dig===hd?9*p.haruf.stake:0)-p.haruf.stake+comm*p.haruf.stake; } } else skipped++; } } day=addD(day,1); }
   return {n:n,h:h,pnl:pnl,skipped:skipped}; }
 function v7PlanBox(mkt,d,pred,col){ var p=v7PlanFor(mkt); var html=''; var miss=v7Missing(mkt,d);
   if(miss.length){ html+='<div style="margin-top:8px;padding:8px 10px;border-radius:8px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.45);color:#fca5a5;font-size:11px;font-weight:700;line-height:1.5">&#9888; '+miss.map(function(x){ return x[0]+' ('+fmtS(x[1])+')'; }).join(', ')+' ka result abhi nahi daala &mdash; ye numbers ADHURE hain. Pehle wo result daalo, phir khelo.</div>'; }
   if(!p){ var pm=v7PlanMkts()[mkt]; if(pm&&pm.play===false) html+='<div style="margin-top:8px;font-size:10px;color:var(--mut)">Plan ke hisaab se aaj ye market <b>nahi khelna</b>.</div>'; return html; }
   if(!v7IsV7(pred)) return html;
-  var nums=v7PlanNums(mkt,pred,d)||[]; var dropped=v7PlanDropped(mkt,pred,d); var dropTxt=dropped.length?'<div style="font-size:10px;color:#93c5fd;margin-top:4px">&#128197; '+v7DropTxt(mkt,d,dropped)+' list se hataya (operator ise kam kholta hai)</div>':''; var hd=v7HarufDigit(p,pred); var txt=v7KhaiwalaText(mkt,d,pred); var sk=p.skip_ranks||[]; var mu=v7Mult(mkt,d), st=v7Stake(mkt,d); var tot=nums.length*st+((hd!==null&&st>0)?p.haruf.stake:0);
+  var nums=v7PlanNums(mkt,pred,d)||[]; var dropped=v7PlanDropped(mkt,pred,d); var dropTxt=v7DropHtml(mkt,d,dropped,false); var cm=v7ColdMissing(mkt,d).filter(function(m){ return !miss.some(function(x){ return x[0]===m&&x[1]===d; }); }); if(cm.length) dropTxt+='<div style="font-size:10px;color:#fbbf24;margin-top:4px">&#9888; Aaj ka '+cm.join(', ')+' result nahi daala. Daal do to thanda niyam poora chalega.</div>'; var hpk=v7HarufPick(mkt,d,pred); var hd=(hpk&&hpk.digit!==null)?hpk.digit:null; var hLab=(p.haruf&&p.haruf.type==='andar')?'Andar':'Bahar'; var harufWhy=(hpk&&hpk.why)?'<div style="font-size:10px;color:#c4b5fd;margin-top:4px">&#9432; '+hLab+' haruf: '+hpk.why+'</div>':''; var txt=v7KhaiwalaText(mkt,d,pred); var sk=p.skip_ranks||[]; var mu=v7Mult(mkt,d), st=v7Stake(mkt,d); var tot=nums.length*st+((hd!==null&&st>0)?p.haruf.stake:0);
   var lab=(v7PlanActive()&&v7PlanActive().label)?' &bull; <span style="color:#fbbf24">'+v7PlanActive().label+'</span>':'';
-  if(mu.skip){ html+='<div class="box" style="margin-top:8px;border-color:rgba(239,68,68,.55)"><div class="boxt" style="color:#ef4444">&#9940; AAJ SKIP (V7.3 plan)'+lab+'</div><div style="font-size:11px;color:#fca5a5;margin:4px 0 2px">'+mu.why.join(' &bull; ')+'</div><div style="font-size:10px;color:var(--mut)">Aaj '+mkt+' mein kuch mat lagao (12 saal ke data mein aise din 1/29 hit). Numbers sirf record ke liye: '+nums.map(p2).join(' ')+'</div></div>'; return html; }
+  if(mu.skip){ html+='<div class="box" style="margin-top:8px;border-color:rgba(239,68,68,.55)"><div class="boxt" style="color:#ef4444">&#9940; AAJ SKIP (V7.4 plan)'+lab+'</div><div style="font-size:11px;color:#fca5a5;margin:4px 0 2px">'+mu.why.join(' &bull; ')+'</div><div style="font-size:10px;color:var(--mut)">Aaj '+mkt+' mein kuch mat lagao (12 saal ke data mein aise din 1/29 hit). Numbers sirf record ke liye: '+nums.map(p2).join(' ')+'</div></div>'; return html; }
   var whyTxt=mu.why.length?'<div style="font-size:10px;color:#fbbf24;margin-top:4px">&#9889; '+mu.why.join(' &bull; ')+' &rarr; '+v7Rs(p.stake)+' &times; '+mu.mult+' = <b>'+v7Rs(st)+'</b> per jodi</div>':'';
-  html+='<div class="box" style="margin-top:8px;border-color:rgba(34,197,94,.35)"><div class="boxt" style="color:#22c55e">&#10003; AAJ KA PLAN (V7.3)'+lab+' <span style="color:var(--mut);font-weight:400">&bull; '+nums.length+' jodi &times; '+v7Rs(st)+'</span></div>'
-    +'<div style="font-family:\'JetBrains Mono\',monospace;font-size:17px;letter-spacing:2px;color:#e6edf3;margin:4px 0 6px;word-spacing:6px">'+nums.map(p2).join(' ')+'</div>'+whyTxt+dropTxt
+  html+='<div class="box" style="margin-top:8px;border-color:rgba(34,197,94,.35)"><div class="boxt" style="color:#22c55e">&#10003; AAJ KA PLAN (V7.4)'+lab+' <span style="color:var(--mut);font-weight:400">&bull; '+nums.length+' jodi &times; '+v7Rs(st)+'</span></div>'
+    +'<div style="font-family:\'JetBrains Mono\',monospace;font-size:17px;letter-spacing:2px;color:#e6edf3;margin:4px 0 6px;word-spacing:6px">'+(nums.length?nums.map(p2).join(' '):'<span style="font-size:11px;letter-spacing:0;color:#fca5a5">aaj jodi nahi (list ke sab number hat gaye)</span>')+'</div>'+whyTxt+dropTxt
     +'<div style="font-size:10px;color:var(--mut);margin-top:4px">Jodi '+v7Rs(nums.length*st)+(hd!==null?' &nbsp;&bull;&nbsp; '+(p.haruf.type==='andar'?'ANDAR (pehla ank) ':'BAHAR (aakhri ank) ')+'<b style="color:#e6edf3;font-size:12px">'+hd+'</b> '+v7Rs(p.haruf.stake):'')+' &nbsp;&bull;&nbsp; kul <b style="color:#e6edf3">'+v7Rs(tot)+'</b></div>'
-    +'<button onclick="v7Copy(this)" data-txt="'+encodeURIComponent(txt)+'" style="margin-top:8px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.5);color:#22c55e;border-radius:6px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">Copy numbers</button>';
+    +harufWhy+'<button onclick="v7Copy(this)" data-txt="'+encodeURIComponent(txt)+'" style="margin-top:8px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.5);color:#22c55e;border-radius:6px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">Copy numbers</button>';
   var mp=v7MonthPnl(mkt,d); if(mp&&(mp.n||mp.skipped)){ html+='<div style="font-size:10px;color:var(--mut);margin-top:8px">Is mahine plan ka hisaab ('+(V7_PLAN.commission_pct||0)+'% commission, din ke hisaab se stake): '+mp.h+' hit / '+mp.n+' din'+(mp.skipped?' ('+mp.skipped+' skip)':'')+' &rarr; <b style="color:'+(mp.pnl>=0?'#22c55e':'#ef4444')+'">'+(mp.pnl>=0?'+':'')+v7Rs(mp.pnl)+'</b></div>'; }
   html+='</div>'; return html; }
 
@@ -1275,7 +1295,7 @@ function renderCard(m){
         var hpTxt='&mdash;';
         if(hp){
           var exTxt='<div style="font-size:10px;color:var(--mut);margin-bottom:2px">EXACT:</div><div style="margin-bottom:6px">'+v7ShowNums(id,hd,hp).map(function(n){return '<span class="pc" style="margin-right:4px">'+p2(n)+'</span>';}).join('')+'</div>';
-          var abTxt='<div style="font-size:10px;color:rgba('+r+',.7)"><span style="color:var(--mut)">AN: </span>'+hp.units.join(' &bull; ')+'&nbsp;&nbsp;<span style="color:var(--mut)">BH: </span>'+hp.tens.join(' &bull; ')+'</div>';
+          var abTxt='<div style="font-size:10px;color:rgba('+r+',.7)"><span style="color:var(--mut)">AN: </span>'+v7HarufShow(id,hd,hp).tens.join(' &bull; ')+'&nbsp;&nbsp;<span style="color:var(--mut)">BH: </span>'+v7HarufShow(id,hd,hp).units.join(' &bull; ')+'</div>';
           hpTxt='<div style="text-align:left;padding:4px 0">'+exTxt+abTxt+'</div>';
         }
         var hac='<div style="text-align:center"><div class="anum '+actCls(hhc)+'" style="font-size:18px;margin-bottom:4px">'+p2(ha)+'</div><div style="zoom:0.8">'+tagHtml(hhc)+'</div></div>';
@@ -1297,7 +1317,7 @@ function renderCard(m){
       +'<div class="pb">'
         +'<div><div class="pb-lbl">Session Date</div>'
         +'<div class="pb-val" style="color:'+col+'">'+fmtFull(selDate)+'</div></div>'
-        +'<div style="font-size:9px;font-weight:700;color:rgba('+r+',.8)">V7.3 VOTE</div>'
+        +'<div style="font-size:9px;font-weight:700;color:rgba('+r+',.8)">V7.4 VOTE</div>'
       +'</div>'
       +'<div class="ctabs">'
         +'<button class="ctab'+(tab==='predict'?' on':'')+'" style="color:'+(tab==='predict'?col:'var(--dim)')+'" data-id="'+id+'" data-tab="predict" onclick="setTab(this.dataset.id,this.dataset.tab)">Predict</button>'
@@ -1326,7 +1346,7 @@ function renderCard(m){
     } else {
       // Cluster (all 6 predicted numbers)
       var planTop=(v7PlanFor(id)&&v7IsV7(pred))?v7PlanNums(id,pred,selDate):null;   // sirf wahi number jo khelne hain (skip rank + tarikh niyam ke baad)
-      var uni=!!(planTop&&planTop.length);
+      var uni=!!planTop;
       var cluster=uni?planTop:(pred.cluster||[pred.j1,pred.j2]);
       var skipR=uni?[]:v7Skip(id);
       var topDrop=uni?v7PlanDropped(id,pred,selDate):[];
@@ -1345,6 +1365,7 @@ function renderCard(m){
           +(isSkip?'<div class="ntop" style="color:#ef4444;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.35)">&#10005; SKIP</div>':isMain?'<div class="ntop" style="color:#fbbf24;background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3)">&#9813; MAIN</div>':'')
           +'<div class="nnum" style="font-size:'+(isMain?21:16)+'px">'+p2(n)+'</div></div>';
       }).join('');
+      if(uni&&!cluster.length) jodis='<div style="font-size:11px;color:#fca5a5;padding:6px 4px">Aaj koi jodi nahi &mdash; list ke sab number hat gaye.</div>';
       // Extended cluster (numbers 3-6)
       var famRow=uni?'':(cluster.slice(2)||[]).map(function(n,fi){
         var hit=storedA!==null&&storedA===n; var fSkip=skipR.indexOf(fi+3)>=0;
@@ -1352,19 +1373,24 @@ function renderCard(m){
           +'<div class="nnum" style="font-size:14px">'+p2(n)+'</div></div>';
       }).join('');
       // Andar (units digit)
-      var anH=pred.units.map(function(d,i){
+      var hsS=v7HarufShow(id,selDate,pred);   // plan ka haruf (niyam ho to wahi ank)
+      var anH=hsS.units.map(function(d,i){
         var hit=storedA!==null&&storedA%10===d;
         return '<div class="dbdg" style="flex:1;background:rgba('+r+','+(hit?.25:i===0?.15:.03)+');'
           +'border-color:rgba('+r+','+(hit?1:i===0?.6:.18)+');color:'+(hit?'#22c55e':i===0?col:'#777')+'">'
           +'<div class="dn">'+d+'</div><div class="dp">'+(i===0?'Primary':'Backup')+'</div></div>';
       }).join('');
       // Bahar (tens digit)
-      var baH=pred.tens.map(function(d,i){
+      var baH=hsS.tens.map(function(d,i){
         var hit=storedA!==null&&Math.floor(storedA/10)===d;
         return '<div class="dbdg" style="flex:1;background:rgba('+r+','+(hit?.25:i===0?.15:.03)+');'
           +'border-color:rgba('+r+','+(hit?1:i===0?.6:.18)+');color:'+(hit?'#22c55e':i===0?col:'#777')+'">'
           +'<div class="dn">'+d+'</div><div class="dp">'+(i===0?'Primary':'Backup')+'</div></div>';
       }).join('');
+      var hsNo='<div style="font-size:10px;color:var(--mut);padding:6px 2px">aaj nahi</div>';
+      if(!hsS.units.length) anH=hsNo;
+      if(!hsS.tens.length) baH=hsNo;
+      var hsNote=(hsS.hp&&hsS.hp.why)?'<div style="font-size:9px;color:#c4b5fd;margin-top:6px;line-height:1.4">'+hsS.hp.why+'</div>':'';
       // Actual area
       var aHTML='';
       var embedded=selDate<='2026-05-17';
@@ -1394,17 +1420,17 @@ function renderCard(m){
       }
       var clusterSize=cluster.length;
       var v3Cmp = (pred.v3 && pred.v3.length) ? '<div style="font-size:9px;color:var(--mut);margin-top:6px;">V3 comparison slate: ' + pred.v3.map(p2).join(' ') + '</div>' : '';
-      content='<div class="box"><div class="boxt" style="color:'+col+'">'+(uni?'&#9733; V7.3 &mdash; aaj khelne wale number ':v7IsV7(pred)?'&#9733; V7.3 Top-8 Vote Slate ':'&#9888; V3 FALLBACK (V7 ke liye data nahi) ')+'<span style="color:var(--mut);font-weight:400">&bull; '+clusterSize+' numbers</span></div>'
+      content='<div class="box"><div class="boxt" style="color:'+col+'">'+(uni?'&#9733; V7.4 &mdash; aaj khelne wale number ':v7IsV7(pred)?'&#9733; V7.4 Top-8 Vote Slate ':'&#9888; V3 FALLBACK (V7 ke liye data nahi) ')+'<span style="color:var(--mut);font-weight:400">&bull; '+clusterSize+' numbers</span></div>'
         +'<div class="numrow" style="flex-wrap:wrap">'+jodis+'</div>'
-        +(uni?(topDrop.length?'<div style="font-size:10px;color:#93c5fd;margin:6px 0 0 4px">&#128197; '+v7DropTxt(id,selDate,topDrop)+' hataya</div>':''):'<div style="font-size:8px;color:var(--mut);margin:8px 0 4px 6px;letter-spacing:1px">EXTENDED CLUSTER</div>'
+        +(uni?v7DropHtml(id,selDate,topDrop,true):'<div style="font-size:8px;color:var(--mut);margin:8px 0 4px 6px;letter-spacing:1px">EXTENDED CLUSTER</div>'
         +'<div class="numrow">'+famRow+'</div>')+spiCopyBtn(id,selDate,cluster,'Copy '+cluster.length+' numbers')+v3Cmp+'</div>'
         +'<div class="abgrid">'
         +'<div class="box"><div class="boxt" style="color:'+col+'">Bahar <span style="color:var(--mut);font-weight:400">aakhri ank (units) &bull; 9:1</span></div>'
         +'<div style="font-size:9px;color:var(--mut);margin-bottom:6px">Result ka AAKHRI ank (47 mein 7) &bull; khaiwala ko &#39;BAHAR&#39; bolein</div>'
-        +'<div style="display:flex;gap:5px">'+anH+'</div></div>'
+        +'<div style="display:flex;gap:5px">'+anH+'</div>'+((hsS.hp&&hsS.hp.type==='bahar')?hsNote:'')+'</div>'
         +'<div class="box"><div class="boxt" style="color:'+col+'">Andar <span style="color:var(--mut);font-weight:400">pehla ank (tens) &bull; 9:1</span></div>'
         +'<div style="font-size:9px;color:var(--mut);margin-bottom:6px">Result ka PEHLA ank (47 mein 4) &bull; khaiwala ko &#39;ANDAR&#39; bolein</div>'
-        +'<div style="display:flex;gap:5px">'+baH+'</div></div>'
+        +'<div style="display:flex;gap:5px">'+baH+'</div>'+((hsS.hp&&hsS.hp.type==='andar')?hsNote:'')+'</div>'
         +'</div>'+v7PlanBox(id,selDate,pred,col)+aHTML;
     }
   } else {
@@ -1419,7 +1445,7 @@ function renderCard(m){
       var predTxt='&mdash;';
       if(p){
         var exTxt = '<div style="font-size:10px;color:var(--mut);margin-bottom:2px">EXACT:</div><div style="margin-bottom:6px">' + v7ShowNums(id,d,p).map(function(n){return '<span class="pc" style="margin-right:4px">'+p2(n)+'</span>';}).join('') + '</div>';
-        var abTxt = '<div style="font-size:10px;color:rgba('+r+',.7)"><span style="color:var(--mut)">AN: </span>' + p.units.join(' &bull; ') + ' &nbsp;&nbsp; <span style="color:var(--mut)">BH: </span>' + p.tens.join(' &bull; ') + '</div>';
+        var abTxt = '<div style="font-size:10px;color:rgba('+r+',.7)"><span style="color:var(--mut)">AN: </span>' + v7HarufShow(id,d,p).tens.join(' &bull; ') + ' &nbsp;&nbsp; <span style="color:var(--mut)">BH: </span>' + v7HarufShow(id,d,p).units.join(' &bull; ') + '</div>';
         predTxt = '<div style="text-align:left;padding:4px 0">' + exTxt + abTxt + '</div>';
       }
       var ac='<div style="text-align:center"><div class="anum '+actCls(hc)+'" style="font-size:18px;margin-bottom:4px">'+p2(a)+'</div><div style="zoom:0.8">'+tagHtml(hc)+'</div></div>';
@@ -1442,7 +1468,7 @@ function renderCard(m){
     +'<div class="pb">'
       +'<div><div class="pb-lbl">Predicting for</div>'
       +'<div class="pb-val" style="color:'+col+'">'+fmtFull(selDate)+'</div></div>'
-      +'<div style="font-size:9px;font-weight:700;color:rgba('+r+',.8)">V7.3 VOTE</div>'
+      +'<div style="font-size:9px;font-weight:700;color:rgba('+r+',.8)">V7.4 VOTE</div>'
     +'</div>'
     +'<div class="ctabs">'
       +'<button class="ctab'+(tab==='predict'?' on':'')+'" style="color:'+(tab==='predict'?col:'var(--dim)')+'" data-id="'+id+'" data-tab="predict" onclick="setTab(this.dataset.id,this.dataset.tab)">Predict</button>'
@@ -2585,7 +2611,7 @@ setInterval(function() { githubPull(); }, 60000);
 </div>
 
 <script>
-var V7_TOOL_VERSION = '7.3';
+var V7_TOOL_VERSION = '7.4';
 (function checkV7Update(){
   try {
     fetch('https://raw.githubusercontent.com/arunk8447ak/spi-pattern-engine/main/v7_version.json?t=' + Date.now())

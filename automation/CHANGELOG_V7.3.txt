@@ -30,3 +30,18 @@ V7.3  (2026-10-30)
   such numbers hit 0.92% (Gali) / 0.47% (Desawar) vs 1.47% / 1.37% for the rest. ROI: Gali +31.0% -> +31.9%, Desawar +21.3% -> +22.9% (no commission).
   Tool: the card now shows only the numbers that are played (no MAIN / SKIP badge; Gali shows 7, Desawar 8 or 10); hit tag follows the same list.
   Tool: nav button 'TOKEN' stores a new GitHub token in this browser only (localStorage). Bot: same date rule (plan_nums / date_drop).
+
+24 Nov 2026 - V7.4 = V7.3 MODEL + THANDA NIYAM + HARUF NIYAM (model weights unchanged; v7_logic.json stays 7.3)
+  v7_plan.json: "cold_rule" (from 2026-11-24, days 14, markets [Gali]): a plan number that did not come in ANY of the six markets
+  (Desawar, Delhi, Shree Ganesh, Faridabad, Ghaziabad, Gali) in the last 14 calendar days, nor earlier on the result date, is removed (no refill).
+  Evidence (strict walk-forward 2015-2026, Gali rank 2-8, on top of the date rule, 90x, no commission): thanda list numbers hit 1.06% (80/7,542),
+  the rest 1.61% (343/21,336). ROI 2015-22 +36.7% -> +51.8%, 2023-26 +21.9% -> +31.0%, better in 12/12 years; numbers per day 6.9 -> 5.3,
+  hit days 9.3% -> 7.7% (2023-26); at Rs750 flat 2023-26: staked 70.9L -> 54.6L, net +15.5L -> +16.9L, losing months 20/47 -> 13/47.
+  Window (14) chosen on 2015-22 only, read off 2023-26. Not for Desawar (6/12 years, profit falls). Robust to missing Delhi/SG (4 markets: +51% / +35%).
+  v7_plan.json: "haruf_rule" (from 2026-11-24, Desawar andar, pick prev2): andar haruf = andar digit of the Desawar draw before the last one,
+  when the last draw's andar differs: 12.7% (487/3,835; break-even 11.1%), 12.7% / 12.6% in the two periods, 9/12 years above break-even.
+  V7's own digit 11.8%; when the two differ: prev2 12.2%, V7 10.8%. Last draw's andar repeating: 8.7%. If last two draws have the same andar:
+  V7's digit (12.9%, 47/364), unless V7's digit is that digit too -> no haruf that day. Missing result -> V7's digit.
+  Tool: card + AAJ KA PLAN show the numbers after both rules, with the removed numbers and the reason; Andar box shows the plan digit and why;
+  one button copies the whole night message (selected date's Gali + next morning's Desawar); history rows: AN = pehla ank, BH = aakhri ank (labels were swapped).
+  Page label V7.4 (V7_TOOL_VERSION 7.4, so older open copies show the update banner). Bot: cold_seen / plan_dropped / haruf_pick, Delhi + Shree Ganesh loaded as data.
