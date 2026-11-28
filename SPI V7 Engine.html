@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- V7.4 page, 28 Nov 2026: 210-Day History + Strategy Hub ab plan ki list ginte hain aur sirf asli ginti dikhate hain. Model, plan ke niyam, Predictions tab aur sync mein koi badlav nahi. -->
+<!-- V7.5 page, 28 Nov 2026: Shree Ganesh paanchwa market (alag chhota model); Gali ka bahar haruf plan se hata. Chaar bade market ka model, unke niyam aur sync mein koi badlav nahi. -->
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>SPI - V7.4 ENGINE</title>
+<title>SPI - V7.5 ENGINE</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -451,7 +451,7 @@ table.ht tr:hover td{background:rgba(255,255,255,.04)}
 </head>
 <body>
 <nav class="nav">
-  <div class="brand">SPI<em> &bull; V7.4 ENGINE</em> <span style="margin-left:8px;background:rgba(0,212,255,0.12);border:1px solid #00d4ff;color:#00d4ff;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:900;letter-spacing:1px;">V7.1 VOTE ENGINE</span></div>
+  <div class="brand">SPI<em> &bull; V7.5 ENGINE</em> <span style="margin-left:8px;background:rgba(0,212,255,0.12);border:1px solid #00d4ff;color:#00d4ff;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:900;letter-spacing:1px;">V7.1 VOTE ENGINE</span></div>
   <div class="nl">
     <button class="nb on" id="nl-p" onclick="showPage('p')">&#127919; Predictions</button>
     <button class="nb" id="nl-d" onclick="showPage('d')">&#128203; 210-Day History</button>
@@ -471,7 +471,7 @@ table.ht tr:hover td{background:rgba(255,255,255,.04)}
     <div style="font-size:18px">&#128276;</div>
     <div style="flex:1;min-width:200px;font-size:11px;color:var(--warn);line-height:1.5">
       <b>Same-Day Data Entry (Desawar 5:30 AM &bull; Delhi 3:30 PM &bull; Shree Ganesh 4:30 PM)</b><br>
-      <span style="font-size:9px;opacity:.85">Delhi &amp; Shree Ganesh are data-entry only (no prediction cards). Enter evening market results directly on their cards below to recompute slates.</span>
+      <span style="font-size:9px;opacity:.85">Delhi sirf data ke liye hai (card nahi). Shree Ganesh ka card ab neeche hai (V7.5); uska result yahan ya card par, kahin bhi daal sakte ho.</span>
     </div>
     <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
       <span style="font-size:10px;color:#00d4ff;font-weight:700;">DSWR:</span>
@@ -506,7 +506,7 @@ table.ht tr:hover td{background:rgba(255,255,255,.04)}
   <div class="mgrid" id="mgrid"></div>
 </div>
 <div class="pg" id="pg-d">
-  <div class="sechd" style="margin-top:4px">&#9889; Overall Performance &mdash; Last 210 Days <span style="font-size:9px;color:#fbbf24;letter-spacing:1px">&#9733; V7.4 ENGINE &mdash; PLAN KI LIST</span></div>
+  <div class="sechd" style="margin-top:4px">&#9889; Overall Performance &mdash; Last 210 Days <span style="font-size:9px;color:#fbbf24;letter-spacing:1px">&#9733; V7.5 ENGINE &mdash; PLAN KI LIST</span></div>
   <div class="kpirow">
     <div class="kpi"><div class="kpi-l">Predictions Made</div><div class="kpi-v" id="kn">-</div><div class="kpi-s">days validated</div></div>
     <div class="kpi"><div class="kpi-l">Jodi Hit Rate</div><div class="kpi-v" id="kjr">-</div><div class="kpi-s" id="kjr-s">barabar 8.9%</div></div>
@@ -517,7 +517,7 @@ table.ht tr:hover td{background:rgba(255,255,255,.04)}
     <div class="kpi"><div class="kpi-l">Any Hit Rate</div><div class="kpi-v" style="color:var(--des)" id="krt">-</div><div class="kpi-s" id="krt-s">jodi+andar+bahar</div></div>
     <div class="kpi" id="ktp-box" style="border-color:rgba(251,191,36,.4);display:none"><div class="kpi-l" style="color:#fbbf24">&#9733; </div><div class="kpi-v" style="color:#fbbf24" id="ktp">-</div><div class="kpi-s" id="ktpr">ek number roz</div></div>
   </div>
-  <div class="spd-note">Yahan sirf <b>asli results</b> dikhte hain. Jis market ko us din ka <b>plan</b> khelta hai (Gali, Desawar &hellip;) wahan <b>plan ki list</b> gini jati hai &mdash; yani V7 ki list mein se MAIN (rank 1) aur tarikh / thanda wale number hata kar jo khelne ko kaha gaya. Kate hue number V7 ki top-8 mein the par plan mein nahi; un par result aaye to wo hit <b>nahi</b> gina jata. Baaki market mein V7 ki top-8 list. Asli kasauti <b>Jodi Hit Rate</b> hai; barabar ka hisaab list ke size se lagta hai (8 number par 8.9%, 5 number par 5.6%). &lsquo;Any Hit&rsquo; zyadatar ittefaq hota hai, use kamai mat samjho.</div>
+  <div class="spd-note">Yahan sirf <b>asli results</b> dikhte hain. Jis market ko us din ka <b>plan</b> khelta hai (Gali, Desawar &hellip;) wahan <b>plan ki list</b> gini jati hai &mdash; yani V7 ki list mein se MAIN (rank 1) aur tarikh / thanda wale number hata kar jo khelne ko kaha gaya. Kate hue number V7 ki top-8 mein the par plan mein nahi; un par result aaye to wo hit <b>nahi</b> gina jata. Baaki market mein V7 ki top-8 list. Asli kasauti <b>Jodi Hit Rate</b> hai; barabar ka hisaab list ke size se lagta hai (8 number par 8.9%, 5 number par 5.6%). &lsquo;Any Hit&rsquo; zyadatar ittefaq hota hai, use kamai mat samjho. <b>Shree Ganesh</b> tool mein 28 Nov 2026 se hai (chhota edge); usse pehle ke dino mein uski top-8 list gini gayi hai.</div>
   <div class="sechd">Accuracy by Market</div>
   <div class="accrow" id="accrow"></div>
   <div class="sechd">All Markets &mdash; Last 210 Days</div>
@@ -633,7 +633,7 @@ table.ht tr:hover td{background:rgba(255,255,255,.04)}
     <button class="sh-btn sh-btn-reset" onclick="resetStrategyFilter()">&#8635; Reset</button>
   </div>
 
-  <div class="spd-note">Yahan sirf <b>asli results</b> ki ginti hai &mdash; koi &lsquo;overdue / high probability&rsquo; jaisa andaza nahi. Plan wale market (Gali, Desawar &hellip;) mein <b>plan ki list</b> gini jati hai, baaki mein V7 ki top-8. <b style="color:var(--ok)">Hara = fayda</b>, <b style="color:var(--err)">laal = ghata</b> (roz barabar daam par; stake ke multiplier yahan nahi jude). &#9733; <b>2013&ndash;2025 = Training Year</b> (model isi data par bana, wahan achha dikhna tay hai); <b>2026 = Out-of-Sample</b> (asli parakh). Tezi ke liye sirf zaroori saal gine jaate hain; Year badloge to us saal ki ginti aa jayegi.</div>
+  <div class="spd-note">Yahan sirf <b>asli results</b> ki ginti hai &mdash; koi &lsquo;overdue / high probability&rsquo; jaisa andaza nahi. Plan wale market (Gali, Desawar &hellip;) mein <b>plan ki list</b> gini jati hai, baaki mein V7 ki top-8. <b style="color:var(--ok)">Hara = fayda</b>, <b style="color:var(--err)">laal = ghata</b> (roz barabar daam par; stake ke multiplier yahan nahi jude). &#9733; <b>2013&ndash;2025 = Training Year</b> (model isi data par bana, wahan achha dikhna tay hai); <b>2026 = Out-of-Sample</b> (asli parakh). Tezi ke liye sirf zaroori saal gine jaate hain; Year badloge to us saal ki ginti aa jayegi. <b>Shree Ganesh</b> ka data Sep 2017 se hai; uska model 2017&ndash;2025 par bana, tool mein 28 Nov 2026 se.</div>
 
   <!-- ROW 1: MARKET KPI CARDS -->
   <div class="sh-kpi-grid" id="sh-kpi-container"><div style="color:var(--mut);font-size:12px;padding:8px 2px">Poore data ki ginti ho rahi hai&hellip; (kuch second)</div></div>
@@ -794,7 +794,7 @@ function isFirstDayOfMonth(dstr){
 }
 function isMarketClosed(mkt, dstr){
   if(mkt==='Desawar') return isFirstDayOfMonth(dstr);
-  if(mkt==='Faridabad'||mkt==='Ghaziabad'||mkt==='Gali') return isLastDayOfMonth(dstr);
+  if(mkt==='Faridabad'||mkt==='Ghaziabad'||mkt==='Gali'||mkt==='Delhi'||mkt==='Shree Ganesh') return isLastDayOfMonth(dstr);   // V7.5: Delhi / Shree Ganesh bhi mahine ke aakhri din band
   return false;
 }
 function hexRgb(c){
@@ -899,6 +899,7 @@ dbg("DATA OK");
 var TABS = {};
 var MKTS = [
   {id:"Desawar",  lbl:"Desawar",   col:"#00d4ff", time:"05:30 AM"},
+  {id:"Shree Ganesh",lbl:"Shree Ganesh", col:"#fbbf24", time:"04:30 PM"},
   {id:"Faridabad",lbl:"Faridabad", col:"#ff6030", time:"06:00 PM"},
   {id:"Ghaziabad",lbl:"Ghaziabad", col:"#a855f7", time:"08:30 PM"},
   {id:"Gali",     lbl:"Gali",      col:"#10d070", time:"11:30 PM"}
@@ -982,8 +983,46 @@ function v7Pred(mkt, tdate, data, v3p){
   return {cluster:top, order12:order.slice(0,12), j1:top[0], j2:top[1], fam:top.slice(2), units:[bu], tens:[bt], v3:(v3p?v3p.cluster:null)};
 }
 
+// ─── SHREE GANESH (V7.5, 28 Nov 2026) ─────────────────────────────────────────
+// Alag chhota vote model, wahi tareeka (rules + aadatein). Source sirf Desawar + Shree Ganesh ke pichhle 2 khel-din.
+// 2 Sep 2017 - 31 Dec 2025 ke data par bana; 2026 iski asli parakh hai (8 number: 35 / 318 din). Chaar bade market ka
+// model (V7_LOGIC, v7Scores) yahan nahi chheda gaya: ye hissa sirf 'Shree Ganesh' ke liye chalta hai.
+var V7_SG = 'Shree Ganesh';
+var V7_SG_LOGIC = {"version":"sg-1","market":"Shree Ganesh","trained_on":"2017-09-02..2025-12-31","src":["Desawar","Shree Ganesh"],"note":"Shree Ganesh vote model, same method as V7 (rules + habits), sources Desawar + Shree Ganesh at lag 1-2. Walk-forward 2020-2026: 246/2438 days hit with 8 numbers.","rules":[["Desawar",1,"x",-0.0064801126363956355],["Desawar",1,"x+1",-0.0050721576909538895],["Desawar",1,"x-1",-0.0022562478000703982],["Desawar",1,"x+2",-0.0026082365364308345],["Desawar",1,"x+10",-0.002960225272791271],["Desawar",1,"x-11",-0.003312214009151707],["Desawar",1,"x+50",-0.0050721576909538895],["Desawar",1,"palti",-0.005776135163674763],["Desawar",1,"inner",-0.0050721576909538895],["Desawar",1,"outer",-0.002960225272791271],["Desawar",1,"palti(full)",-0.002960225272791271],["Desawar",1,"100-x",-0.001904259063709961],["Desawar",1,"TT",-0.002960225272791271],["Shree Ganesh",1,"x+1",-0.0033027846316531547],["Shree Ganesh",1,"x+2",-0.002950299612266479],["Shree Ganesh",1,"x+5",-0.004007754670426507],["Shree Ganesh",1,"x+10",-0.004360239689813183],["Shree Ganesh",1,"x+50",-0.002245329573493127],["Shree Ganesh",1,"palti",-0.002597814592879803],["Shree Ganesh",1,"full",-0.006122664786746564],["Shree Ganesh",1,"inner",-0.002245329573493127],["Shree Ganesh",1,"palti(full)",-0.004712724709199859],["Shree Ganesh",1,"100-x",-0.004712724709199859],["Shree Ganesh",1,"99-x",-0.004007754670426507],["Shree Ganesh",1,"jod11",-0.0018928445541064511],["Desawar",2,"x+1",-0.003312214009151707],["Desawar",2,"x-1",-0.0022562478000703982],["Desawar",2,"x+2",-0.0026082365364308345],["Desawar",2,"x+5",0.004783526927138331],["Desawar",2,"x-5",0.002319605772615276],["Desawar",2,"x+50",-0.003312214009151707],["Desawar",2,"inner",-0.003312214009151707],["Desawar",2,"outer",0.004431538190777896],["Desawar",2,"99-x",0.001967617036254839],["Desawar",2,"2x",0.003023583245336149],["Desawar",2,"TT",0.003023583245336149],["Shree Ganesh",2,"x",0.00691928093056045],["Shree Ganesh",2,"x+2",0.003394430736693691],["Shree Ganesh",2,"palti",0.004804370814240394],["Shree Ganesh",2,"full",-0.0033027846316531547],["Shree Ganesh",2,"100-x",-0.0033027846316531547],["Shree Ganesh",2,"2x",-0.002950299612266479],["Shree Ganesh",2,"TT",0.0019844906591469855]],"adjust":{"Desawar morning":-0.0064801126363958385,"Desawar morning family":-0.0035370695226667427,"own yesterday family":-0.00314560948499478,"own yesterday +1..+5":-0.0027388086006343705,"own 2-3 days ago":0.006669622273451863}};
+var V7_SG_ORDER = ['Delhi','Shree Ganesh','Faridabad','Ghaziabad','Gali','Desawar'];   // ek khel-din ke andar result ka kram (Desawar agli subah)
+function sgClosed(mk,d){ return (mk==='Desawar')?isFirstDayOfMonth(d):isLastDayOfMonth(d); }
+function sgValRaw(data,mk,G){ var d=(mk==='Desawar')?addD(G,1):G; if(sgClosed(mk,d)) return null; var v=data[mk]?data[mk][d]:undefined; if(v===undefined||v===null||v==='') return null; v=parseInt(v,10); return (isNaN(v)||v<0||v>99)?null:v; }
+// chhutti ke baad wale pehle draw par (fb): band din ka input = us se pichhla din (wahi niyam jo V7.2 se chaar market mein hai)
+function sgVal(data,mk,G,fb){ var x=sgValRaw(data,mk,G); if(x===null&&fb&&sgClosed(mk,(mk==='Desawar')?addD(G,1):G)) return sgValRaw(data,mk,addD(G,-1)); return x; }
+function sgHabitSets(G,data,fb){
+  var T=V7_SG, SRC=V7_SG_LOGIC.src, S=[]; function add(name,arr){ var seen={},out=[]; arr.forEach(function(v){ if(v!==null&&v!==undefined&&!seen[v]){seen[v]=true;out.push(v);} }); if(out.length) S.push([name,out]); }
+  var y=sgVal(data,T,addD(G,-1),fb);
+  if(y!==null){ add('own yesterday',[y]); add('own yesterday family',v7Fam(y).filter(function(n){return n!==y;})); var up=[]; for(var k=1;k<=5;k++) up.push((y+k)%100); add('own yesterday +1..+5',up); }
+  add('own 2-3 days ago',[sgVal(data,T,addD(G,-2),fb),sgVal(data,T,addD(G,-3),fb)]);
+  var r=[]; for(var k2=4;k2<=14;k2++) r.push(sgVal(data,T,addD(G,-k2),fb)); add('own 4-14 days ago',r);
+  var x=sgVal(data,'Desawar',addD(G,-1),fb); if(x!==null){ add('Desawar morning',[x]); add('Desawar morning family',v7Fam(x).filter(function(n){return n!==x;})); }
+  add('other markets yesterday',SRC.filter(function(X){return X!==T&&X!=='Desawar';}).map(function(X){return sgVal(data,X,addD(G,-1),fb);}));
+  add('same-day earlier markets',SRC.filter(function(X){return V7_SG_ORDER.indexOf(X)<V7_SG_ORDER.indexOf(T);}).map(function(X){return sgVal(data,X,G,fb);}));
+  return S;
+}
+function sgScores(tdate,data){
+  var L=V7_SG_LOGIC, G=tdate, s=new Array(100).fill(0), used=0; var fb=sgClosed(V7_SG,addD(tdate,-1));
+  L.rules.forEach(function(rl){ var v=sgVal(data,rl[0],addD(G,-rl[1]),fb); if(v===null) return; var n=v7T(rl[2],v); if(n===null) return; s[n]+=rl[3]; used++; });
+  if(used===0) return null;
+  sgHabitSets(G,data,fb).forEach(function(p){ var a=L.adjust[p[0]]; if(!a) return; p[1].forEach(function(n){ s[n]+=a; }); });
+  return s;
+}
+function sgPred(tdate,data){
+  var s=sgScores(tdate,data); if(!s) return null;
+  var order=[]; for(var i=0;i<100;i++) order.push(i); order.sort(function(a,b){ return (s[b]-s[a])||(a-b); });
+  var top=order.slice(0,8); var u=new Array(10).fill(0), t=new Array(10).fill(0);
+  for(var j=0;j<100;j++){ u[j%10]+=s[j]; t[Math.floor(j/10)]+=s[j]; }
+  var bu=0,bt=0; for(var d=1;d<10;d++){ if(u[d]>u[bu]) bu=d; if(t[d]>t[bt]) bt=d; }
+  return {cluster:top, order12:order.slice(0,12), j1:top[0], j2:top[1], fam:top.slice(2), units:[bu], tens:[bt], v3:null};
+}
+
 // ─── V7.3 PLAN (kya khelna hai) + auto-updated logic ──────────────────────────
-var V7_PLAN = {"version": "7.4", "updated": "2026-11-24", "payout": 90, "commission_pct": 5, "note": "V7.3 plan. skip_ranks = V7 slate ke kaunse rank nahi khelne (1 = MAIN). Stake = Rs per jodi. haruf type bahar = aakhri ank, andar = pehla ank. 'overrides' = tay tarikhon ke liye alag plan (tool aur bot dono aaj ki tarikh dekh kar chunte hain); baaki dino ke liye 'markets'. copy_amounts=false: copy/Telegram message mein sirf numbers (rupaye nahi). count = kitne rank khelne (default 8; Desawar 10 = rank 9-10 bhi). calendar = din/mahine/cool-down ke stake multipliers. date_rule = aaj ki tarikh wala number (aur uska palti) plan ke numbers se hata do. cold_rule = thanda number (jo 'days' din se kisi market mein nahi aaya) plan ke numbers se hata do. haruf_rule = haruf ka ank kis niyam se (prev2 = us market ke do draw pehle wala ank).", "markets": {"Gali": {"play": true, "skip_ranks": [1], "stake": 125, "haruf": {"type": "bahar", "stake": 200}, "count": 8}, "Desawar": {"play": true, "skip_ranks": [], "stake": 75, "haruf": {"type": "andar", "stake": 150}, "count": 10}, "Ghaziabad": {"play": true, "skip_ranks": [], "stake": 40, "haruf": null}, "Faridabad": {"play": false, "skip_ranks": [], "stake": 0, "haruf": null}}, "backup_ladder": [{"below": 150000, "scale": 0.67}, {"below": 250000, "scale": 1.0}, {"below": 400000, "scale": 1.33}], "stop_below": 80000, "heavy_experiment": true, "overrides": [{"label": "NOVEMBER HIGH-STAKE PLAN (1-30 Nov)", "from": "2026-11-01", "to": "2026-11-30", "markets": {"Gali": {"play": true, "skip_ranks": [1], "stake": 750, "haruf": {"type": "bahar", "stake": 500}, "count": 8}, "Desawar": {"play": true, "skip_ranks": [], "stake": 500, "haruf": {"type": "andar", "stake": 400}, "count": 8}, "Ghaziabad": {"play": false, "skip_ranks": [], "stake": 0, "haruf": null}, "Faridabad": {"play": false, "skip_ranks": [], "stake": 0, "haruf": null}}, "rules": "Backup Rs3 lakh alag. Mahine ka ghaata Rs1.5 lakh par stake Rs400; Rs2 lakh par normal plan. 1 Dec se apne aap normal plan. Desawar base Rs500 x Nov 1.5 = Rs750 (thanda din Rs375, garam din cap par Rs750). Gali Rs750 base: Sun/Fri Rs1,125, Tue/Wed Rs375, thanda Rs375, garam Rs1,125. Desawar 10 number 1 Dec se."}], "copy_amounts": false, "calendar": {"note": "Stake multipliers (sirf jodi par; haruf flat). mult = weekday x month x cool-down, phir cap. Cool-down trigger = Desawar ka result us din ki V7 top-8 list mein tha (hamara hit): us raat Gali aur agli subah Desawar same_day_mult; agar us raat Gali (plan numbers) bhi hit -> agli subah Desawar SKIP. rebound_after_days game-day baad Gali/Desawar rebound_mult. Walk-forward 2015-2026: Gali +35.5% -> +42.7% ROI, Desawar +32% -> +38%.", "cap": [0.5, 1.5], "round_to": 5, "weekday_mult": {"Gali": {"Sun": 1.5, "Fri": 1.5, "Tue": 0.5, "Wed": 0.5}}, "month_mult": {"Desawar": {"Jul": 1.5, "Nov": 1.5, "Jan": 1.5, "Apr": 0.5, "Oct": 0.5}}, "cooldown": {"trigger": "Desawar result in that day's V7 top-8", "same_day_mult": 0.5, "rebound_after_days": 2, "rebound_mult": 1.5, "double_payout_skip_desawar": true}}, "date_rule": {"note": "Operator aaj ki tarikh wala number (jaise 22 tarikh ko 22) aur uska palti kam kholta hai: sab 6 market mein 0.50% / 0.66% (tukka 1%), 2013-2026. Plan ke numbers mein aisa number ho to hata do; uski jagah naya number nahi. Desawar ke liye tarikh = jis subah result aata hai. 'from' se pehle ke dino par lagu nahi (purana hisaab waisa hi rahe).", "from": "2026-11-22", "markets": {"Gali": ["day", "palti"], "Desawar": ["day", "palti"], "Faridabad": ["day", "palti"], "Ghaziabad": ["day"]}}, "cold_rule": {"note": "Thanda number: plan ka jo number pichhle 'days' din mein (aur aaj ab tak) chhe mein se kisi bhi market mein nahi aaya, use hata do; uski jagah naya number nahi. 'Due' wali soch ka ulta. Walk-forward 2015-2026 (Gali rank 2-8, tarikh niyam ke upar): aise number 1.06% aaye (80/7,542; tukka 1%, barabar 1.11%), baaki list-number 1.61%. ROI 2015-22 +36.7% -> +51.8%, 2023-26 +21.9% -> +31.0% (12/12 saal behtar); roz ~7 ki jagah ~5 number, hit wale din 9.3% -> 7.7%. Desawar par fayda nahi, isliye sirf Gali. 'from' se pehle ke dino par lagu nahi.", "from": "2026-11-24", "days": 14, "markets": ["Gali"]}, "haruf_rule": {"note": "prev2 = haruf ka ank us market ke do draw pehle ('parson wale') result se, jab pichhle draw ka wahi ank us se alag ho. Desawar andar 2015-2026: 12.7% (487/3,835; barabar 11.1%), dono daur mein same (12.7% / 12.6%); V7 ka ank 11.8%; jab dono alag hon to parson wala 12.2%, V7 wala 10.8%. Kal wala andar dobara sirf 8.7% aata hai. Jab kal aur parson ka ank ek hi ho to V7 ka ank; agar V7 ka ank bhi wahi ho to us din haruf nahi. Result adhura ho to V7 ka ank. 'from' se pehle ke dino par lagu nahi.", "from": "2026-11-24", "markets": {"Desawar": {"type": "andar", "pick": "prev2"}}}};
+var V7_PLAN = {"version": "7.5", "updated": "2026-11-28", "payout": 90, "commission_pct": 5, "note": "V7.3 plan. skip_ranks = V7 slate ke kaunse rank nahi khelne (1 = MAIN). Stake = Rs per jodi. haruf type bahar = aakhri ank, andar = pehla ank. 'overrides' = tay tarikhon ke liye alag plan (tool aur bot dono aaj ki tarikh dekh kar chunte hain); baaki dino ke liye 'markets'. copy_amounts=false: copy/Telegram message mein sirf numbers (rupaye nahi). count = kitne rank khelne (default 8; Desawar 10 = rank 9-10 bhi). calendar = din/mahine/cool-down ke stake multipliers. date_rule = aaj ki tarikh wala number (aur uska palti) plan ke numbers se hata do. cold_rule = thanda number (jo 'days' din se kisi market mein nahi aaya) plan ke numbers se hata do. haruf_rule = haruf ka ank kis niyam se (prev2 = us market ke do draw pehle wala ank). V7.5 (28 Nov 2026): Shree Ganesh joda (alag chhota model). Market ke andar 'from' = is tarikh se plan mein (usse pehle ke din hisaab mein nahi), 'note' = card par dikhne wali line. Gali ka bahar haruf plan se hataya (2023-26 mein 11.1% = barabar; 2026 mein 9.5%).", "markets": {"Gali": {"play": true, "skip_ranks": [1], "stake": 125, "haruf": null, "count": 8}, "Desawar": {"play": true, "skip_ranks": [], "stake": 75, "haruf": {"type": "andar", "stake": 150}, "count": 10}, "Ghaziabad": {"play": true, "skip_ranks": [], "stake": 40, "haruf": null}, "Faridabad": {"play": false, "skip_ranks": [], "stake": 0, "haruf": null}, "Shree Ganesh": {"play": true, "skip_ranks": [], "stake": 40, "haruf": {"type": "andar", "stake": 80}, "count": 8, "from": "2026-11-28", "note": "Shree Ganesh: chhota edge. 2020-26 mein 8 number par 10.1% din hit (barabar 8.9%), Rs100 par Rs110-114. Stake chhota aur roz barabar rakho; yahan 1.5x / 0.5x wala koi niyam nahi."}}, "backup_ladder": [{"below": 150000, "scale": 0.67}, {"below": 250000, "scale": 1.0}, {"below": 400000, "scale": 1.33}], "stop_below": 80000, "heavy_experiment": true, "overrides": [{"label": "NOVEMBER HIGH-STAKE PLAN (1-30 Nov)", "from": "2026-11-01", "to": "2026-11-30", "markets": {"Gali": {"play": true, "skip_ranks": [1], "stake": 750, "haruf": null, "count": 8}, "Desawar": {"play": true, "skip_ranks": [], "stake": 500, "haruf": {"type": "andar", "stake": 400}, "count": 8}, "Ghaziabad": {"play": false, "skip_ranks": [], "stake": 0, "haruf": null}, "Faridabad": {"play": false, "skip_ranks": [], "stake": 0, "haruf": null}, "Shree Ganesh": {"play": true, "skip_ranks": [], "stake": 200, "haruf": {"type": "andar", "stake": 200}, "count": 8, "from": "2026-11-28", "note": "Shree Ganesh: chhota edge. 2020-26 mein 8 number par 10.1% din hit (barabar 8.9%), Rs100 par Rs110-114. Stake chhota aur roz barabar rakho; yahan 1.5x / 0.5x wala koi niyam nahi."}}, "rules": "Backup Rs3 lakh alag. Mahine ka ghaata Rs1.5 lakh par stake Rs400; Rs2 lakh par normal plan. 1 Dec se apne aap normal plan. Desawar base Rs500 x Nov 1.5 = Rs750 (thanda din Rs375, garam din cap par Rs750). Gali Rs750 base: Sun/Fri Rs1,125, Tue/Wed Rs375, thanda Rs375, garam Rs1,125. Desawar 10 number 1 Dec se."}], "copy_amounts": false, "calendar": {"note": "Stake multipliers (sirf jodi par; haruf flat). mult = weekday x month x cool-down, phir cap. Cool-down trigger = Desawar ka result us din ki V7 top-8 list mein tha (hamara hit): us raat Gali aur agli subah Desawar same_day_mult; agar us raat Gali (plan numbers) bhi hit -> agli subah Desawar SKIP. rebound_after_days game-day baad Gali/Desawar rebound_mult. Walk-forward 2015-2026: Gali +35.5% -> +42.7% ROI, Desawar +32% -> +38%.", "cap": [0.5, 1.5], "round_to": 5, "weekday_mult": {"Gali": {"Sun": 1.5, "Fri": 1.5, "Tue": 0.5, "Wed": 0.5}}, "month_mult": {"Desawar": {"Jul": 1.5, "Nov": 1.5, "Jan": 1.5, "Apr": 0.5, "Oct": 0.5}}, "cooldown": {"trigger": "Desawar result in that day's V7 top-8", "same_day_mult": 0.5, "rebound_after_days": 2, "rebound_mult": 1.5, "double_payout_skip_desawar": true}}, "date_rule": {"note": "Operator aaj ki tarikh wala number (jaise 22 tarikh ko 22) aur uska palti kam kholta hai: sab 6 market mein 0.50% / 0.66% (tukka 1%), 2013-2026. Plan ke numbers mein aisa number ho to hata do; uski jagah naya number nahi. Desawar ke liye tarikh = jis subah result aata hai. 'from' se pehle ke dino par lagu nahi (purana hisaab waisa hi rahe).", "from": "2026-11-22", "markets": {"Gali": ["day", "palti"], "Desawar": ["day", "palti"], "Faridabad": ["day", "palti"], "Ghaziabad": ["day"], "Shree Ganesh": ["day", "palti"]}}, "cold_rule": {"note": "Thanda number: plan ka jo number pichhle 'days' din mein (aur aaj ab tak) chhe mein se kisi bhi market mein nahi aaya, use hata do; uski jagah naya number nahi. 'Due' wali soch ka ulta. Walk-forward 2015-2026 (Gali rank 2-8, tarikh niyam ke upar): aise number 1.06% aaye (80/7,542; tukka 1%, barabar 1.11%), baaki list-number 1.61%. ROI 2015-22 +36.7% -> +51.8%, 2023-26 +21.9% -> +31.0% (12/12 saal behtar); roz ~7 ki jagah ~5 number, hit wale din 9.3% -> 7.7%. Desawar par fayda nahi, isliye sirf Gali. 'from' se pehle ke dino par lagu nahi.", "from": "2026-11-24", "days": 14, "markets": ["Gali"]}, "haruf_rule": {"note": "prev2 = haruf ka ank us market ke do draw pehle ('parson wale') result se, jab pichhle draw ka wahi ank us se alag ho. Desawar andar 2015-2026: 12.7% (487/3,835; barabar 11.1%), dono daur mein same (12.7% / 12.6%); V7 ka ank 11.8%; jab dono alag hon to parson wala 12.2%, V7 wala 10.8%. Kal wala andar dobara sirf 8.7% aata hai. Jab kal aur parson ka ank ek hi ho to V7 ka ank; agar V7 ka ank bhi wahi ho to us din haruf nahi. Result adhura ho to V7 ka ank. 'from' se pehle ke dino par lagu nahi. Shree Ganesh andar (28 Nov 2026 se): parson wala ank 2017-2026 mein 13.0% (422/3,256); 2023-26 mein 12.1%.", "from": "2026-11-24", "markets": {"Desawar": {"type": "andar", "pick": "prev2"}, "Shree Ganesh": {"type": "andar", "pick": "prev2"}}}};
 (function loadPlan(){ try{ fetch('https://raw.githubusercontent.com/arunk8447ak/spi-pattern-engine/main/v7_plan.json?t='+Date.now()).then(function(r){return r.ok?r.json():null;}).then(function(j){ if(j&&j.markets&&JSON.stringify(j)!==JSON.stringify(V7_PLAN)){ V7_PLAN=j; if(typeof renderAll==='function') renderAll(); } }).catch(function(){}); }catch(e){} })();
 (function loadLogic(){ try{ fetch('https://raw.githubusercontent.com/arunk8447ak/spi-pattern-engine/main/v7_logic.json?t='+Date.now()).then(function(r){return r.ok?r.json():null;}).then(function(j){
   if(!j||!j.markets||!j.version) return;
@@ -993,7 +1032,7 @@ var V7_PLAN = {"version": "7.4", "updated": "2026-11-24", "payout": 90, "commiss
 }).catch(function(){}); }catch(e){} })();
 function v7PlanActive(){ var t=today(); var o=((V7_PLAN&&V7_PLAN.overrides)||[]).filter(function(x){ return x&&x.markets&&x.from<=t&&t<=x.to; })[0]; return o||null; }
 function v7PlanMkts(){ var o=v7PlanActive(); return (o?o.markets:(V7_PLAN&&V7_PLAN.markets))||{}; }
-function v7PlanFor(mkt){ var p=v7PlanMkts()[mkt]; return (p&&p.play!==false&&p.stake>0)?p:null; }
+function v7PlanFor(mkt){ var p=v7PlanMkts()[mkt]; return (p&&p.play!==false&&p.stake>0&&!(p.from&&today()<p.from))?p:null; }   // V7.5: 'from' = is tarikh se plan mein
 function v7Skip(mkt){ var p=v7PlanMkts()[mkt]; return (p&&p.skip_ranks)||[]; }
 function v7IsV7(pred){ return !!(pred&&pred.cluster&&pred.cluster.length===8&&('v3' in pred)); }
 function v7Cal(){ return (V7_PLAN&&V7_PLAN.calendar)||null; }
@@ -1024,7 +1063,7 @@ function v7Mult(mkt,d){ var r={mult:1,why:[],skip:false}; var cal=v7Cal(); if(!c
     if(v7Hit8('Desawar',rD)===true){ r.mult*=rm; r.why.push('garam din (Desawar '+fmtS(rD)+' hit ke '+rb+' din baad) '+rm+'x'); } }
   var cap=cal.cap||[0.5,1.5]; r.mult=Math.max(cap[0],Math.min(cap[1],r.mult)); r.mult=Math.round(r.mult*1000)/1000; return r; }
 function v7Stake(mkt,d){ var p=v7PlanFor(mkt); if(!p) return 0; var m=v7Mult(mkt,d); if(m.skip) return 0; var rt=(v7Cal()&&v7Cal().round_to)||5; return Math.round(p.stake*m.mult/rt)*rt; }
-function v7Needs(mkt,d){ var ex=(V7_LOGIC.exclude_same_day&&V7_LOGIC.exclude_same_day[mkt])||[]; if(mkt==='Desawar'){ var g=addD(d,-1); return ['Faridabad','Ghaziabad','Gali'].filter(function(X){return ex.indexOf(X)<0;}).map(function(X){return [X,g];}); } if(mkt==='Faridabad') return [['Desawar',d]]; if(mkt==='Ghaziabad') return [['Faridabad',d]]; if(mkt==='Gali') return [['Faridabad',d],['Ghaziabad',d]]; return []; }
+function v7Needs(mkt,d){ if(mkt===V7_SG) return [['Desawar',d],['Desawar',addD(d,-1)],[V7_SG,addD(d,-1)],[V7_SG,addD(d,-2)],[V7_SG,addD(d,-3)]]; var ex=(V7_LOGIC.exclude_same_day&&V7_LOGIC.exclude_same_day[mkt])||[]; if(mkt==='Desawar'){ var g=addD(d,-1); return ['Faridabad','Ghaziabad','Gali'].filter(function(X){return ex.indexOf(X)<0;}).map(function(X){return [X,g];}); } if(mkt==='Faridabad') return [['Desawar',d]]; if(mkt==='Ghaziabad') return [['Faridabad',d]]; if(mkt==='Gali') return [['Faridabad',d],['Ghaziabad',d]]; return []; }
 function v7Missing(mkt,d){ return v7Needs(mkt,d).filter(function(x){ if(isMarketClosed(x[0],x[1])) return false; var v=ACT[x[0]]?ACT[x[0]][x[1]]:undefined; return v===undefined||v===null||v===''; }); }
 // 24 Nov 2026: haruf niyam (plan.haruf_rule). prev2 = us market ke do draw pehle ('parson wale') result ka ank, jab pichhle draw ka ank us se alag ho.
 function v7PrevOpen(mkt,d){ var x=addD(d,-1), g=0; while(isMarketClosed(mkt,x)&&g<5){ x=addD(x,-1); g++; } return x; }
@@ -1042,7 +1081,7 @@ function v7NightParts(g){ var out=[], warn=[]; [['Gali',g],['Desawar',addD(g,1)]
 function v7CopyNight(){ var r=v7NightParts(selDate); if(!r.parts.length&&selDate===today()){ var r2=v7NightParts(addD(selDate,-1)); if(r2.parts.length) r=r2; }   // aadhi raat ke baad: kal ki raat ka message
   var msg=document.getElementById('v7-night-msg'); var t=r.parts.map(function(p){ return p.txt; }).join('\n\n'); if(!t){ if(msg){ msg.style.color='#fca5a5'; msg.textContent='Kuch copy nahi hua: '+(r.warn.join(' | ')||'plan mein koi market nahi'); } return; } function done(){ if(msg){ msg.style.color=r.warn.length?'#fbbf24':'#22c55e'; msg.textContent='Copy ho gaya: '+r.parts.map(function(p){ return p.mkt+' '+fmtS(p.d)+' ('+p.n+' number)'; }).join(' + ')+(r.warn.length?' | Dhyan: '+r.warn.join(' | '):''); } } if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(done,function(){ v7CopyFallback(t); done(); }); } else { v7CopyFallback(t); done(); } }
 function v7MonthPnl(mkt,d){ var p=v7PlanFor(mkt); if(!p) return null; var ym=d.slice(0,7), day=ym+'-01', n=0, h=0, pnl=0, comm=(V7_PLAN.commission_pct||0)/100, pay=V7_PLAN.payout||90, guard=0, skipped=0;
-  while(day<=d&&day.slice(0,7)===ym&&guard++<40){ var a=v7ActOf(mkt,day); if(a!==null){ var pr=ypePred(mkt,day); var nums=v7PlanNums(mkt,pr,day); if(nums){ var st1=v7Stake(mkt,day); if(st1>0){ n++; var st=nums.length*st1; var ret=nums.indexOf(a)>=0?pay*st1:0; if(ret) h++; pnl+=ret-st+comm*st; var hd=v7HarufDigit(p,pr,mkt,day); if(hd!==null){ var dig=p.haruf.type==='andar'?Math.floor(a/10):a%10; pnl+=(dig===hd?9*p.haruf.stake:0)-p.haruf.stake+comm*p.haruf.stake; } } else skipped++; } } day=addD(day,1); }
+  while(day<=d&&day.slice(0,7)===ym&&guard++<40){ var a=v7ActOf(mkt,day); if(a!==null&&!(p.from&&day<p.from)){ var pr=ypePred(mkt,day); var nums=v7PlanNums(mkt,pr,day); if(nums){ var st1=v7Stake(mkt,day); if(st1>0){ n++; var st=nums.length*st1; var ret=nums.indexOf(a)>=0?pay*st1:0; if(ret) h++; pnl+=ret-st+comm*st; var hd=v7HarufDigit(p,pr,mkt,day); if(hd!==null){ var dig=p.haruf.type==='andar'?Math.floor(a/10):a%10; pnl+=(dig===hd?9*p.haruf.stake:0)-p.haruf.stake+comm*p.haruf.stake; } } else skipped++; } } day=addD(day,1); }
   return {n:n,h:h,pnl:pnl,skipped:skipped}; }
 function v7PlanBox(mkt,d,pred,col){ var p=v7PlanFor(mkt); var html=''; var miss=v7Missing(mkt,d);
   if(miss.length){ html+='<div style="margin-top:8px;padding:8px 10px;border-radius:8px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.45);color:#fca5a5;font-size:11px;font-weight:700;line-height:1.5">&#9888; '+miss.map(function(x){ return x[0]+' ('+fmtS(x[1])+')'; }).join(', ')+' ka result abhi nahi daala &mdash; ye numbers ADHURE hain. Pehle wo result daalo, phir khelo.</div>'; }
@@ -1050,12 +1089,13 @@ function v7PlanBox(mkt,d,pred,col){ var p=v7PlanFor(mkt); var html=''; var miss=
   if(!v7IsV7(pred)) return html;
   var nums=v7PlanNums(mkt,pred,d)||[]; var dropped=v7PlanDropped(mkt,pred,d); var dropTxt=v7DropHtml(mkt,d,dropped,false); var cm=v7ColdMissing(mkt,d).filter(function(m){ return !miss.some(function(x){ return x[0]===m&&x[1]===d; }); }); if(cm.length) dropTxt+='<div style="font-size:10px;color:#fbbf24;margin-top:4px">&#9888; Aaj ka '+cm.join(', ')+' result nahi daala. Daal do to thanda niyam poora chalega.</div>'; var hpk=v7HarufPick(mkt,d,pred); var hd=(hpk&&hpk.digit!==null)?hpk.digit:null; var hLab=(p.haruf&&p.haruf.type==='andar')?'Andar':'Bahar'; var harufWhy=(hpk&&hpk.why)?'<div style="font-size:10px;color:#c4b5fd;margin-top:4px">&#9432; '+hLab+' haruf: '+hpk.why+'</div>':''; var txt=v7KhaiwalaText(mkt,d,pred); var sk=p.skip_ranks||[]; var mu=v7Mult(mkt,d), st=v7Stake(mkt,d); var tot=nums.length*st+((hd!==null&&st>0)?p.haruf.stake:0);
   var lab=(v7PlanActive()&&v7PlanActive().label)?' &bull; <span style="color:#fbbf24">'+v7PlanActive().label+'</span>':'';
-  if(mu.skip){ html+='<div class="box" style="margin-top:8px;border-color:rgba(239,68,68,.55)"><div class="boxt" style="color:#ef4444">&#9940; AAJ SKIP (V7.4 plan)'+lab+'</div><div style="font-size:11px;color:#fca5a5;margin:4px 0 2px">'+mu.why.join(' &bull; ')+'</div><div style="font-size:10px;color:var(--mut)">Aaj '+mkt+' mein kuch mat lagao (12 saal ke data mein aise din 1/29 hit). Numbers sirf record ke liye: '+nums.map(p2).join(' ')+'</div></div>'; return html; }
+  if(mu.skip){ html+='<div class="box" style="margin-top:8px;border-color:rgba(239,68,68,.55)"><div class="boxt" style="color:#ef4444">&#9940; AAJ SKIP (V7.5 plan)'+lab+'</div><div style="font-size:11px;color:#fca5a5;margin:4px 0 2px">'+mu.why.join(' &bull; ')+'</div><div style="font-size:10px;color:var(--mut)">Aaj '+mkt+' mein kuch mat lagao (12 saal ke data mein aise din 1/29 hit). Numbers sirf record ke liye: '+nums.map(p2).join(' ')+'</div></div>'; return html; }
   var whyTxt=mu.why.length?'<div style="font-size:10px;color:#fbbf24;margin-top:4px">&#9889; '+mu.why.join(' &bull; ')+' &rarr; '+v7Rs(p.stake)+' &times; '+mu.mult+' = <b>'+v7Rs(st)+'</b> per jodi</div>':'';
-  html+='<div class="box" style="margin-top:8px;border-color:rgba(34,197,94,.35)"><div class="boxt" style="color:#22c55e">&#10003; AAJ KA PLAN (V7.4)'+lab+' <span style="color:var(--mut);font-weight:400">&bull; '+nums.length+' jodi &times; '+v7Rs(st)+'</span></div>'
+  html+='<div class="box" style="margin-top:8px;border-color:rgba(34,197,94,.35)"><div class="boxt" style="color:#22c55e">&#10003; AAJ KA PLAN (V7.5)'+lab+' <span style="color:var(--mut);font-weight:400">&bull; '+nums.length+' jodi &times; '+v7Rs(st)+'</span></div>'
     +'<div style="font-family:\'JetBrains Mono\',monospace;font-size:17px;letter-spacing:2px;color:#e6edf3;margin:4px 0 6px;word-spacing:6px">'+(nums.length?nums.map(p2).join(' '):'<span style="font-size:11px;letter-spacing:0;color:#fca5a5">aaj jodi nahi (list ke sab number hat gaye)</span>')+'</div>'+whyTxt+dropTxt
     +'<div style="font-size:10px;color:var(--mut);margin-top:4px">Jodi '+v7Rs(nums.length*st)+(hd!==null?' &nbsp;&bull;&nbsp; '+(p.haruf.type==='andar'?'ANDAR (pehla ank) ':'BAHAR (aakhri ank) ')+'<b style="color:#e6edf3;font-size:12px">'+hd+'</b> '+v7Rs(p.haruf.stake):'')+' &nbsp;&bull;&nbsp; kul <b style="color:#e6edf3">'+v7Rs(tot)+'</b></div>'
     +harufWhy+'<button onclick="v7Copy(this)" data-txt="'+encodeURIComponent(txt)+'" style="margin-top:8px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.5);color:#22c55e;border-radius:6px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">Copy numbers</button>';
+  if(p.note) html+='<div style="font-size:10px;color:var(--mut);margin-top:8px;line-height:1.5">&#9432; '+p.note+'</div>';
   var mp=v7MonthPnl(mkt,d); if(mp&&(mp.n||mp.skipped)){ html+='<div style="font-size:10px;color:var(--mut);margin-top:8px">Is mahine plan ka hisaab ('+(V7_PLAN.commission_pct||0)+'% commission, din ke hisaab se stake): '+mp.h+' hit / '+mp.n+' din'+(mp.skipped?' ('+mp.skipped+' skip)':'')+' &rarr; <b style="color:'+(mp.pnl>=0?'#22c55e':'#ef4444')+'">'+(mp.pnl>=0?'+':'')+v7Rs(mp.pnl)+'</b></div>'; }
   html+='</div>'; return html; }
 
@@ -1123,8 +1163,9 @@ function ypePredCore(mkt, tdate, store) {
   if (useCache && _PRED_CACHE[cacheKey] !== undefined) {
     return _PRED_CACHE[cacheKey];
   }
-  var v3p = v3FallbackPred(mkt, tdate, st);
-  var resObj = v7Pred(mkt, tdate, st, v3p);
+  var resObj;
+  if (mkt === V7_SG) { resObj = sgPred(tdate, st); }                      // V7.5: Shree Ganesh ka apna model
+  else { var v3p = v3FallbackPred(mkt, tdate, st); resObj = v7Pred(mkt, tdate, st, v3p); }
   if (useCache) _PRED_CACHE[cacheKey] = resObj;
   return resObj;
 }
@@ -1291,7 +1332,7 @@ function renderCard(m){
       +'<div class="pb">'
         +'<div><div class="pb-lbl">Session Date</div>'
         +'<div class="pb-val" style="color:'+col+'">'+fmtFull(selDate)+'</div></div>'
-        +'<div style="font-size:9px;font-weight:700;color:rgba('+r+',.8)">V7.4 VOTE</div>'
+        +'<div style="font-size:9px;font-weight:700;color:rgba('+r+',.8)">V7.5 VOTE</div>'
       +'</div>'
       +'<div class="ctabs">'
         +'<button class="ctab'+(tab==='predict'?' on':'')+'" style="color:'+(tab==='predict'?col:'var(--dim)')+'" data-id="'+id+'" data-tab="predict" onclick="setTab(this.dataset.id,this.dataset.tab)">Predict</button>'
@@ -1393,8 +1434,8 @@ function renderCard(m){
         }
       }
       var clusterSize=cluster.length;
-      var v3Cmp = (pred.v3 && pred.v3.length) ? '<div style="font-size:9px;color:var(--mut);margin-top:6px;">V3 comparison slate: ' + pred.v3.map(p2).join(' ') + '</div>' : '';
-      content='<div class="box"><div class="boxt" style="color:'+col+'">'+(uni?'&#9733; V7.4 &mdash; aaj khelne wale number ':v7IsV7(pred)?'&#9733; V7.4 Top-8 Vote Slate ':'&#9888; V3 FALLBACK (V7 ke liye data nahi) ')+'<span style="color:var(--mut);font-weight:400">&bull; '+clusterSize+' numbers</span></div>'
+      var v3Cmp = (pred.v3 && pred.v3.length) ? '<div style="font-size:9px;color:var(--mut);margin-top:6px;">' + (id==='Faridabad' ? 'V3 ka purana formula (V3 page par Faridabad ki list is se thodi alag hoti hai): ' : 'V3 comparison slate: ') + pred.v3.map(p2).join(' ') + '</div>' : '';
+      content='<div class="box"><div class="boxt" style="color:'+col+'">'+(uni?'&#9733; V7.5 &mdash; aaj khelne wale number ':v7IsV7(pred)?'&#9733; V7.5 Top-8 Vote Slate ':'&#9888; V3 FALLBACK (V7 ke liye data nahi) ')+'<span style="color:var(--mut);font-weight:400">&bull; '+clusterSize+' numbers</span></div>'
         +'<div class="numrow" style="flex-wrap:wrap">'+jodis+'</div>'
         +(uni?v7DropHtml(id,selDate,topDrop,true):'<div style="font-size:8px;color:var(--mut);margin:8px 0 4px 6px;letter-spacing:1px">EXTENDED CLUSTER</div>'
         +'<div class="numrow">'+famRow+'</div>')+spiCopyBtn(id,selDate,cluster,'Copy '+cluster.length+' numbers')+v3Cmp+'</div>'
@@ -1442,7 +1483,7 @@ function renderCard(m){
     +'<div class="pb">'
       +'<div><div class="pb-lbl">Predicting for</div>'
       +'<div class="pb-val" style="color:'+col+'">'+fmtFull(selDate)+'</div></div>'
-      +'<div style="font-size:9px;font-weight:700;color:rgba('+r+',.8)">V7.4 VOTE</div>'
+      +'<div style="font-size:9px;font-weight:700;color:rgba('+r+',.8)">V7.5 VOTE</div>'
     +'</div>'
     +'<div class="ctabs">'
       +'<button class="ctab'+(tab==='predict'?' on':'')+'" style="color:'+(tab==='predict'?col:'var(--dim)')+'" data-id="'+id+'" data-tab="predict" onclick="setTab(this.dataset.id,this.dataset.tab)">Predict</button>'
@@ -1701,10 +1742,10 @@ var SPD_CFG = {
 // Results file ke 9 purane khane jo baasi / galat hain (Gali 6 & 26 Nov 2022; Faridabad 1 Jan–1 Jul 2015 ki 7 tarikh).
 // Sirf is ginti / table mein sahi value (ya khaali) dikhti hai; page ka data aur formula jaisa tha waisa hi rehta hai.
 var SPD_FIXES = {"Gali":{"2022-11-06":42,"2022-11-26":24},"Faridabad":{"2015-01-01":null,"2015-02-01":null,"2015-03-01":null,"2015-04-01":null,"2015-05-01":null,"2015-06-01":null,"2015-07-01":null}};
-var SPD_VERSION = 'v7-spd-1 2026-11-28';
+var SPD_VERSION = 'v7-spd-2 2026-11-28';
 function spdClosed(mk, d){              // market us din band hota hai?
   if (mk === 'Desawar') return parseInt(d.slice(8), 10) === 1;
-  if (mk === 'Faridabad' || mk === 'Ghaziabad' || mk === 'Gali') {
+  if (mk === 'Faridabad' || mk === 'Ghaziabad' || mk === 'Gali' || mk === 'Delhi' || mk === 'Shree Ganesh') {
     var x = new Date(d + 'T12:00:00Z'), n = new Date(x); n.setUTCDate(x.getUTCDate() + 1);
     return n.getUTCMonth() !== x.getUTCMonth();
   }
@@ -2756,7 +2797,7 @@ setInterval(function() { githubPull(); }, 60000);
 </div>
 
 <script>
-var V7_TOOL_VERSION = '7.4';
+var V7_TOOL_VERSION = '7.5';
 (function checkV7Update(){
   try {
     fetch('https://raw.githubusercontent.com/arunk8447ak/spi-pattern-engine/main/v7_version.json?t=' + Date.now())

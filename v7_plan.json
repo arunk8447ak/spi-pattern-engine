@@ -1,9 +1,9 @@
 {
- "version": "7.4",
- "updated": "2026-11-24",
+ "version": "7.5",
+ "updated": "2026-11-28",
  "payout": 90,
  "commission_pct": 5,
- "note": "V7.3 plan. skip_ranks = V7 slate ke kaunse rank nahi khelne (1 = MAIN). Stake = Rs per jodi. haruf type bahar = aakhri ank, andar = pehla ank. 'overrides' = tay tarikhon ke liye alag plan (tool aur bot dono aaj ki tarikh dekh kar chunte hain); baaki dino ke liye 'markets'. copy_amounts=false: copy/Telegram message mein sirf numbers (rupaye nahi). count = kitne rank khelne (default 8; Desawar 10 = rank 9-10 bhi). calendar = din/mahine/cool-down ke stake multipliers. date_rule = aaj ki tarikh wala number (aur uska palti) plan ke numbers se hata do. cold_rule = thanda number (jo 'days' din se kisi market mein nahi aaya) plan ke numbers se hata do. haruf_rule = haruf ka ank kis niyam se (prev2 = us market ke do draw pehle wala ank).",
+ "note": "V7.3 plan. skip_ranks = V7 slate ke kaunse rank nahi khelne (1 = MAIN). Stake = Rs per jodi. haruf type bahar = aakhri ank, andar = pehla ank. 'overrides' = tay tarikhon ke liye alag plan (tool aur bot dono aaj ki tarikh dekh kar chunte hain); baaki dino ke liye 'markets'. copy_amounts=false: copy/Telegram message mein sirf numbers (rupaye nahi). count = kitne rank khelne (default 8; Desawar 10 = rank 9-10 bhi). calendar = din/mahine/cool-down ke stake multipliers. date_rule = aaj ki tarikh wala number (aur uska palti) plan ke numbers se hata do. cold_rule = thanda number (jo 'days' din se kisi market mein nahi aaya) plan ke numbers se hata do. haruf_rule = haruf ka ank kis niyam se (prev2 = us market ke do draw pehle wala ank). V7.5 (28 Nov 2026): Shree Ganesh joda (alag chhota model). Market ke andar 'from' = is tarikh se plan mein (usse pehle ke din hisaab mein nahi), 'note' = card par dikhne wali line. Gali ka bahar haruf plan se hataya (2023-26 mein 11.1% = barabar; 2026 mein 9.5%).",
  "markets": {
   "Gali": {
    "play": true,
@@ -11,10 +11,7 @@
     1
    ],
    "stake": 125,
-   "haruf": {
-    "type": "bahar",
-    "stake": 200
-   },
+   "haruf": null,
    "count": 8
   },
   "Desawar": {
@@ -38,6 +35,18 @@
    "skip_ranks": [],
    "stake": 0,
    "haruf": null
+  },
+  "Shree Ganesh": {
+   "play": true,
+   "skip_ranks": [],
+   "stake": 40,
+   "haruf": {
+    "type": "andar",
+    "stake": 80
+   },
+   "count": 8,
+   "from": "2026-11-28",
+   "note": "Shree Ganesh: chhota edge. 2020-26 mein 8 number par 10.1% din hit (barabar 8.9%), Rs100 par Rs110-114. Stake chhota aur roz barabar rakho; yahan 1.5x / 0.5x wala koi niyam nahi."
   }
  },
  "backup_ladder": [
@@ -68,10 +77,7 @@
       1
      ],
      "stake": 750,
-     "haruf": {
-      "type": "bahar",
-      "stake": 500
-     },
+     "haruf": null,
      "count": 8
     },
     "Desawar": {
@@ -95,6 +101,18 @@
      "skip_ranks": [],
      "stake": 0,
      "haruf": null
+    },
+    "Shree Ganesh": {
+     "play": true,
+     "skip_ranks": [],
+     "stake": 200,
+     "haruf": {
+      "type": "andar",
+      "stake": 200
+     },
+     "count": 8,
+     "from": "2026-11-28",
+     "note": "Shree Ganesh: chhota edge. 2020-26 mein 8 number par 10.1% din hit (barabar 8.9%), Rs100 par Rs110-114. Stake chhota aur roz barabar rakho; yahan 1.5x / 0.5x wala koi niyam nahi."
     }
    },
    "rules": "Backup Rs3 lakh alag. Mahine ka ghaata Rs1.5 lakh par stake Rs400; Rs2 lakh par normal plan. 1 Dec se apne aap normal plan. Desawar base Rs500 x Nov 1.5 = Rs750 (thanda din Rs375, garam din cap par Rs750). Gali Rs750 base: Sun/Fri Rs1,125, Tue/Wed Rs375, thanda Rs375, garam Rs1,125. Desawar 10 number 1 Dec se."
@@ -151,6 +169,10 @@
    ],
    "Ghaziabad": [
     "day"
+   ],
+   "Shree Ganesh": [
+    "day",
+    "palti"
    ]
   }
  },
@@ -163,10 +185,14 @@
   ]
  },
  "haruf_rule": {
-  "note": "prev2 = haruf ka ank us market ke do draw pehle ('parson wale') result se, jab pichhle draw ka wahi ank us se alag ho. Desawar andar 2015-2026: 12.7% (487/3,835; barabar 11.1%), dono daur mein same (12.7% / 12.6%); V7 ka ank 11.8%; jab dono alag hon to parson wala 12.2%, V7 wala 10.8%. Kal wala andar dobara sirf 8.7% aata hai. Jab kal aur parson ka ank ek hi ho to V7 ka ank; agar V7 ka ank bhi wahi ho to us din haruf nahi. Result adhura ho to V7 ka ank. 'from' se pehle ke dino par lagu nahi.",
+  "note": "prev2 = haruf ka ank us market ke do draw pehle ('parson wale') result se, jab pichhle draw ka wahi ank us se alag ho. Desawar andar 2015-2026: 12.7% (487/3,835; barabar 11.1%), dono daur mein same (12.7% / 12.6%); V7 ka ank 11.8%; jab dono alag hon to parson wala 12.2%, V7 wala 10.8%. Kal wala andar dobara sirf 8.7% aata hai. Jab kal aur parson ka ank ek hi ho to V7 ka ank; agar V7 ka ank bhi wahi ho to us din haruf nahi. Result adhura ho to V7 ka ank. 'from' se pehle ke dino par lagu nahi. Shree Ganesh andar (28 Nov 2026 se): parson wala ank 2017-2026 mein 13.0% (422/3,256); 2023-26 mein 12.1%.",
   "from": "2026-11-24",
   "markets": {
    "Desawar": {
+    "type": "andar",
+    "pick": "prev2"
+   },
+   "Shree Ganesh": {
     "type": "andar",
     "pick": "prev2"
    }
