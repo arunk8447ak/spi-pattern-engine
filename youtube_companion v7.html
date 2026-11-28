@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- V7.4 page, 28 Nov 2026: 210-Day History + Strategy Hub ab plan ki list ginte hain aur sirf asli ginti dikhate hain. Model, plan ke niyam, Predictions tab aur sync mein koi badlav nahi. -->
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>SPI - V7.4 ENGINE</title>
@@ -418,6 +419,34 @@ table.ht tr:hover td{background:rgba(255,255,255,.04)}
   transition: width .4s;
 }
 
+
+/* ===== SPD (28 Nov 2026): asli-ginti wale History / Hub ke chhote style ===== */
+.sh-sub{font-size:9px;color:var(--mut);font-weight:400;font-family:'JetBrains Mono',monospace;margin-top:1px}
+.sh-note{font-size:10.5px;color:var(--mut);line-height:1.6;margin-top:10px}
+.sh-note b{color:var(--txt)}
+.sh-mini th{font-size:8px;white-space:normal;line-height:1.35;padding:7px 4px}
+.sh-mini td{padding:6px 4px;font-size:11px}
+.sh-mini td.l{padding-left:6px;font-size:11px}
+.sh-badge-bad{background:rgba(239,68,68,.14);color:#ef4444;border:1px solid rgba(239,68,68,.35)}
+.sh-cell-bad{background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
+.spd-note{background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.22);border-radius:10px;padding:10px 14px;font-size:11.5px;color:var(--txt);line-height:1.65;margin:-4px 0 18px}
+.spd-note b{color:#fff}
+.sh-main-layout > div{min-width:0}
+.sh-box{min-width:0}
+.sh-box-title{flex-wrap:wrap;gap:4px 12px}
+#spd-sync{font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--mut);white-space:nowrap}
+@media (max-width:760px){
+  .nav{flex-wrap:wrap;padding:0 10px;gap:2px 8px}
+  .brand{border-right:none;padding:10px 0 4px 0}
+  .nav-r{gap:8px}
+  .nl{order:3;width:100%;overflow-x:auto}
+  .nb{white-space:nowrap;padding:9px 10px}
+  .sh-filter-bar{padding:10px;gap:8px}
+  .sh-btn-reset{margin-left:0}
+}
+/* V7: History mein plan se hataye gaye number / skip wale din */
+.spd-drop{opacity:.45;text-decoration:line-through}
+.spd-skip{display:inline-block;font-size:8px;font-weight:800;letter-spacing:.5px;padding:1px 5px;border-radius:3px;border:1px solid rgba(239,68,68,.5);color:#fca5a5;margin-left:3px}
 </style>
 </head>
 <body>
@@ -477,15 +506,18 @@ table.ht tr:hover td{background:rgba(255,255,255,.04)}
   <div class="mgrid" id="mgrid"></div>
 </div>
 <div class="pg" id="pg-d">
-  <div class="sechd" style="margin-top:4px">&#9889; Overall Performance &mdash; Last 210 Days</div>
+  <div class="sechd" style="margin-top:4px">&#9889; Overall Performance &mdash; Last 210 Days <span style="font-size:9px;color:#fbbf24;letter-spacing:1px">&#9733; V7.4 ENGINE &mdash; PLAN KI LIST</span></div>
   <div class="kpirow">
     <div class="kpi"><div class="kpi-l">Predictions Made</div><div class="kpi-v" id="kn">-</div><div class="kpi-s">days validated</div></div>
+    <div class="kpi"><div class="kpi-l">Jodi Hit Rate</div><div class="kpi-v" id="kjr">-</div><div class="kpi-s" id="kjr-s">barabar 8.9%</div></div>
     <div class="kpi"><div class="kpi-l">J1/J2 Hits</div><div class="kpi-v" style="color:#22c55e" id="kex">-</div><div class="kpi-s">main 2 numbers</div></div>
     <div class="kpi"><div class="kpi-l">Ext Hits</div><div class="kpi-v" style="color:#86efac" id="kext">-</div><div class="kpi-s">cluster 3-8 numbers</div></div>
-    <div class="kpi"><div class="kpi-l">Bahar Hits</div><div class="kpi-v" style="color:var(--warn)" id="kan">-</div><div class="kpi-s">aakhri ank (units) sahi</div></div>
-    <div class="kpi"><div class="kpi-l">Andar Hits</div><div class="kpi-v" style="color:var(--warn)" id="kba">-</div><div class="kpi-s">pehla ank (tens) sahi</div></div>
-    <div class="kpi"><div class="kpi-l">Any Hit Rate</div><div class="kpi-v" style="color:var(--des)" id="krt">-</div><div class="kpi-s">jodi+andar+bahar</div></div>
+    <div class="kpi"><div class="kpi-l">Bahar Hits</div><div class="kpi-v" style="color:var(--warn)" id="kbh">-</div><div class="kpi-s">aakhri ank (units) sahi</div></div>
+    <div class="kpi"><div class="kpi-l">Andar Hits</div><div class="kpi-v" style="color:var(--warn)" id="kand">-</div><div class="kpi-s">pehla ank (tens) sahi</div></div>
+    <div class="kpi"><div class="kpi-l">Any Hit Rate</div><div class="kpi-v" style="color:var(--des)" id="krt">-</div><div class="kpi-s" id="krt-s">jodi+andar+bahar</div></div>
+    <div class="kpi" id="ktp-box" style="border-color:rgba(251,191,36,.4);display:none"><div class="kpi-l" style="color:#fbbf24">&#9733; </div><div class="kpi-v" style="color:#fbbf24" id="ktp">-</div><div class="kpi-s" id="ktpr">ek number roz</div></div>
   </div>
+  <div class="spd-note">Yahan sirf <b>asli results</b> dikhte hain. Jis market ko us din ka <b>plan</b> khelta hai (Gali, Desawar &hellip;) wahan <b>plan ki list</b> gini jati hai &mdash; yani V7 ki list mein se MAIN (rank 1) aur tarikh / thanda wale number hata kar jo khelne ko kaha gaya. Kate hue number V7 ki top-8 mein the par plan mein nahi; un par result aaye to wo hit <b>nahi</b> gina jata. Baaki market mein V7 ki top-8 list. Asli kasauti <b>Jodi Hit Rate</b> hai; barabar ka hisaab list ke size se lagta hai (8 number par 8.9%, 5 number par 5.6%). &lsquo;Any Hit&rsquo; zyadatar ittefaq hota hai, use kamai mat samjho.</div>
   <div class="sechd">Accuracy by Market</div>
   <div class="accrow" id="accrow"></div>
   <div class="sechd">All Markets &mdash; Last 210 Days</div>
@@ -493,49 +525,62 @@ table.ht tr:hover td{background:rgba(255,255,255,.04)}
     <div class="dbwrap-hd">
       <div class="dbwrap-t">Daily Results Table</div>
       <div style="display:flex; align-items:center; gap:12px;">
-        <button onclick="exportDashboardToCSV()" style="background:rgba(0,212,255,0.1); border:1px solid var(--des); color:var(--des); border-radius:6px; padding:6px 12px; font-size:10px; font-weight:700; cursor:pointer; font-family:'Orbitron', sans-serif; text-transform:uppercase; letter-spacing:1px; transition: all 0.2s;" onmouseover="this.style.background='rgba(0,212,255,0.2)'" onmouseout="this.style.background='rgba(0,212,255,0.1)'">💾 Export CSV</button>
+        <button onclick="exportDashboardToCSV()" style="background:rgba(0,212,255,0.1); border:1px solid var(--des); color:var(--des); border-radius:6px; padding:6px 12px; font-size:10px; font-weight:700; cursor:pointer; font-family:'Orbitron', sans-serif; text-transform:uppercase; letter-spacing:1px; transition: all 0.2s;" onmouseover="this.style.background='rgba(0,212,255,0.2)'" onmouseout="this.style.background='rgba(0,212,255,0.1)'">&#128190; Export CSV</button>
         <div style="font-size:9px;color:var(--mut)" id="dbcnt"></div>
+      </div>
+    </div>
+    <div style="padding:8px 15px;border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+      <div style="font-size:9px;color:var(--mut);letter-spacing:1px;text-transform:uppercase">Legend:</div>
+      <div id="spd-leg-top" style="display:none;align-items:center;gap:5px">
+        <span style="background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.5);color:#fbbf24;font-size:9px;font-weight:900;padding:2px 7px;border-radius:4px">&#9733; TOP</span>
+        <span style="font-size:10px;color:var(--mut)"></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:5px">
+        <span class="pc spd-drop">19</span>
+        <span style="font-size:10px;color:var(--mut)">V7 ki list mein tha, plan ne hataya (MAIN / tarikh / thanda)</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:5px">
+        <span style="background:rgba(148,163,184,.1);border:1px solid rgba(148,163,184,.45);color:#cbd5e1;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px">PLAN SE BAHAR</span>
+        <span style="font-size:10px;color:var(--mut)">result hataye hue number par aaya &mdash; hit nahi gina</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:5px">
+        <span class="spd-skip" style="margin-left:0">SKIP</span>
+        <span style="font-size:10px;color:var(--mut)">plan ne us din ye market chhodne ko kaha &mdash; ginti mein nahi</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:5px">
+        <span style="background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.4);color:#22c55e;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px">&#9679; JODI</span>
+        <span style="font-size:10px;color:var(--mut)">Main 2 numbers (J1/J2) hit</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:5px">
+        <span style="background:rgba(134,239,172,.1);border:1px solid rgba(134,239,172,.35);color:#86efac;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px">&#9675; EXT</span>
+        <span style="font-size:10px;color:var(--mut)">Extended cluster (numbers 3-8) hit</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:5px">
+        <span style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:#f59e0b;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px">AN / BH</span>
+        <span style="font-size:10px;color:var(--mut)">sirf andar (pehla ank) / bahar (aakhri ank) mila, jodi nahi</span>
       </div>
     </div>
     <div style="overflow-x:auto">
       <table class="ht">
-        <thead>
-          <tr>
-            <th class="l" rowspan="2">Date</th>
-            <th colspan="2" style="border-left:1px solid var(--brd);color:#00d4ff">Desawar</th>
-            <th colspan="2" style="border-left:1px solid var(--brd);color:#ff6030">Faridabad</th>
-            <th colspan="2" style="border-left:1px solid var(--brd);color:#a855f7">Ghaziabad</th>
-            <th colspan="2" style="border-left:1px solid var(--brd);color:#10d070">Gali</th>
-          </tr>
-          <tr style="font-size:8px">
-            <th style="border-left:1px solid var(--brd)">Predicted</th><th>Actual</th>
-            <th style="border-left:1px solid var(--brd)">Predicted</th><th>Actual</th>
-            <th style="border-left:1px solid var(--brd)">Predicted</th><th>Actual</th>
-            <th style="border-left:1px solid var(--brd)">Predicted</th><th>Actual</th>
-          </tr>
-        </thead>
-        <tbody id="dbtb"><tr><td colspan="9" class="empty">Loading...</td></tr></tbody>
+        <thead id="spd-dh"></thead>
+        <tbody id="dbtb"><tr><td class="empty">Loading...</td></tr></tbody>
       </table>
     </div>
   </div>
   <div class="sechd">Monthly Breakdown</div>
   <div class="dbwrap">
-    <div class="dbwrap-hd"><div class="dbwrap-t">Month-by-Month Summary</div></div>
+    <div class="dbwrap-hd"><div class="dbwrap-t">Month-by-Month Summary</div><div style="font-size:9px;color:var(--mut)">hara = us mahine fayda &bull; laal = ghata (roz barabar daam, 90x)</div></div>
+    <div style="overflow-x:auto">
     <table class="ht">
-      <thead><tr>
-        <th class="l">Month</th>
-        <th style="color:#00d4ff">DSWR</th><th style="color:#ff6030">FRBD</th>
-        <th style="color:#a855f7">GZBD</th><th style="color:#10d070">GALI</th>
-        <th>Jodi</th><th>A/B</th><th>Tested</th><th>Jodi%</th><th>Any%</th>
-      </tr></thead>
+      <thead id="spd-mh"></thead>
       <tbody id="motb"></tbody>
     </table>
+    </div>
   </div>
 </div>
 
-<!-- ===== STRATEGY & DECISION HUB (PAGE 3) ===== -->
+<!-- ===== STRATEGY & DECISION HUB — V7 jaisa layout, sirf asli ginti ===== -->
 <div class="pg" id="pg-s">
-  <!-- ERROR BOX (IF ANY) -->
   <div id="sh-error-box" style="display:none;background:rgba(239,68,68,0.14);border:1px solid #ef4444;color:#ef4444;padding:10px 14px;border-radius:8px;margin-bottom:12px;font-size:11px;font-family:monospace;"></div>
 
   <!-- FILTER BAR -->
@@ -546,30 +591,15 @@ table.ht tr:hover td{background:rgba(255,255,255,.04)}
     <button class="sh-preset-btn" id="sh-p-thisyr" onclick="setStrategyPreset('this-year')">This Year</button>
 
     <span class="sh-filter-label" style="margin-left:6px;">Year:</span>
-    <select class="sh-select" id="sh-f-year" onchange="onYQMFilterChange('year')">
-      <option value="2026">2026 (Out-of-Sample)</option>
-      <option value="2025">2025 (Training)</option>
-      <option value="2024">2024 (Training)</option>
-      <option value="2023">2023 (Training)</option>
-      <option value="2022">2022 (Training)</option>
-      <option value="2021">2021 (Training)</option>
-      <option value="2020">2020 (Training)</option>
-      <option value="2019">2019 (Training)</option>
-      <option value="2018">2018 (Training)</option>
-      <option value="2017">2017 (Training)</option>
-      <option value="2016">2016 (Training)</option>
-      <option value="2015">2015 (Training)</option>
-      <option value="2014">2014 (Training)</option>
-      <option value="2013">2013 (Training)</option>
-    </select>
+    <select class="sh-select" id="sh-f-year" onchange="onYQMFilterChange('year')"></select>
 
     <span class="sh-filter-label">Quarter:</span>
     <select class="sh-select" id="sh-f-quarter" onchange="onYQMFilterChange('quarter')">
       <option value="all">All Quarters</option>
-      <option value="Q1">Q1 (Jan–Mar)</option>
-      <option value="Q2">Q2 (Apr–Jun)</option>
-      <option value="Q3">Q3 (Jul–Sep)</option>
-      <option value="Q4">Q4 (Oct–Dec)</option>
+      <option value="Q1">Q1 (Jan&ndash;Mar)</option>
+      <option value="Q2">Q2 (Apr&ndash;Jun)</option>
+      <option value="Q3">Q3 (Jul&ndash;Sep)</option>
+      <option value="Q4">Q4 (Oct&ndash;Dec)</option>
     </select>
 
     <span class="sh-filter-label">Month:</span>
@@ -593,174 +623,117 @@ table.ht tr:hover td{background:rgba(255,255,255,.04)}
     <select class="sh-select" id="sh-f-mkt" onchange="applyStrategyFilter()">
       <option value="all">All Markets</option>
     </select>
-    
+
     <span class="sh-filter-label">Date Range:</span>
     <input type="date" class="sh-date-inp" id="sh-f-from" onchange="onCustomDateChange()"/>
     <span style="color:var(--mut);font-size:10px;">to</span>
     <input type="date" class="sh-date-inp" id="sh-f-to" onchange="onCustomDateChange()"/>
-    
+
     <button class="sh-btn sh-btn-apply" onclick="applyStrategyFilter()">Apply Filter</button>
     <button class="sh-btn sh-btn-reset" onclick="resetStrategyFilter()">&#8635; Reset</button>
   </div>
 
+  <div class="spd-note">Yahan sirf <b>asli results</b> ki ginti hai &mdash; koi &lsquo;overdue / high probability&rsquo; jaisa andaza nahi. Plan wale market (Gali, Desawar &hellip;) mein <b>plan ki list</b> gini jati hai, baaki mein V7 ki top-8. <b style="color:var(--ok)">Hara = fayda</b>, <b style="color:var(--err)">laal = ghata</b> (roz barabar daam par; stake ke multiplier yahan nahi jude). &#9733; <b>2013&ndash;2025 = Training Year</b> (model isi data par bana, wahan achha dikhna tay hai); <b>2026 = Out-of-Sample</b> (asli parakh). Tezi ke liye sirf zaroori saal gine jaate hain; Year badloge to us saal ki ginti aa jayegi.</div>
+
   <!-- ROW 1: MARKET KPI CARDS -->
-  <div class="sh-kpi-grid" id="sh-kpi-container">
-    <!-- Populated by JS -->
-  </div>
+  <div class="sh-kpi-grid" id="sh-kpi-container"><div style="color:var(--mut);font-size:12px;padding:8px 2px">Poore data ki ginti ho rahi hai&hellip; (kuch second)</div></div>
 
   <!-- MAIN 2-COLUMN LAYOUT -->
   <div class="sh-main-layout">
     <!-- LEFT COLUMN: HIT MATRICES & TIMING TABLES -->
     <div>
-      <!-- 1. JODI HIT MATRIX -->
       <div class="sh-box">
         <div class="sh-box-title">
-          <span>&#127919; Jodi Hit Matrix (Year <span id="sh-matrix-year">2026</span>)</span>
-          <span class="sh-box-sub">&#10003; Green badge = 3+ Hits (Target Recovered)</span>
+          <span>&#127919; Jodi Hit Matrix (Year <span id="sh-matrix-year"></span>)</span>
+          <span class="sh-box-sub">Hara = us mahine fayda &bull; peela = 2+ hit par ghata</span>
         </div>
         <div class="sh-table-wrap">
           <table class="sh-table">
-            <thead>
-              <tr>
-                <th class="l">Market</th>
-                <th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th>
-                <th>Jul</th><th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th>
-                <th>Total</th>
-              </tr>
-            </thead>
+            <thead><tr><th class="l">Market</th><th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th><th>Jul</th><th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th><th>Total</th></tr></thead>
             <tbody id="sh-jodi-tbody"></tbody>
           </table>
         </div>
       </div>
 
-      <!-- 2. ANDAR HIT MATRIX -->
       <div class="sh-box">
         <div class="sh-box-title">
           <span>&#9654; Bahar (Aakhri Ank / Units) Hit Matrix</span>
-          <span class="sh-box-sub">Result ka aakhri ank (jaise 47 mein 7)</span>
+          <span class="sh-box-sub">Result ka aakhri ank (47 mein 7) &bull; ittefaq ~20%, barabar ~22%</span>
         </div>
         <div class="sh-table-wrap">
           <table class="sh-table">
-            <thead>
-              <tr>
-                <th class="l">Market</th>
-                <th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th>
-                <th>Jul</th><th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody id="sh-andar-tbody"></tbody>
+            <thead><tr><th class="l">Market</th><th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th><th>Jul</th><th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th><th>Total</th></tr></thead>
+            <tbody id="sh-units-tbody"></tbody>
           </table>
         </div>
       </div>
 
-      <!-- 3. BAHAR HIT MATRIX -->
       <div class="sh-box">
         <div class="sh-box-title">
           <span>&#9664; Andar (Pehla Ank / Tens) Hit Matrix</span>
-          <span class="sh-box-sub">Result ka pehla ank (jaise 47 mein 4)</span>
+          <span class="sh-box-sub">Result ka pehla ank (47 mein 4) &bull; ittefaq ~20%, barabar ~22%</span>
         </div>
         <div class="sh-table-wrap">
           <table class="sh-table">
-            <thead>
-              <tr>
-                <th class="l">Market</th>
-                <th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th>
-                <th>Jul</th><th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody id="sh-bahar-tbody"></tbody>
+            <thead><tr><th class="l">Market</th><th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th><th>Jul</th><th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th><th>Total</th></tr></thead>
+            <tbody id="sh-tens-tbody"></tbody>
           </table>
         </div>
       </div>
 
-      <!-- 4. FIRST HIT TIMING TABLE -->
       <div class="sh-box">
         <div class="sh-box-title">
           <span>&#9201; First Hit Timing in Month</span>
-          <span class="sh-box-sub">Day of month when 1st Jodi hit landed (e.g. D2 = 2nd of month)</span>
+          <span class="sh-box-sub">Mahine ka pehla jodi hit kis tarikh ko aaya (D2 = 2 tarikh)</span>
         </div>
         <div class="sh-table-wrap">
           <table class="sh-table">
-            <thead>
-              <tr>
-                <th class="l">Market</th>
-                <th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th>
-                <th>Jul</th><th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th>
-                <th>Avg Day</th>
-              </tr>
-            </thead>
+            <thead><tr><th class="l">Market</th><th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th><th>Jul</th><th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th><th>Avg Day</th></tr></thead>
             <tbody id="sh-firsthit-tbody"></tbody>
           </table>
         </div>
       </div>
 
-      <!-- 5. LAST HIT TIMING TABLE -->
       <div class="sh-box">
         <div class="sh-box-title">
           <span>&#128337; Last Hit Timing in Month</span>
-          <span class="sh-box-sub">Day of month when final Jodi hit landed (shows end-of-month rhythm)</span>
+          <span class="sh-box-sub">Mahine ka aakhri jodi hit kis tarikh ko aaya</span>
         </div>
         <div class="sh-table-wrap">
           <table class="sh-table">
-            <thead>
-              <tr>
-                <th class="l">Market</th>
-                <th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th>
-                <th>Jul</th><th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th>
-                <th>Avg Day</th>
-              </tr>
-            </thead>
+            <thead><tr><th class="l">Market</th><th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th><th>Jul</th><th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th><th>Avg Day</th></tr></thead>
             <tbody id="sh-lasthit-tbody"></tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- RIGHT COLUMN: DECISION SUPPORT & STRATEGY SIGNALS -->
+    <!-- RIGHT COLUMN: ASLI GINTI -->
     <div>
-      <!-- 3-HIT TARGET STATUS -->
       <div class="sh-box">
-        <div class="sh-box-title">&#128176; 3-Hit Recovery Progress</div>
-        <div style="font-size:10px;color:var(--mut);margin-bottom:12px;" id="sh-target-subheading">Monthly goal of 3 Jodi hits for full recovery:</div>
+        <div class="sh-box-title">&#128176; Recovery Progress (kharcha wapas)</div>
+        <div style="font-size:10px;color:var(--mut);margin-bottom:12px;line-height:1.5" id="sh-target-subheading">Is range mein kharcha wapas (barabar) ke liye itne jodi hit chahiye:</div>
         <div id="sh-target-progress-container"></div>
       </div>
 
-      <!-- MARKET BET READINESS & SIGNAL -->
       <div class="sh-box">
-        <div class="sh-box-title">&#9889; Market Bet Readiness &amp; Signal</div>
-        <div id="sh-market-signals-container"></div>
+        <div class="sh-box-title">&#128202; Asli Record (V7 ki roz ki list)</div>
+        <div id="sh-record-container"></div>
       </div>
 
-      <!-- HIT GAP & DROUGHT INTELLIGENCE -->
       <div class="sh-box">
-        <div class="sh-box-title">&#128207; Hit Gap &amp; Cycle Intelligence</div>
-        <div id="sh-gap-intelligence-container"></div>
+        <div class="sh-box-title">&#128207; Hit Gap &mdash; kya &lsquo;due&rsquo; hota hai?</div>
+        <div id="sh-gap-container"></div>
       </div>
 
-      <!-- TIMING STRATEGY ADVICE -->
       <div class="sh-box">
-        <div class="sh-box-title">&#128161; Timing Strategy Advice</div>
-        <div style="font-size:11px;color:var(--txt);line-height:1.6;" id="sh-timing-advice-text">
-          &bull; <strong>Early Month Window (Day 1-5):</strong> Over 80% probability of 1st Jodi hit. Optimal initial entry window.<br>
-          &bull; <strong>Post-Hit Spacing:</strong> Average interval between hits is 5 to 7 days. Avoid aggressive play immediately after a hit.<br>
-          &bull; <strong>Overdue Alert:</strong> If days since last hit exceed 7 days, probability of a hit in next 48 hours increases significantly.
-        </div>
+        <div class="sh-box-title">&#128161; Tarikh aur hit ke baad &mdash; data</div>
+        <div id="sh-timing-container"></div>
       </div>
 
-      <!-- MODEL RULE STABILITY -->
       <div class="sh-box">
-        <div class="sh-box-title">&#9879; Model Rule Stability</div>
-        <div class="sh-decision-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-            <span style="font-size:11px;font-weight:700;">Overall Model Health:</span>
-            <span class="sh-badge sh-badge-ok" id="sh-model-health-badge">94% Healthy</span>
-          </div>
-          <div style="font-size:10px;color:var(--mut);line-height:1.5;" id="sh-model-health-desc">
-            Rules are performing consistently within historical variance. No parameter or rule changes needed at this time.
-          </div>
-        </div>
+        <div class="sh-box-title">&#9879; Formula kitna tika hai</div>
+        <div id="sh-stability-container"></div>
       </div>
     </div>
   </div>
@@ -915,6 +888,7 @@ window.addEventListener('storage', function(e) {
     loadTK();
     buildACT();
     renderAll();
+    if (typeof spdRerender === 'function') spdRerender();
   }
 });
 
@@ -1479,97 +1453,7 @@ function renderCard(m){
 function renderAll(){ MKTS.forEach(renderCard); }
 
 // ─── DASHBOARD ───────────────────────────────────────────────────────────────
-function renderDash(){
-  var td=today(), days=[], totN=0,totEx=0,totExt=0,totAn=0,totBa=0,totHit=0;
-  var ms={}; MKTS.forEach(function(m){ms[m.id]={n:0,ex:0,ext:0,an:0,ba:0,any:0};});
-  var months={};
-  var ACT_SNAP = {};
-  MKS.forEach(function(mk){ ACT_SNAP[mk] = {}; for(var d in ACT[mk]) ACT_SNAP[mk][d] = ACT[mk][d]; });
-  function ypePredSnap(mkt, tdate){
-    return ypePredCore(mkt, tdate, ACT_SNAP);
-  }
-
-  for(var i=210;i>=0;i--){
-    var d=addD(td,-i), mo=d.slice(0,7);
-    if(!months[mo]) months[mo]={n:0,ex:0,ab:0,any:0};
-    var row={date:d,cells:{}};
-    MKTS.forEach(function(m){
-      var a=ACT_SNAP[m.id][d]; if(a===undefined) a=null;
-      var p=(a!==null)?ypePredSnap(m.id,d):null;
-      var c=(p&&a!==null)?cls(p,a):null;
-      row.cells[m.id]={p:p,a:a,c:c};
-      if(a!==null&&p){
-        totN++; ms[m.id].n++; months[mo].n++;
-        var isJ12 = (c==='j1j2');
-        var isExt = (c==='ext');
-        var isAn  = (p.units && p.units.indexOf(a%10)>=0);
-        var isBa  = (p.tens && p.tens.indexOf(Math.floor(a/10))>=0);
-        if(isJ12){ totEx++; ms[m.id].ex++; months[mo].ex++; }
-        if(isExt){ totExt++; ms[m.id].ext++; months[mo].ex++; }
-        if(isAn) { totAn++; ms[m.id].an++; }
-        if(isBa) { totBa++; ms[m.id].ba++; }
-        if(isAn || isBa) { months[mo].ab++; }
-        if(isJ12 || isExt || isAn || isBa) { totHit++; ms[m.id].any++; months[mo].any++; }
-      }
-    });
-    days.push(row);
-  }
-  document.getElementById('kn').textContent=totN;
-  document.getElementById('kex').textContent=totEx;
-  document.getElementById('kext').textContent=totExt;
-  document.getElementById('kan').textContent=totAn;
-  document.getElementById('kba').textContent=totBa;
-  document.getElementById('krt').textContent=totN?(Math.round(totHit/totN*1000)/10)+'%':'--';
-  document.getElementById('accrow').innerHTML=MKTS.map(function(m){
-    var s=ms[m.id];
-    var sExt=s.ext||0;
-    var pJ=s.n?((s.ex+sExt)/s.n*100):0, pA=s.n?(s.an/s.n*100):0, pB=s.n?(s.ba/s.n*100):0;
-    var pAny=s.n?(s.any/s.n*100):0;
-    function bar(lbl,pct,c){
-      return '<div class="abar-r"><div class="abar-l">'+lbl+'</div>'
-        +'<div class="abar"><div class="abar-f" style="width:'+Math.min(100,pct*4)+'%;background:'+c+'"></div></div>'
-        +'<div class="abar-v" style="color:'+c+'">'+pct.toFixed(1)+'%</div></div>';
-    }
-    return '<div class="accard"><div class="acname" style="color:'+m.col+'">'+m.lbl.toUpperCase()+'</div>'
-      +bar('Jodi',pJ,m.col)+bar('Bahar (units)',pA,'#f59e0b')+bar('Andar (tens)',pB,'#f59e0b')+bar('Any Hit',pAny,'#00d4ff')
-      +'<div style="font-size:9px;color:var(--mut);margin-top:5px">Tested: '+s.n+' days</div></div>';
-  }).join('');
-  var tbrows=days.slice().reverse().map(function(row){
-    var cells=MKTS.map(function(m){
-      var cell=row.cells[m.id];
-      var clArr=cell.p?(cell.p.cluster||[cell.p.j1,cell.p.j2]).slice(0,8):[];
-      var pc=clArr.length?clArr.map(function(n){return '<span class="pc">'+p2(n)+'</span>';}).join(' '):'<span class="pend">--</span>';
-      var hitLbl=cell.c==='j1j2'?'<span style="font-size:9px;font-weight:700"> (J)</span>':cell.c==='ext'?'<span style="font-size:9px;font-weight:700"> (O)</span>':'';
-      var ac=cell.a!==null?('<span class="anum '+actCls(cell.c)+'">'+p2(cell.a)+hitLbl+'</span>'):'<span class="pend">--</span>';
-      return '<td style="border-left:1px solid var(--brd)">'+pc+'</td><td>'+ac+'</td>';
-    }).join('');
-    return '<tr><td class="l">'+fmtS(row.date)+'</td>'+cells+'</tr>';
-  }).join('');
-  document.getElementById('dbtb').innerHTML=tbrows||'<tr><td colspan="9" class="empty">No data</td></tr>';
-  document.getElementById('dbcnt').textContent=days.length+' days shown';
-  var mlist=Object.keys(months).sort();
-  document.getElementById('motb').innerHTML=mlist.map(function(mo){
-    var s=months[mo];
-    var mktCols=MKTS.map(function(m){
-      var ex2=0,n2=0;
-      days.forEach(function(row){
-        if(row.date.slice(0,7)!==mo) return;
-        var c=row.cells[m.id];
-        if(c.a!==null&&c.p){ n2++; if(c.c==='j1j2'||c.c==='ext') ex2++; }
-      });
-      return '<td><span class="'+(n2?(ex2>0?'ex':'ms'):'')+'">'
-        +ex2+'</span><span style="font-size:9px;color:var(--mut)">/'+n2+'</span></td>';
-    }).join('');
-    var jp=s.n?(s.ex/s.n*100).toFixed(1):'--';
-    var ap=s.n?(s.any/s.n*100).toFixed(1):'--';
-    var jc=parseFloat(jp)>=5?'ex':parseFloat(jp)>0?'an':'ms';
-    var ac=parseFloat(ap)>=20?'ex':parseFloat(ap)>=10?'an':'ms';
-    return '<tr><td class="l">'+mo+'</td>'+mktCols
-      +'<td class="'+jc+'">'+s.ex+'</td><td class="an">'+s.ab+'</td>'
-      +'<td style="color:var(--mut)">'+s.n+'</td>'
-      +'<td class="'+jc+'">'+jp+'%</td><td class="'+ac+'">'+ap+'%</td></tr>';
-  }).join('');
-}
+// 28 Nov 2026: History / Hub / CSV ka code ab neeche "SPD" hisse mein hai (sirf asli ginti; plan ki list).
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
 dbg("Starting init...");
@@ -1766,104 +1650,418 @@ function mergeTKData(local, remote) {
 }
 
 
-// ─── STANDARDIZED CSV EXPORT WITH HIT / MISS & MISS DIFFERENCE ──────────────
-function getMissDiffAnalysis(preds, actual) {
-  if (actual === null || actual === undefined || isNaN(actual) || !preds || !preds.length) {
-    return { hitStr: "", diffStr: "" };
-  }
-  var act = parseInt(actual, 10);
-  if (preds.indexOf(act) !== -1) {
-    return { hitStr: "Exact hit", diffStr: "0" };
-  }
-  var minAbs = 999;
-  var bestDiff = 0;
-  preds.forEach(function(p) {
-    var d = p - act;
-    if (Math.abs(d) < minAbs) {
-      minAbs = Math.abs(d);
-      bestDiff = d;
+// ── V7: History / Hub mein kaun si list gini jaye (28 Nov 2026) ──
+// Jis din ka plan kisi market ko khelta hai, us din us market mein PLAN ki list gini jati hai (v7PlanNums: MAIN / tarikh / thanda hata kar),
+// aur plan SKIP kahe to wo din ginti mein nahi. Plan ke niyam yahan dobara nahi likhe: wahi function chalte hain jo card chalata hai.
+function v7PlanAt(d, fn){               // fn ko aise chalao jaise "aaj" = d ho, taaki us din lagu plan (override) hi lage
+  var keep = today;
+  today = function(){ return d; };
+  try { return fn(); } finally { today = keep; }
+}
+function v7DashPred(mk, d){
+  var p = ypePred(mk, d);
+  if (!p || !p.cluster || !p.cluster.length) return null;
+  var o = { cluster: p.cluster.slice(), units: p.units, tens: p.tens, plan: false, dropped: [], skip: false };
+  if (!v7IsV7(p)) return o;
+  var r = v7PlanAt(d, function(){ var nums = v7PlanNums(mk, p, d); return nums ? { nums: nums, stake: v7Stake(mk, d) } : null; });
+  if (!r) return o;                                       // us din ke plan mein ye market nahi: V7 ki top-8 list hi gini jati hai
+  o.plan = true;
+  o.cluster = r.nums.slice();
+  o.dropped = p.cluster.filter(function(n){ return r.nums.indexOf(n) < 0; });
+  o.skip = !(r.stake > 0) || !r.nums.length;             // plan ne SKIP kaha, ya list mein koi number nahi bacha
+  return o;
+}
+var SPD_CFG = {
+  model: 'V7',
+  pred: function(mk, d){ return v7DashPred(mk, d); },
+  top: null, topWhere: '', mark: null,
+  firstYear: 2013,
+  fitYears: [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+  fitYearNote: 'Training Year (2013\u20132025)',
+  postYearNote: 'Out-of-Sample (training ke baad ka saal)',
+  periodsFor: function(y, cur){
+    function P(yr){
+      var tr = yr <= 2025;
+      return { h: yr + (tr ? ' &#9733;<br>(Training Year)' : '<br>(Out-of-Sample)'), from: yr + '-01-01', to: yr + '-12-31', kind: tr ? 'fit' : 'post',
+               say: tr ? ('&#9733; ' + yr + ' training ka saal hai (model 2013&ndash;2025 ke data par bana), isliye yahan achha dikhna tay tha:') : (yr + ' training ke baad ka saal hai (asli parakh):') };
     }
-  });
-  var diffLabel = ">+-2";
-  if (minAbs === 1) diffLabel = (bestDiff > 0 ? "+1" : "-1");
-  else if (minAbs === 2) diffLabel = (bestDiff > 0 ? "+2" : "-2");
-  return { hitStr: "Exact miss", diffStr: diffLabel };
+    return (y === cur) ? [P(cur)] : [P(y), P(cur)];
+  },
+  stabNote: 'Model 2013\u20132025 ke data par train hua hai; agla retrain 1 Jan 2027 ko.'
+};
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SPD — 210-Day History + Strategy & Decision Hub: sirf asli ginti (28 Nov 2026)
+// (V7 wala roop: plan ki list gini jati hai, aur Hub saal-dar-saal ginta hai.)  Model ka formula yahan NAHI hai: ye sirf
+// SPD_CFG.pred(market, din) se wahi list maangta hai jo draw se pehle card par thi, aur use
+// asli result se milata hai. Band din (mahine ka aakhri din: Faridabad / Ghaziabad / Gali;
+// 1 tarikh: Desawar) ginti mein nahi aate. Yahan "ab due hai / pakka signal / model health %"
+// jaisa koi andaza nahi dikhaya jata: jo data mein hai wahi number, barabar ke hisaab se tulna.
+// ═══════════════════════════════════════════════════════════════════════════════
+// Results file ke 9 purane khane jo baasi / galat hain (Gali 6 & 26 Nov 2022; Faridabad 1 Jan–1 Jul 2015 ki 7 tarikh).
+// Sirf is ginti / table mein sahi value (ya khaali) dikhti hai; page ka data aur formula jaisa tha waisa hi rehta hai.
+var SPD_FIXES = {"Gali":{"2022-11-06":42,"2022-11-26":24},"Faridabad":{"2015-01-01":null,"2015-02-01":null,"2015-03-01":null,"2015-04-01":null,"2015-05-01":null,"2015-06-01":null,"2015-07-01":null}};
+var SPD_VERSION = 'v7-spd-1 2026-11-28';
+function spdClosed(mk, d){              // market us din band hota hai?
+  if (mk === 'Desawar') return parseInt(d.slice(8), 10) === 1;
+  if (mk === 'Faridabad' || mk === 'Ghaziabad' || mk === 'Gali') {
+    var x = new Date(d + 'T12:00:00Z'), n = new Date(x); n.setUTCDate(x.getUTCDate() + 1);
+    return n.getUTCMonth() !== x.getUTCMonth();
+  }
+  return false;
+}
+function spdNum(a){
+  if (a === undefined || a === null || a === '') return null;
+  var n = (typeof a === 'number') ? a : parseInt(a, 10);
+  return (isNaN(n) || n < 0 || n > 99) ? null : n;
+}
+function spdRes(mk, d){                 // us din ka asli result; band din ya khaali ho to null
+  if (spdClosed(mk, d)) return null;
+  var f = SPD_FIXES[mk];
+  if (f && Object.prototype.hasOwnProperty.call(f, d)) return f[d];
+  return spdNum(ACT[mk] ? ACT[mk][d] : null);
+}
+function spdPred(mk, d){                // wahi list jo us din draw se pehle card par thi
+  try { var p = SPD_CFG.pred(mk, d); return (p && p.cluster && (p.cluster.length || p.skip)) ? p : null; } catch(e) { return null; }
+}
+function spdTop(mk, p){                 // "top pick" (ek number) — sirf jahan model deta hai
+  if (!SPD_CFG.top) return null;
+  var t = SPD_CFG.top(mk, p);
+  return (t === undefined || t === null) ? null : t;
+}
+function spdCls(p, a){                  // j1j2 / ext = jodi hit; bh = sirf aakhri ank mila; an = sirf pehla ank mila
+  var i = p.cluster.indexOf(a);
+  if (i === 0 || i === 1) return 'j1j2';
+  if (i >= 2) return 'ext';
+  if (p.units && p.units.indexOf(a % 10) >= 0) return 'bh';
+  if (p.tens && p.tens.indexOf(Math.floor(a / 10)) >= 0) return 'an';
+  return 'miss';
+}
+function spdPct(h, n){ return n ? (h / n * 100).toFixed(1) + '%' : '--'; }
+function spdBack(h, k){ return k ? Math.round(h * 9000 / k) : 0; }      // Rs100 lagane par kitna wapas
+function spdBE(n, k){ return n ? (k / n / 90 * 100).toFixed(1) + '%' : '8.9%'; }   // barabar ke liye kitne % din hit chahiye
+function spdAnyChance(p){               // us din ki list par "any hit" ittefaq se kitni baar lagta
+  var c = 0, u = p.units || [], t = p.tens || [];
+  for (var x = 0; x < 100; x++) {
+    if (p.cluster.indexOf(x) >= 0 || u.indexOf(x % 10) >= 0 || t.indexOf(Math.floor(x / 10)) >= 0) c++;
+  }
+  return c / 100;
+}
+function spdSetHtml(id, html){ var el = document.getElementById(id); if (el) el.innerHTML = html; return el; }
+function spdAbbr(m){
+  var M = { 'Desawar': 'DSWR', 'Faridabad': 'FRBD', 'Ghaziabad': 'GZBD', 'Gali': 'GALI', 'Delhi': 'DELHI', 'Shree Ganesh': 'SG' };
+  return M[m.id] || String(m.lbl || m.id).slice(0, 5).toUpperCase();
+}
+function spdHeads(){                    // table ke upar market ke naam (page ke MKTS se)
+  var dh = document.getElementById('spd-dh');
+  if (dh && !dh.getAttribute('data-done')) {
+    dh.innerHTML = '<tr><th class="l" rowspan="2">Date</th>'
+      + MKTS.map(function(m){ return '<th colspan="2" style="border-left:1px solid var(--brd);color:' + m.col + '">' + m.lbl + '</th>'; }).join('') + '</tr>'
+      + '<tr style="font-size:8px">' + MKTS.map(function(){ return '<th style="border-left:1px solid var(--brd)">Predicted</th><th>Actual</th>'; }).join('') + '</tr>';
+    dh.setAttribute('data-done', '1');
+  }
+  var mh = document.getElementById('spd-mh');
+  if (mh && !mh.getAttribute('data-done')) {
+    mh.innerHTML = '<tr><th class="l">Month</th>'
+      + MKTS.map(function(m){ return '<th style="color:' + m.col + '">' + spdAbbr(m) + '</th>'; }).join('')
+      + '<th>Jodi</th><th>A/B</th><th>Tested</th><th>Jodi%</th><th>Any%</th></tr>';
+    mh.setAttribute('data-done', '1');
+  }
+  var tb = document.getElementById('ktp-box');
+  if (tb) tb.style.display = SPD_CFG.top ? '' : 'none';
+  var lg = document.getElementById('spd-leg-top');
+  if (lg) lg.style.display = SPD_CFG.top ? 'flex' : 'none';
+}
+function spdBadge(txt, bg, bd, col, w){
+  return '<span style="display:inline-block;margin-top:3px;background:' + bg + ';border:1px solid ' + bd + ';color:' + col + ';font-size:8px;font-weight:' + (w || 700) + ';padding:1px 6px;border-radius:3px;letter-spacing:.5px">' + txt + '</span>';
 }
 
-function exportDashboardToCSV() {
-  var csv = [];
-  var mList = (typeof MKTS !== 'undefined' && MKTS && MKTS.length) ? MKTS : [
-    {id:"Desawar",name:"Desawar"},
-    {id:"Faridabad",name:"Faridabad"},
-    {id:"Ghaziabad",name:"Ghaziabad"},
-    {id:"Gali",name:"Gali"}
-  ];
-
-  var headers = ["Date"];
-  mList.forEach(function(m) {
-    var mName = m.name || m.id;
-    headers.push(mName + " Predicted");
-    headers.push(mName + " Actual");
-    headers.push(mName + " Result");
-    headers.push(mName + " Miss Difference");
-  });
-  csv.push(headers.join(","));
-
-  var td = (typeof today === 'function') ? today() : new Date().toISOString().slice(0, 10);
-  for (var i = 210; i >= 0; i--) {
-    var d = (typeof addD === 'function') ? addD(td, -i) : (function(cur, off){
-      var dt = new Date(cur); dt.setDate(dt.getDate() + off); return dt.toISOString().slice(0, 10);
-    })(td, -i);
-
-    var row = [d];
-    var hasData = false;
-
-    mList.forEach(function(m) {
-      var a = (typeof ACT !== 'undefined' && ACT[m.id]) ? ACT[m.id][d] : (typeof TK !== 'undefined' && TK[m.id] ? TK[m.id][d] : null);
-      if (a === undefined) a = null;
-      var p = (typeof ypePred === 'function') ? ypePred(m.id, d) : null;
-
-      var pStr = "";
-      var numList = [];
-      if (p) {
-        var clArr = p.cluster || [p.j1, p.j2];
-        numList = clArr.slice(0, 8);
-        pStr = numList.map(function(n){ return String(n).padStart(2, '0'); }).join(" ");
+function renderDash(){
+  spdHeads();
+  var td=today(), days=[], totN=0,totEx=0,totExt=0,totBh=0,totAn=0,totHit=0,totK=0,tpN=0,tpH=0,chance=0;
+  var ms={}; MKTS.forEach(function(m){ms[m.id]={n:0,ex:0,ext:0,bh:0,an:0,any:0,k:0};});
+  var months={};
+  for(var i=210;i>=0;i--){
+    var d=addD(td,-i), mo=d.slice(0,7);
+    if(!months[mo]) months[mo]={n:0,ex:0,ab:0,any:0,k:0,by:{}};
+    var row={date:d,cells:{}};
+    MKTS.forEach(function(m){
+      var a=spdRes(m.id,d);
+      var p=(a!==null)?spdPred(m.id,d):null;
+      var skip=!!(p&&p.skip);                                       // plan ne us din ye market SKIP kiya (ya list mein koi number nahi bacha): dikhta hai, ginti mein nahi
+      var c=(p&&a!==null&&!skip)?spdCls(p,a):null;
+      var tp=p?spdTop(m.id,p):null;
+      var tpHit=(tp!==null&&a!==null&&a===tp);
+      var off=!!(p&&a!==null&&!skip&&p.dropped&&p.dropped.indexOf(a)>=0);   // result us number par aaya jo V7 ki list mein tha par plan ne hata diya tha
+      row.cells[m.id]={p:p,a:a,c:c,tp:tp,tpHit:tpHit,off:off,skip:skip};
+      if(a!==null&&p&&!skip){
+        var mm=months[mo].by[m.id]||(months[mo].by[m.id]={n:0,h:0,k:0});
+        var k=p.cluster.length;
+        totN++; ms[m.id].n++; months[mo].n++; mm.n++;
+        totK+=k; ms[m.id].k+=k; months[mo].k+=k; mm.k+=k;
+        var isJ12=(c==='j1j2'), isExt=(c==='ext');
+        var isBh=(p.units&&p.units.indexOf(a%10)>=0);              // Bahar = aakhri ank (units)
+        var isAn=(p.tens&&p.tens.indexOf(Math.floor(a/10))>=0);    // Andar = pehla ank (tens)
+        if(isJ12){ totEx++; ms[m.id].ex++; months[mo].ex++; mm.h++; }
+        if(isExt){ totExt++; ms[m.id].ext++; months[mo].ex++; mm.h++; }
+        if(isBh){ totBh++; ms[m.id].bh++; }
+        if(isAn){ totAn++; ms[m.id].an++; }
+        if(isBh||isAn){ months[mo].ab++; }
+        if(isJ12||isExt||isBh||isAn){ totHit++; ms[m.id].any++; months[mo].any++; }
+        if(tp!==null){ tpN++; if(tpHit) tpH++; }
+        chance+=spdAnyChance(p);
       }
-      var aStr = (a !== null && !isNaN(a)) ? String(a).padStart(2, '0') : "";
-      var analysis = getMissDiffAnalysis(numList, a);
-
-      if (aStr || pStr) hasData = true;
-      row.push('"' + pStr + '"');
-      row.push('"' + aStr + '"');
-      row.push('"' + analysis.hitStr + '"');
-      row.push('"' + analysis.diffStr + '"');
     });
-
-    if (hasData) {
-      csv.push(row.join(","));
-    }
+    days.push(row);
   }
+  var jh=totEx+totExt, good=(totN>0&&jh*90>=totK), be=spdBE(totN,totK);
+  spdSetHtml('kn', String(totN));
+  var kj=spdSetHtml('kjr', spdPct(jh,totN)); if(kj) kj.style.color=totN?(good?'var(--ok)':'var(--err)'):'';
+  spdSetHtml('kjr-s', totN?(jh+'/'+totN+' &bull; barabar '+be+' &bull; &#8377;100&rarr;&#8377;'+spdBack(jh,totK)):'barabar 8.9%');
+  spdSetHtml('kex', String(totEx));
+  spdSetHtml('kext', String(totExt));
+  spdSetHtml('kbh', String(totBh));
+  spdSetHtml('kand', String(totAn));
+  spdSetHtml('krt', totN?(Math.round(totHit/totN*1000)/10)+'%':'--');
+  spdSetHtml('krt-s', totN?('jodi+andar+bahar &bull; ittefaq se bhi '+(chance/totN*100).toFixed(1)+'%'):'jodi+andar+bahar');
+  spdSetHtml('ktp', tpN?(tpH+'/'+tpN):'--');
+  spdSetHtml('ktpr', tpN?(spdPct(tpH,tpN)+' &bull; ek number: barabar 1.1%'):'ek number roz');
+  spdSetHtml('accrow', MKTS.map(function(m){
+    var s=ms[m.id], h=s.ex+s.ext;
+    var pJ=s.n?(h/s.n*100):0, pB=s.n?(s.bh/s.n*100):0, pA=s.n?(s.an/s.n*100):0;
+    var pAny=s.n?(s.any/s.n*100):0;
+    function bar(lbl,pct,c){
+      return '<div class="abar-r"><div class="abar-l">'+lbl+'</div>'
+        +'<div class="abar"><div class="abar-f" style="width:'+Math.min(100,pct*4)+'%;background:'+c+'"></div></div>'
+        +'<div class="abar-v" style="color:'+c+'">'+pct.toFixed(1)+'%</div></div>';
+    }
+    var ok=(s.n>0&&h*90>=s.k);
+    return '<div class="accard"><div class="acname" style="color:'+m.col+'">'+m.lbl.toUpperCase()+'</div>'
+      +bar('Jodi',pJ,m.col)+bar('Bahar (units)',pB,'#f59e0b')+bar('Andar (tens)',pA,'#f59e0b')+bar('Any Hit',pAny,'#00d4ff')
+      +'<div style="font-size:9px;color:var(--mut);margin-top:5px">Tested: '+s.n+' days</div>'
+      +(s.n?'<div style="font-size:10px;margin-top:3px;font-weight:700;color:'+(ok?'var(--ok)':'var(--err)')+'">Jodi '+h+'/'+s.n+' &bull; &#8377;100&rarr;&#8377;'+spdBack(h,s.k)+' ('+(ok?'fayda':'ghata')+')</div>':'')
+      +'</div>';
+  }).join(''));
+  var tbrows=days.slice().reverse().map(function(row){
+    var any=false;
+    var cells=MKTS.map(function(m){
+      var cell=row.cells[m.id];
+      var clArr=cell.p?cell.p.cluster:[];
+      if(cell.a!==null) any=true;
+      var drp=(cell.p&&cell.p.dropped)?cell.p.dropped:[];
+      var pc=(clArr.length||drp.length)?(clArr.map(function(n){
+        return '<span class="pc"'+(cell.skip?' style="opacity:.5"':'')+'>'+p2(n)+'</span>';
+      }).concat(drp.map(function(n){
+        return '<span class="pc spd-drop" title="V7 ki list mein tha, plan ne hataya (MAIN / tarikh / thanda)">'+p2(n)+'</span>';
+      })).join(' ')+(cell.skip?' <span class="spd-skip">SKIP</span>':'')):'<span class="pend">--</span>';
+      var hitBadge='';
+      if(cell.tpHit) hitBadge=spdBadge('&#9733; TOP','rgba(251,191,36,.15)','rgba(251,191,36,.5)','#fbbf24',900);
+      else if(cell.c==='j1j2') hitBadge=spdBadge('&#9679; JODI','rgba(34,197,94,.12)','rgba(34,197,94,.35)','#22c55e');
+      else if(cell.c==='ext') hitBadge=spdBadge('&#9675; EXT','rgba(134,239,172,.08)','rgba(134,239,172,.3)','#86efac');
+      else if(cell.off) hitBadge=spdBadge('PLAN SE BAHAR','rgba(148,163,184,.1)','rgba(148,163,184,.45)','#cbd5e1');
+      else if(cell.c==='bh') hitBadge=spdBadge('BH','rgba(245,158,11,.1)','rgba(245,158,11,.3)','#f59e0b');
+      else if(cell.c==='an') hitBadge=spdBadge('AN','rgba(245,158,11,.1)','rgba(245,158,11,.3)','#f59e0b');
+      var ak=(cell.c==='j1j2'||cell.c==='ext')?'ex':(cell.off?'ms':((cell.c==='bh'||cell.c==='an')?'an':(cell.c==='miss'?'ms':'')));
+      var ac=cell.a!==null
+        ?('<div style="text-align:center"><div class="anum '+ak+'">'+p2(cell.a)+'</div>'+hitBadge+'</div>')
+        :'<span class="pend">--</span>';
+      return '<td style="border-left:1px solid var(--brd)">'+pc+'</td><td>'+ac+'</td>';
+    }).join('');
+    return '<tr><td class="l">'+fmtS(row.date)+'</td>'+cells+'</tr>';
+  }).join('');
+  spdSetHtml('dbtb', tbrows||'<tr><td colspan="'+(1+2*MKTS.length)+'" class="empty">No data</td></tr>');
+  var dc=document.getElementById('dbcnt'); if(dc) dc.textContent=days.length+' days shown';
+  var mlist=Object.keys(months).sort();
+  spdSetHtml('motb', mlist.map(function(mo){
+    var s=months[mo];
+    var mktCols=MKTS.map(function(m){
+      var b=s.by[m.id]||{n:0,h:0,k:0};
+      var cl=b.n?((b.h>0&&b.h*90>=b.k)?'ex':(b.h>0?'an':'ms')):'';
+      return '<td><span class="'+cl+'">'+b.h+'</span><span style="font-size:9px;color:var(--mut)">/'+b.n+'</span></td>';
+    }).join('');
+    var jp=s.n?(s.ex/s.n*100).toFixed(1):'--';
+    var ap=s.n?(s.any/s.n*100).toFixed(1):'--';
+    var jc=s.n?((s.ex>0&&s.ex*90>=s.k)?'ex':(s.ex/s.n>=0.06?'an':'ms')):'';
+    return '<tr><td class="l">'+mo+'</td>'+mktCols
+      +'<td class="'+jc+'">'+s.ex+'</td><td class="an">'+s.ab+'</td>'
+      +'<td style="color:var(--mut)">'+s.n+'</td>'
+      +'<td class="'+jc+'">'+jp+'%</td><td style="color:var(--mut)">'+ap+'%</td></tr>';
+  }).join(''));
+}
 
-  var csvStr = csv.join("\n");
-  var blob = new Blob([csvStr], { type: 'text/csv;charset=utf-8;' });
-  var url = URL.createObjectURL(blob);
-  var link = document.createElement("a");
-  link.setAttribute("href", url);
-  var title = (typeof docTitle !== 'undefined') ? docTitle : "SPI_Predictions";
-  link.setAttribute("download", title + "_" + td + ".csv");
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+// ─── CSV (wahi 210 din, wahi list jo draw se pehle thi, sirf asli result) ─────
+function exportDashboardToCSV(){
+  var csv=[], headers=['Date'];
+  MKTS.forEach(function(m){ var nm=m.name||m.lbl||m.id; headers.push(nm+' Predicted'); headers.push(nm+' Actual'); headers.push(nm+' Result'); headers.push(nm+' Miss Difference'); });
+  csv.push(headers.join(','));
+  var td=today();
+  for(var i=210;i>=0;i--){
+    var d=addD(td,-i), row=[d], hasData=false;
+    MKTS.forEach(function(m){
+      var a=spdRes(m.id,d);
+      var p=spdClosed(m.id,d)?null:spdPred(m.id,d);
+      var numList=p?p.cluster.slice():[];
+      var pStr=numList.map(function(n){ return p2(n); }).join(' ');
+      var aStr=(a!==null)?p2(a):'';
+      var hitStr='', diffStr='';
+      if(p&&p.skip){ if(a!==null) hitStr='Plan skip'; }
+      else if(a!==null&&numList.length){
+        if(numList.indexOf(a)>=0){ hitStr='Exact hit'; diffStr='0'; }
+        else {
+          var minAbs=999,best=0; numList.forEach(function(x){ var df=x-a; if(Math.abs(df)<minAbs){ minAbs=Math.abs(df); best=df; } });
+          hitStr='Exact miss'; diffStr=(minAbs===1)?(best>0?'+1':'-1'):((minAbs===2)?(best>0?'+2':'-2'):'>+-2');
+        }
+      }
+      if(aStr||pStr) hasData=true;
+      row.push('"'+pStr+'"'); row.push('"'+aStr+'"'); row.push('"'+hitStr+'"'); row.push('"'+diffStr+'"');
+    });
+    if(hasData) csv.push(row.join(','));
+  }
+  var blob=new Blob([csv.join('\n')],{type:'text/csv;charset=utf-8;'});
+  var url=URL.createObjectURL(blob), link=document.createElement('a');
+  link.setAttribute('href',url);
+  link.setAttribute('download',(typeof docTitle!=='undefined'?docTitle:('SPI_'+SPD_CFG.model+'_Predictions'))+'_'+td+'.csv');
+  document.body.appendChild(link); link.click(); document.body.removeChild(link);
 }
 window.exportDashboardToCSV = exportDashboardToCSV;
 
-
-
 // ═══════════════════════════════════════════════════════════════════════════════
-// STRATEGY & DECISION HUB ENGINE (V7.1 WITH RED ERROR BOX & TRAINING YEAR LABELS)
+// STRATEGY & DECISION HUB — layout V7 jaisa, par sirf asli ginti.
 // ═══════════════════════════════════════════════════════════════════════════════
+var SPD_HIST = { key: null, years: {} };     // V7: har saal alag banta hai, aur wahi saal jo chahiye (model ka ek din ginna bhaari hai)
+function spdSig(){                      // data ka chhota nishaan: results badle to ginti dobara banti hai
+  var h = 2166136261, n = 0;
+  MKTS.forEach(function(m){
+    var a = ACT[m.id] || {};
+    for (var d in a) {
+      var v = a[d]; if (v === undefined || v === null || v === '') continue;
+      n++;
+      h ^= ((parseInt(d.slice(0, 4), 10) * 372 + parseInt(d.slice(5, 7), 10) * 31 + parseInt(d.slice(8), 10)) * 131 + (+v) + m.id.length * 7919) | 0;
+      h = Math.imul(h, 16777619);
+    }
+  });
+  return n + ':' + (h >>> 0);
+}
+function spdHistYear(y){                 // ek saal ke har market ke din: list, result, hit
+  var key = today() + '|' + spdSig();
+  if (SPD_HIST.key !== key) SPD_HIST = { key: key, years: {} };
+  if (SPD_HIST.years[y]) return SPD_HIST.years[y];
+  var td = today(), pre = y + '-', out = {};
+  MKTS.forEach(function(m){
+    var data = ACT[m.id] || {}, rows = [];
+    Object.keys(data).filter(function(d){ return d.slice(0, 5) === pre && /^\d{4}-\d{2}-\d{2}$/.test(d) && d <= td; }).sort().forEach(function(d){
+      var a = spdRes(m.id, d); if (a === null) return;
+      var p = spdPred(m.id, d); if (!p || p.skip) return;
+      var c = spdCls(p, a), tp = spdTop(m.id, p);
+      rows.push({ d: d, a: a, hit: (c === 'j1j2' || c === 'ext') ? 1 : 0,
+                  u: (p.units && p.units.indexOf(a % 10) >= 0) ? 1 : 0, t: (p.tens && p.tens.indexOf(Math.floor(a / 10)) >= 0) ? 1 : 0,
+                  k: p.cluster.length, nu: (p.units || []).length, nt: (p.tens || []).length,
+                  tpn: (tp !== null) ? 1 : 0, tp: (tp !== null && tp === a) ? 1 : 0 });
+    });
+    out[m.id] = rows;
+  });
+  SPD_HIST.years[y] = out;
+  return out;
+}
+function spdHistFor(years){             // maange hue saalon ka itihaas (tarikh ke kram mein) + mahine ka index
+  var ys = years.slice().sort(), by = {};
+  MKTS.forEach(function(m){
+    var rows = [], mo = {};
+    ys.forEach(function(y){ rows = rows.concat(spdHistYear(y)[m.id]); });
+    rows.forEach(function(r){
+      var ym = r.d.slice(0, 7), s = mo[ym] || (mo[ym] = { n: 0, h: 0, k: 0, u: 0, t: 0, nu: 0, nt: 0, first: null, last: null });
+      s.n++; s.h += r.hit; s.k += r.k; s.u += r.u; s.t += r.t; s.nu += r.nu; s.nt += r.nt;
+      if (r.hit) { var dn = parseInt(r.d.slice(8), 10); if (s.first === null) s.first = dn; s.last = dn; }
+    });
+    by[m.id] = { rows: rows, mo: mo };
+  });
+  return by;
+}
+function spdAgg(rows, from, to){
+  var o = { n: 0, h: 0, k: 0, tp: 0, tpn: 0 };
+  for (var i = 0; i < rows.length; i++) {
+    var r = rows[i];
+    if ((from && r.d < from) || (to && r.d > to)) continue;
+    o.n++; o.h += r.hit; o.k += r.k; o.tp += r.tp; o.tpn += r.tpn;
+  }
+  return o;
+}
+function spdSum(a, b){ return { n: a.n + b.n, h: a.h + b.h, k: a.k + b.k, tp: (a.tp || 0) + (b.tp || 0), tpn: (a.tpn || 0) + (b.tpn || 0) }; }
+function spdGood(o){ return o.n > 0 && o.h * 90 >= o.k; }
+function spdRateCell(o){                // hit % (hara/laal) + hit/din + Rs100 par wapas
+  if (!o.n) return '<span style="color:var(--mut)">--</span>';
+  return '<span style="font-weight:800;color:' + (spdGood(o) ? 'var(--ok)' : 'var(--err)') + '">' + spdPct(o.h, o.n) + '</span>'
+    + '<div class="sh-sub">' + o.h + '/' + o.n + ' &bull; &#8377;' + spdBack(o.h, o.k) + '</div>';
+}
+function spdPlainCell(o){               // hit % (barabar se tulna) + hit/din
+  if (!o.n) return '<span style="color:var(--mut)">--</span>';
+  return '<span style="font-weight:800;color:' + (spdGood(o) ? 'var(--ok)' : 'var(--err)') + '">' + spdPct(o.h, o.n) + '</span>'
+    + '<div class="sh-sub">' + o.h + '/' + o.n + '</div>';
+}
+function spdZ3(){ return { n: 0, h: 0, k: 0 }; }
+function spdAdd3(g, r){ g.n++; g.h += r.hit; g.k += r.k; }
+function spdMerge3(a, b){ a.n += b.n; a.h += b.h; a.k += b.k; }
+function spdDryStat(rows){              // 8+ khele hue din se hit nahi -> us din hit kitni baar?  (A)   baaki din (B)
+  var A = spdZ3(), B = spdZ3(), dry = null;
+  for (var i = 0; i < rows.length; i++) {
+    var r = rows[i];
+    if (dry !== null) spdAdd3((dry >= 8) ? A : B, r);
+    if (r.hit) dry = 0; else if (dry !== null) dry++;
+  }
+  return { A: A, B: B };
+}
+function spdTimeStat(rows){             // tarikh ke hisse aur "hit ke agle din"
+  var o = { e: spdZ3(), m: spdZ3(), l: spdZ3(), ah: spdZ3(), ot: spdZ3() }, prev = null;
+  for (var i = 0; i < rows.length; i++) {
+    var r = rows[i], dn = parseInt(r.d.slice(8), 10);
+    spdAdd3(dn <= 7 ? o.e : (dn <= 20 ? o.m : o.l), r);
+    if (prev !== null) spdAdd3(prev ? o.ah : o.ot, r);
+    prev = r.hit;
+  }
+  return o;
+}
+function spdZ(h1, n1, h2, n2){          // do hit-dar ka farq ittefaq se kitna bada hai (2 se kam = ittefaq maan lo)
+  if (!n1 || !n2) return 0;
+  var p = (h1 + h2) / (n1 + n2), se = Math.sqrt(p * (1 - p) * (1 / n1 + 1 / n2));
+  return se ? (h1 / n1 - h2 / n2) / se : 0;
+}
+function spdRemaining(mk, fromDay, toDay){   // range ke bache hue khule din (aaj se aage, jinka result abhi nahi aaya)
+  var n = 0, d = fromDay, guard = 0;
+  while (d <= toDay && guard++ < 800) { if (!spdClosed(mk, d) && spdRes(mk, d) === null) n++; d = addD(d, 1); }
+  return n;
+}
+function spdYearKind(y){                // 'fit' = formula isi saal ke data par bana; 'pre' / 'post' = asli parakh; '' = pata nahi
+  var fy = SPD_CFG.fitYears || [];
+  if (!fy.length) return '';
+  if (fy.indexOf(y) >= 0) return 'fit';
+  return (y < fy[0]) ? 'pre' : 'post';
+}
+function spdYearTag(y){
+  var k = spdYearKind(y);
+  if (k === 'fit') return ' \u2605 \u2014 ' + SPD_CFG.fitYearNote;
+  if (k === 'pre') return ' \u2014 formula se pehle ka saal (asli parakh)';
+  if (k === 'post') return ' \u2014 ' + (SPD_CFG.postYearNote || 'formula ke baad ka saal (asli parakh)');
+  return '';
+}
+function spdFillYears(){
+  var sel = document.getElementById('sh-f-year'); if (!sel || sel.options.length) return;
+  var y1 = parseInt(today().slice(0, 4), 10), y0 = Math.min(y1, SPD_CFG.firstYear);
+  for (var y = y1; y >= y0; y--) {
+    var o = document.createElement('option'), k = spdYearKind(y);
+    o.value = String(y);
+    o.textContent = y + (k === 'fit' ? ' \u2605 Training Year' : (k === 'post' ? ' Out-of-Sample' : ''));
+    sel.appendChild(o);
+  }
+}
+function spdRerender(){                 // jo tab khula hai (History / Hub) use naye data se dobara banao
+  try {
+    var pd = document.getElementById('pg-d'), ps = document.getElementById('pg-s');
+    if (pd && /(^|\s)on(\s|$)/.test(pd.className)) renderDash();
+    if (ps && /(^|\s)on(\s|$)/.test(ps.className)) renderStrategyHub();
+  } catch(e) {}
+}
 
+// ── filter bar (V7 wala hi code) ──
 var SH_STATE = {
   preset: 'this-month',
   market: 'all',
@@ -1890,11 +2088,6 @@ function showShError(msg) {
     box.style.display = msg ? 'block' : 'none';
     box.textContent = msg ? ('Strategy Hub Error: ' + msg) : '';
   }
-}
-
-function shGetPred(mkt, tdate) {
-  if (typeof ypePred === 'function') return ypePred(mkt, tdate);
-  return null;
 }
 
 function fmtIsoDate(d) {
@@ -1970,6 +2163,7 @@ function onYQMFilterChange(changedField) {
 function initAndRenderStrategyHub() {
   try {
     showShError('');
+    spdFillYears();
     var sel = document.getElementById('sh-f-mkt');
     if (sel && sel.options.length <= 1) {
       MKTS.forEach(function(m) {
@@ -2081,317 +2275,268 @@ function resetStrategyFilter() {
   setStrategyPreset('this-month', true);
 }
 
+
 function renderStrategyHub() {
   try {
-    showShError('');
-    var matrixYear = SH_STATE.year || 2026;
-    var yrSpan = document.getElementById('sh-matrix-year');
-    if (yrSpan) {
-      yrSpan.textContent = (matrixYear >= 2013 && matrixYear <= 2025)
-        ? (matrixYear + ' — Training Year (2013–2025)')
-        : (matrixYear + ' — Out-of-Sample');
+    var pgS = document.getElementById('pg-s');
+    if (pgS && !/(^|\s)on(\s|$)/.test(pgS.className)) {       // Hub khula nahi hai: poore data ki bhaari ginti abhi mat karo
+      var pgD = document.getElementById('pg-d');               // (History khuli ho to use naye data se taaza kar do)
+      if (pgD && /(^|\s)on(\s|$)/.test(pgD.className)) renderDash();
+      return;
     }
+    showShError('');
+    var tToday = today();
+    var curYear = parseInt(tToday.slice(0, 4), 10);
+    var matrixYear = SH_STATE.year || curYear;
+    var yrSpan = document.getElementById('sh-matrix-year');
+    if (yrSpan) yrSpan.textContent = matrixYear + spdYearTag(matrixYear);
 
-    var fromD = SH_STATE.fromDate;
-    var toD = SH_STATE.toDate;
-    var tToday = today ? today() : new Date().toISOString().substr(0,10);
-    var refEndDate = (toD && toD < tToday) ? toD : tToday;
-    var lookbackFloor = addD(refEndDate, -180);
-
-    var dStart = new Date(fromD + 'T00:00:00');
-    var dEnd = new Date(toD + 'T00:00:00');
+    var fromD = SH_STATE.fromDate, toD = SH_STATE.toDate;
+    var refEnd = (toD && toD < tToday) ? toD : tToday;
+    var dStart = new Date(fromD + 'T00:00:00'), dEnd = new Date(toD + 'T00:00:00');
     var totalMonths = Math.max(1, (dEnd.getFullYear() - dStart.getFullYear()) * 12 + (dEnd.getMonth() - dStart.getMonth()) + 1);
-    var periodTarget = totalMonths * 3;
 
     var subEl = document.getElementById('sh-target-subheading');
     if (subEl) {
-      if (totalMonths === 1) {
-        subEl.textContent = 'Monthly goal of 3 Jodi hits for full recovery (' + fromD.slice(0,7) + '):';
-      } else {
-        subEl.textContent = 'Period goal of ' + periodTarget + ' Jodi hits (' + totalMonths + ' months × 3 hits/mo) for recovery:';
-      }
+      subEl.textContent = 'Is range mein kharcha wapas (barabar) ke liye itne jodi hit chahiye \u2014 roz ki list ke number, 90x'
+        + (totalMonths === 1 ? ' (8 number roz par mahine mein lagbhag 3):' : ':');
     }
 
-    var kpiHtml = '';
-    var targetProgressHtml = '';
-    var marketSignalsHtml = '';
-    var gapIntelHtml = '';
+    var shown = MKTS.filter(function(m){ return SH_STATE.market === 'all' || m.id === SH_STATE.market; });
+    // sirf zaroori saal: ye saal, chuna hua saal, chuni hui range ke saal, aur 'last hit' ke liye range ke aakhri din se 180 din peechhe tak
+    var lookFrom = addD(refEnd, -180), curFrom = curYear + '-01-01', need = {};
+    need[curYear] = 1; need[matrixYear] = 1;
+    for (var yy = parseInt(lookFrom.slice(0, 4), 10); yy <= parseInt(refEnd.slice(0, 4), 10); yy++) need[yy] = 1;
+    for (var yz = Math.max(SPD_CFG.firstYear, parseInt(fromD.slice(0, 4), 10)); yz <= Math.min(curYear, parseInt(toD.slice(0, 4), 10)); yz++) need[yz] = 1;
+    var by = spdHistFor(Object.keys(need));
+    function nameCell(m){ return '<td class="l" style="color:' + m.col + '">' + m.lbl + '</td>'; }
+    var ZERO = { n: 0, h: 0, k: 0, tp: 0, tpn: 0 };
+    var PER = SPD_CFG.periodsFor(matrixYear, curYear);
 
-    MKTS.forEach(function(m) {
-      if (SH_STATE.market !== 'all' && m.id !== SH_STATE.market) return;
-      var mktData = (typeof ACT !== 'undefined' && ACT[m.id]) ? ACT[m.id] : {};
-      
-      var rangeHits = 0;
-      var rangeDays = 0;
-      var lastHitDate = null;
-      var lastHitDaysAgo = '--';
-      
-      var sortedDatesDesc = Object.keys(mktData).filter(function(d){ return mktData[d] != null; }).sort().reverse();
-      
-      for (var i = 0; i < sortedDatesDesc.length; i++) {
-        var dd = sortedDatesDesc[i];
-        if (dd > toD) continue;
-        if (dd < fromD) break;
-        var a = mktData[dd];
-        var p = shGetPred(m.id, dd);
-        if (a !== null && p) {
-          rangeDays++;
-          var c = cls(p, a);
-          if (c === 'j1j2' || c === 'ext') rangeHits++;
-        }
-      }
+    var kpiHtml = '', progHtml = '', recRows = '', gapRows = '', timeRows = '', stabRows = '';
+    var recTot = [ZERO, ZERO], stabTot = PER.map(function(){ return ZERO; }), allTot = ZERO;
+    var dryTot = { A: spdZ3(), B: spdZ3() };
+    var timeTot = { e: spdZ3(), m: spdZ3(), l: spdZ3(), ah: spdZ3(), ot: spdZ3() };
 
+    shown.forEach(function(m){
+      var rows = by[m.id].rows;
+      var rg = spdAgg(rows, fromD, toD);
+
+      // pichhle hit (range ke aakhri din tak)
       var hitDates = [];
-      for (var k = 0; k < sortedDatesDesc.length; k++) {
-        var d2 = sortedDatesDesc[k];
-        if (d2 > refEndDate) continue;
-        if (d2 < lookbackFloor && hitDates.length >= 11) break;
-        var a2 = mktData[d2];
-        var p2 = shGetPred(m.id, d2);
-        var c2 = cls(p2, a2);
-        if (c2 === 'j1j2' || c2 === 'ext') {
-          if (lastHitDate === null) {
-            lastHitDate = d2;
-            var diffMs = new Date(refEndDate + 'T00:00:00') - new Date(d2 + 'T00:00:00');
-            lastHitDaysAgo = Math.max(0, Math.floor(diffMs / 86400000));
-          }
-          hitDates.push(d2);
-          if (hitDates.length >= 11) break;
-        }
+      for (var i = rows.length - 1; i >= 0 && hitDates.length < 11; i--) {
+        if (rows[i].d <= refEnd && rows[i].d >= lookFrom && rows[i].hit) hitDates.push(rows[i].d);
       }
-      
-      var avgGap = 6.2;
-      if (hitDates.length >= 4) {
-        var totalGapDays = 0;
-        var gapCnt = Math.min(10, hitDates.length - 1);
-        for (var j = 0; j < gapCnt; j++) {
-          var g = (new Date(hitDates[j]) - new Date(hitDates[j+1])) / 86400000;
-          if (g > 0 && g < 60) totalGapDays += g;
-        }
-        avgGap = (totalGapDays / gapCnt).toFixed(1);
+      var lastHit = hitDates.length ? hitDates[0] : null;
+      var gapNow = lastHit ? Math.max(0, Math.round((new Date(refEnd + 'T12:00:00Z') - new Date(lastHit + 'T12:00:00Z')) / 86400000)) : null;
+      var avgGap = null;
+      if (hitDates.length >= 3) {
+        avgGap = ((new Date(hitDates[0] + 'T12:00:00Z') - new Date(hitDates[hitDates.length - 1] + 'T12:00:00Z')) / 86400000 / (hitDates.length - 1)).toFixed(1);
       }
 
-      var diffAway = periodTarget - rangeHits;
-      var goalBadge = '';
-      if (rangeHits >= periodTarget) {
-        goalBadge = '<span class="sh-badge sh-badge-ok">&#10003; Goal Reached: ' + rangeHits + '/' + periodTarget + '</span>';
+      var statusBadge = !rg.n
+        ? '<span class="sh-badge sh-badge-dim">is range mein data nahi</span>'
+        : (spdGood(rg)
+            ? '<span class="sh-badge sh-badge-ok">&#9650; ' + spdPct(rg.h, rg.n) + ' fayda</span>'
+            : '<span class="sh-badge sh-badge-bad">&#9660; ' + spdPct(rg.h, rg.n) + ' ghata</span>');
+
+      // poori range mein barabar ke liye kitne hit chahiye: ab tak lage number + bache hue din ke number (pichhle 60 din ka ausat), 90 se bhaag
+      var rem = (toD >= tToday) ? spdRemaining(m.id, (fromD > tToday ? fromD : tToday), toD) : 0;
+      var kSum = 0, kN = 0;
+      for (var q = rows.length - 1; q >= 0 && kN < 60; q--) { kSum += rows[q].k; kN++; }
+      var kAvg = kN ? kSum / kN : 8;
+      var periodTarget = Math.max(1, Math.ceil((rg.k + kAvg * rem) / 90 - 1e-9));
+      var diffAway = periodTarget - rg.h, goalBadge;
+      if (rg.h >= periodTarget) {
+        goalBadge = '<span class="sh-badge sh-badge-ok">&#10003; ' + rg.h + '/' + periodTarget + ' hit</span>';
       } else if (diffAway <= 2) {
-        goalBadge = '<span class="sh-badge sh-badge-warn">Pending: ' + rangeHits + '/' + periodTarget + ' (' + diffAway + ' away)</span>';
+        goalBadge = '<span class="sh-badge sh-badge-warn">' + rg.h + '/' + periodTarget + ' (' + diffAway + ' kam)</span>';
       } else {
-        goalBadge = '<span class="sh-badge sh-badge-dim">Pending: ' + rangeHits + '/' + periodTarget + '</span>';
+        goalBadge = '<span class="sh-badge sh-badge-dim">' + rg.h + '/' + periodTarget + '</span>';
       }
-
-      var statusBadge = '';
-      if (typeof lastHitDaysAgo === 'number') {
-        if (lastHitDaysAgo > parseFloat(avgGap) + 1) {
-          statusBadge = '<span style="color:var(--warn);font-weight:700;">&#9888; OVERDUE</span>';
-        } else if (lastHitDaysAgo <= 2) {
-          statusBadge = '<span style="color:var(--ok);font-weight:700;">&#9889; ACTIVE</span>';
-        } else {
-          statusBadge = '<span style="color:var(--txt);font-weight:700;">ON TARGET</span>';
-        }
-      } else {
-        statusBadge = '<span style="color:var(--mut);">NORMAL</span>';
-      }
-
-      var lastHitText = lastHitDate 
-        ? lastHitDate + ' (' + lastHitDaysAgo + ' days ago)'
-        : 'None recorded';
-
       kpiHtml += '<div class="sh-kpi-card" style="border-top-color:' + m.col + ';">'
         + '<div class="sh-kpi-header">'
           + '<span class="sh-kpi-title" style="color:' + m.col + '">' + m.lbl + '</span>'
           + statusBadge
         + '</div>'
         + '<div class="sh-kpi-hits-row">'
-          + '<span class="sh-kpi-hitcount">' + rangeHits + '</span>'
+          + '<span class="sh-kpi-hitcount">' + rg.h + '</span>'
           + '<span style="font-size:11px;color:var(--mut);">Jodi Hits</span>'
           + '<span style="margin-left:auto;">' + goalBadge + '</span>'
         + '</div>'
         + '<div class="sh-kpi-meta">'
-          + '<div>Last Hit: <strong>' + lastHitText + '</strong></div>'
-          + '<div>Current Gap: <strong>' + (typeof lastHitDaysAgo==='number'?lastHitDaysAgo+' Days':'--') + '</strong> <span style="color:var(--mut);font-size:10px;">(Market Avg: ' + avgGap + 'd)</span></div>'
+          + '<div>Khele din: <strong>' + rg.n + '</strong>' + (rem ? ' <span style="color:var(--mut);font-size:10px;">(' + rem + ' din baaki)</span>' : '') + '</div>'
+          + '<div>Last Hit: <strong>' + (lastHit ? lastHit + ' (' + gapNow + ' din pehle)' : 'koi nahi (180 din mein)') + '</strong></div>'
+          + '<div>Average gap: <strong>' + (avgGap !== null ? avgGap + ' din' : '--') + '</strong> <span style="color:var(--mut);font-size:10px;">(pichhle ' + Math.max(0, hitDates.length - 1) + ' gap)</span></div>'
         + '</div>'
         + '</div>';
 
-      var pct = Math.min(100, Math.round((rangeHits / periodTarget) * 100));
-      var barCol = rangeHits >= periodTarget ? 'var(--ok)' : (periodTarget - rangeHits <= 2) ? 'var(--warn)' : 'var(--des)';
-      targetProgressHtml += '<div style="margin-bottom:10px;">'
+      var pct = Math.min(100, Math.round((rg.h / periodTarget) * 100));
+      var barCol = rg.h >= periodTarget ? 'var(--ok)' : (periodTarget - rg.h <= 2) ? 'var(--warn)' : 'var(--des)';
+      progHtml += '<div style="margin-bottom:10px;">'
         + '<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;">'
           + '<span style="font-weight:600;color:' + m.col + '">' + m.lbl + '</span>'
-          + '<span style="font-family:monospace;font-weight:700;">' + rangeHits + ' / ' + periodTarget + ' Hits</span>'
+          + '<span style="font-family:monospace;font-weight:700;">' + rg.h + ' / ' + periodTarget + ' Hits</span>'
         + '</div>'
         + '<div class="sh-progress-bar"><div class="sh-progress-fill" style="width:' + pct + '%;background:' + barCol + ';"></div></div>'
         + '</div>';
 
-      var signalText = '';
-      if (typeof lastHitDaysAgo === 'number') {
-        if (lastHitDaysAgo > parseFloat(avgGap) + 1) {
-          signalText = '<span style="color:var(--warn);font-weight:700;">OVERDUE (High Probability Zone)</span>';
-        } else if (lastHitDaysAgo <= 2) {
-          signalText = '<span style="color:var(--ok);font-weight:700;">STRONG SIGNAL (Pattern Hot)</span>';
-        } else {
-          signalText = '<span style="color:var(--des);font-weight:600;">WARM PLAY (Normal Rhythm)</span>';
-        }
-      } else {
-        signalText = '<span style="color:var(--mut);">READY</span>';
-      }
+      // asli record: chuni range + is saal ab tak
+      var y365 = spdAgg(rows, curFrom, tToday);
+      recRows += '<tr>' + nameCell(m) + '<td>' + spdRateCell(rg) + '</td><td>' + spdRateCell(y365) + '</td></tr>';
+      recTot = [spdSum(recTot[0], rg), spdSum(recTot[1], y365)];
+      allTot = spdSum(allTot, spdAgg(rows, curFrom, null));
 
-      marketSignalsHtml += '<div class="sh-signal-item">'
-        + '<span style="font-weight:600;color:' + m.col + '">' + m.lbl + '</span>'
-        + signalText
-        + '</div>';
+      // sookha (gap): is saal ka data
+      var rowsCur = rows.filter(function(r){ return r.d >= curFrom; });
+      var ds = spdDryStat(rowsCur);
+      gapRows += '<tr>' + nameCell(m)
+        + '<td>' + (gapNow !== null ? gapNow + ' din' : '--') + '</td>'
+        + '<td>' + spdPlainCell(ds.A) + '</td><td>' + spdPlainCell(ds.B) + '</td></tr>';
+      spdMerge3(dryTot.A, ds.A); spdMerge3(dryTot.B, ds.B);
 
-      var gapStatus = (typeof lastHitDaysAgo === 'number' && lastHitDaysAgo > parseFloat(avgGap))
-        ? '<span style="color:var(--warn);font-weight:700;">Cycle Extended</span>'
-        : '<span style="color:var(--ok);font-weight:600;">Within Normal Cycle</span>';
+      // tarikh / hit ke agle din: is saal ka data
+      var ts = spdTimeStat(rowsCur);
+      timeRows += '<tr>' + nameCell(m)
+        + '<td>' + spdPlainCell(ts.e) + '</td><td>' + spdPlainCell(ts.m) + '</td><td>' + spdPlainCell(ts.l) + '</td>'
+        + '<td>' + spdPlainCell(ts.ah) + '</td></tr>';
+      ['e', 'm', 'l', 'ah', 'ot'].forEach(function(kk){ spdMerge3(timeTot[kk], ts[kk]); });
 
-      gapIntelHtml += '<div class="sh-signal-item">'
-        + '<span><strong style="color:' + m.col + '">' + m.lbl + ':</strong> ' + avgGap + 'd avg gap</span>'
-        + '<span>At Day ' + lastHitDaysAgo + ' &bull; ' + gapStatus + '</span>'
-        + '</div>';
+      // formula kitna tika: alag-alag daur
+      var cellsP = '';
+      PER.forEach(function(pp, ix){ var s = spdAgg(rows, pp.from || null, pp.to || null); cellsP += '<td>' + spdRateCell(s) + '</td>'; stabTot[ix] = spdSum(stabTot[ix], s); });
+      stabRows += '<tr>' + nameCell(m) + cellsP + '</tr>';
     });
 
-    document.getElementById('sh-kpi-container').innerHTML = kpiHtml;
-    document.getElementById('sh-target-progress-container').innerHTML = targetProgressHtml;
-    document.getElementById('sh-market-signals-container').innerHTML = marketSignalsHtml;
-    document.getElementById('sh-gap-intelligence-container').innerHTML = gapIntelHtml;
+    var totName = '<td class="l" style="color:var(--txt)">Sab milakar</td>';
+    var multi = shown.length > 1;
 
-    var monthsList = [];
-    for (var mo = 1; mo <= 12; mo++) {
-      monthsList.push(matrixYear + '-' + (mo < 10 ? '0' : '') + mo);
+    spdSetHtml('sh-kpi-container', kpiHtml);
+    spdSetHtml('sh-target-progress-container', progHtml);
+
+    // ── Asli record ──
+    var recHtml = '<div class="sh-table-wrap"><table class="sh-table sh-mini"><thead><tr><th class="l">Market</th><th>Chuni hui range</th><th>Is saal ab tak (' + curYear + ')</th></tr></thead><tbody>'
+      + recRows
+      + (multi ? '<tr>' + totName + '<td>' + spdRateCell(recTot[0]) + '</td><td>' + spdRateCell(recTot[1]) + '</td></tr>' : '')
+      + '</tbody></table></div>'
+      + '<div class="sh-note">Har khane mein: <b>hit %</b>, phir hit/din, phir &#8377;100 lagane par kitna wapas. <b>Barabar = &#8377;100 par &#8377;100</b> (8 number roz par 8.9% din hit).</div>';
+    if (SPD_CFG.top && allTot.tpn) {
+      recHtml += '<div class="sh-note">&#9733; &lsquo;Top pick&rsquo; (ek number roz)' + (SPD_CFG.topWhere ? ' &mdash; ' + SPD_CFG.topWhere : '') + ', ' + curYear + ' mein: <b>' + allTot.tp + '/' + allTot.tpn + ' = ' + spdPct(allTot.tp, allTot.tpn) + '</b>. Ek number par barabar ke liye 1.1% chahiye.</div>';
     }
+    spdSetHtml('sh-record-container', recHtml);
 
-    var jodiRowsHtml = '';
-    var andarRowsHtml = '';
-    var baharRowsHtml = '';
-    var firstHitRowsHtml = '';
-    var lastHitRowsHtml = '';
+    // ── Hit gap: kya "due" hota hai? ──
+    var zDry = spdZ(dryTot.A.h, dryTot.A.n, dryTot.B.h, dryTot.B.n);
+    var pA = spdPct(dryTot.A.h, dryTot.A.n), pB = spdPct(dryTot.B.h, dryTot.B.n);
+    var dryMsg;
+    if (!dryTot.A.n || !dryTot.B.n) dryMsg = 'Abhi itna data nahi ki kuchh kaha jaye.';
+    else if (Math.abs(zDry) < 2) dryMsg = 'Lamba sookha chalne se agle din hit ka chance <b>nahi badhta</b>: sookhe ke baad ' + pA + ', baaki din ' + pB + ' &mdash; itna farq ittefaq se bhi aata hai. Yani &lsquo;ab due hai&rsquo; wali baat data mein nahi hai.';
+    else if (zDry > 0) dryMsg = 'Sookhe ke baad hit thoda zyada dikhta hai (' + pA + ' vs ' + pB + '). Phir bhi barabar se tulna karke hi dekho.';
+    else dryMsg = 'Sookhe ke baad hit <b>kam hi</b> dikhta hai (' + pA + ' vs ' + pB + '). Yani &lsquo;ab due hai&rsquo; soch kar daam badhane ka koi aadhaar data mein nahi hai.';
+    spdSetHtml('sh-gap-container',
+      '<div class="sh-table-wrap"><table class="sh-table sh-mini"><thead><tr><th class="l">Market</th><th>' + (refEnd === tToday ? 'Abhi gap' : 'Gap (' + refEnd + ' tak)') + '</th><th>8+ din sookhe ke baad</th><th>Baaki din</th></tr></thead><tbody>'
+      + gapRows
+      + (multi ? '<tr>' + totName + '<td></td><td>' + spdPlainCell(dryTot.A) + '</td><td>' + spdPlainCell(dryTot.B) + '</td></tr>' : '')
+      + '</tbody></table></div>'
+      + '<div class="sh-note">Is saal (' + curYear + ') ke data par: jab 8 ya zyada khele hue din se hit nahi aaya, tab agle din hit kitni baar aaya. ' + dryMsg + '</div>');
 
-    MKTS.forEach(function(m) {
-      if (SH_STATE.market !== 'all' && m.id !== SH_STATE.market) return;
-      var mktData = (typeof ACT !== 'undefined' && ACT[m.id]) ? ACT[m.id] : {};
+    // ── Tarikh aur hit ke baad ──
+    var zAh = spdZ(timeTot.ah.h, timeTot.ah.n, timeTot.ot.h, timeTot.ot.n);
+    var ahMsg = (!timeTot.ah.n || !timeTot.ot.n) ? ''
+      : (Math.abs(zAh) < 2
+          ? 'Hit ke agle din ' + spdPct(timeTot.ah.h, timeTot.ah.n) + ', baaki din ' + spdPct(timeTot.ot.h, timeTot.ot.n) + ' &mdash; koi asli farq nahi.'
+          : 'Hit ke agle din ' + spdPct(timeTot.ah.h, timeTot.ah.n) + ', baaki din ' + spdPct(timeTot.ot.h, timeTot.ot.n) + '.');
+    spdSetHtml('sh-timing-container',
+      '<div class="sh-table-wrap"><table class="sh-table sh-mini"><thead><tr><th class="l">Market</th><th>Tarikh 1&ndash;7</th><th>8&ndash;20</th><th>21&ndash;31</th><th>Hit ke agle din</th></tr></thead><tbody>'
+      + timeRows
+      + (multi ? '<tr>' + totName + '<td>' + spdPlainCell(timeTot.e) + '</td><td>' + spdPlainCell(timeTot.m) + '</td><td>' + spdPlainCell(timeTot.l) + '</td><td>' + spdPlainCell(timeTot.ah) + '</td></tr>' : '')
+      + '</tbody></table></div>'
+      + '<div class="sh-note">Is saal (' + curYear + ') ke data par jodi hit %. ' + ahMsg + ' 1&ndash;2% ka farq ittefaq se bhi aata hai &mdash; ise niyam mat banao.</div>');
 
-      var totalJodiYear = 0;
-      var totalAndarYear = 0;
-      var totalBaharYear = 0;
+    // ── Formula kitna tika hai ──
+    var stMsg = '';
+    ['fit', 'pre', 'mid', 'post'].forEach(function(kind){
+      PER.forEach(function(pp, ix){
+        if (pp.kind !== kind) return;
+        var s = stabTot[ix]; if (!s.n) return;
+        stMsg += pp.say + ' <b>' + spdPct(s.h, s.n) + '</b> (' + s.h + '/' + s.n + '; &#8377;100&rarr;&#8377;' + spdBack(s.h, s.k)
+          + (kind === 'fit' ? '' : (spdGood(s) ? ', barabar se upar' : ', barabar se neeche = ghata'))
+          + ((kind === 'post' && s.n < 400 * shown.length) ? '; din kam hain, pakka nahi' : '') + '). ';
+      });
+    });
+    stMsg += SPD_CFG.stabNote || '';
+    spdSetHtml('sh-stability-container',
+      '<div class="sh-table-wrap"><table class="sh-table sh-mini"><thead><tr><th class="l">Market</th>'
+      + PER.map(function(pp){ return '<th>' + pp.h + '</th>'; }).join('') + '</tr></thead><tbody>'
+      + stabRows
+      + (multi ? '<tr>' + totName + stabTot.map(function(s){ return '<td>' + spdRateCell(s) + '</td>'; }).join('') + '</tr>' : '')
+      + '</tbody></table></div>'
+      + '<div class="sh-note">' + stMsg + '</div>');
 
-      var jodiCells = '';
-      var andarCells = '';
-      var baharCells = '';
-      var firstHitCells = '';
-      var lastHitCells = '';
+    // ── Matrices (chuna hua saal) ──
+    var monthsList = [];
+    for (var mo = 1; mo <= 12; mo++) monthsList.push(matrixYear + '-' + (mo < 10 ? '0' : '') + mo);
 
-      var allFirstHitDays = [];
-      var allLastHitDays = [];
+    var jodiRowsHtml = '', unitsRowsHtml = '', tensRowsHtml = '', firstHitRowsHtml = '', lastHitRowsHtml = '';
+    shown.forEach(function(m){
+      var moIdx = by[m.id].mo;
+      var yr = { n: 0, h: 0, k: 0, u: 0, t: 0, nu: 0, nt: 0 };
+      var jodiCells = '', unitsCells = '', tensCells = '', firstHitCells = '', lastHitCells = '';
+      var allFirst = [], allLast = [];
 
-      monthsList.forEach(function(moStr, moZeroIdx) {
+      monthsList.forEach(function(moStr, moZeroIdx){
         var moNum = moZeroIdx + 1;
         var isSelectedMo = (SH_STATE.month !== 'all' && parseInt(SH_STATE.month, 10) === moNum) ||
                            (SH_STATE.quarter === 'Q1' && moNum >= 1 && moNum <= 3) ||
                            (SH_STATE.quarter === 'Q2' && moNum >= 4 && moNum <= 6) ||
                            (SH_STATE.quarter === 'Q3' && moNum >= 7 && moNum <= 9) ||
                            (SH_STATE.quarter === 'Q4' && moNum >= 10 && moNum <= 12);
-        var cellHighlight = isSelectedMo ? ' style="background:rgba(0,212,255,0.07);"' : '';
-
-        var datesInMo = [];
-        for (var day = 1; day <= 31; day++) {
-          var ddStr = moStr + '-' + (day < 10 ? '0' : '') + day;
-          if (mktData[ddStr] !== undefined && mktData[ddStr] !== null) {
-            datesInMo.push(ddStr);
-          }
+        var hl = isSelectedMo ? ' style="background:rgba(0,212,255,0.07);"' : '';
+        var s = moIdx[moStr];
+        if (!s || !s.n) {
+          var blank = '<td' + hl + '><span style="color:var(--dim)">&middot;</span></td>';
+          jodiCells += blank; unitsCells += blank; tensCells += blank; firstHitCells += blank; lastHitCells += blank;
+          return;
         }
-        
-        var mJodiHits = 0;
-        var mAndarHits = 0;
-        var mBaharHits = 0;
-        var firstHitDay = null;
-        var lastHitDay = null;
+        ['n', 'h', 'k', 'u', 't', 'nu', 'nt'].forEach(function(kk){ yr[kk] += s[kk]; });
 
-        datesInMo.forEach(function(dd) {
-          var a = mktData[dd];
-          var p = shGetPred(m.id, dd);
-          if (!p) return;
-          var c = cls(p, a);
-          var dayNum = parseInt(dd.substr(8, 2), 10);
+        var jCls = (s.h > 0 && s.h * 90 >= s.k) ? 'sh-cell-ok' : (s.h >= 2 ? 'sh-cell-warn' : 'sh-cell-dim');
+        jodiCells += '<td' + hl + ' title="' + s.h + ' hit / ' + s.n + ' din"><span class="sh-cell-badge ' + jCls + '">' + s.h + '</span></td>';
 
-          if (c === 'j1j2' || c === 'ext') {
-            mJodiHits++;
-            if (firstHitDay === null) firstHitDay = dayNum;
-            lastHitDay = dayNum;
-          }
+        var uNet = 9 * s.u - s.nu, tNet = 9 * s.t - s.nt;
+        var uCls = (s.u > 0 && uNet >= 0) ? 'sh-cell-ok' : ((s.u > 0 && uNet >= -9) ? 'sh-cell-warn' : 'sh-cell-dim');
+        var tCls = (s.t > 0 && tNet >= 0) ? 'sh-cell-ok' : ((s.t > 0 && tNet >= -9) ? 'sh-cell-warn' : 'sh-cell-dim');
+        unitsCells += '<td' + hl + ' title="' + s.u + ' hit / ' + s.n + ' din"><span class="sh-cell-badge ' + uCls + '">' + s.u + '</span></td>';
+        tensCells += '<td' + hl + ' title="' + s.t + ' hit / ' + s.n + ' din"><span class="sh-cell-badge ' + tCls + '">' + s.t + '</span></td>';
 
-          if (p.units && p.units.indexOf(a % 10) >= 0) {
-            mAndarHits++;
-          }
-
-          if (p.tens && p.tens.indexOf(Math.floor(a / 10)) >= 0) {
-            mBaharHits++;
-          }
-        });
-
-        totalJodiYear += mJodiHits;
-        totalAndarYear += mAndarHits;
-        totalBaharYear += mBaharHits;
-
-        var jBadgeCls = mJodiHits >= 3 ? 'sh-cell-ok' : mJodiHits === 2 ? 'sh-cell-warn' : 'sh-cell-dim';
-        jodiCells += '<td' + cellHighlight + '><span class="sh-cell-badge ' + jBadgeCls + '">' + mJodiHits + '</span></td>';
-
-        var aBadgeCls = mAndarHits >= 10 ? 'sh-cell-ok' : mAndarHits >= 4 ? 'sh-cell-warn' : 'sh-cell-dim';
-        var bBadgeCls = mBaharHits >= 10 ? 'sh-cell-ok' : mBaharHits >= 5 ? 'sh-cell-warn' : 'sh-cell-dim';
-        andarCells += '<td' + cellHighlight + '><span class="sh-cell-badge ' + aBadgeCls + '">' + mAndarHits + '</span></td>';
-        baharCells += '<td' + cellHighlight + '><span class="sh-cell-badge ' + bBadgeCls + '">' + mBaharHits + '</span></td>';
-
-        if (firstHitDay !== null) {
-          allFirstHitDays.push(firstHitDay);
-          var isEarly = firstHitDay <= 3;
-          firstHitCells += '<td style="' + (isEarly ? 'color:var(--ok);font-weight:700;' : '') + '">D' + firstHitDay + '</td>';
-        } else {
-          firstHitCells += '<td style="color:var(--mut);">--</td>';
-        }
-
-        if (lastHitDay !== null) {
-          allLastHitDays.push(lastHitDay);
-          lastHitCells += '<td style="color:var(--txt);">D' + lastHitDay + '</td>';
-        } else {
-          lastHitCells += '<td style="color:var(--mut);">--</td>';
-        }
+        if (s.first !== null) { allFirst.push(s.first); firstHitCells += '<td' + hl + '>D' + s.first + '</td>'; }
+        else firstHitCells += '<td' + (isSelectedMo ? ' style="background:rgba(0,212,255,0.07);color:var(--mut);"' : ' style="color:var(--mut);"') + '>--</td>';
+        if (s.last !== null) { allLast.push(s.last); lastHitCells += '<td' + hl + '>D' + s.last + '</td>'; }
+        else lastHitCells += '<td' + (isSelectedMo ? ' style="background:rgba(0,212,255,0.07);color:var(--mut);"' : ' style="color:var(--mut);"') + '>--</td>';
       });
 
-      var avgFirstDay = allFirstHitDays.length > 0 
-        ? 'D' + Math.round(allFirstHitDays.reduce(function(a,b){return a+b;},0) / allFirstHitDays.length)
-        : '--';
-      var avgLastDay = allLastHitDays.length > 0 
-        ? 'D' + Math.round(allLastHitDays.reduce(function(a,b){return a+b;},0) / allLastHitDays.length)
-        : '--';
+      var avgFirst = allFirst.length ? 'D' + Math.round(allFirst.reduce(function(a, b){ return a + b; }, 0) / allFirst.length) : '--';
+      var avgLast = allLast.length ? 'D' + Math.round(allLast.reduce(function(a, b){ return a + b; }, 0) / allLast.length) : '--';
 
-      var jTotCls = totalJodiYear >= 20 ? 'sh-cell-ok' : 'sh-cell-warn';
-      jodiRowsHtml += '<tr><td class="l" style="color:' + m.col + '">' + m.lbl + '</td>'
-        + jodiCells
-        + '<td><span class="sh-cell-badge ' + jTotCls + '" style="font-size:12px;">' + totalJodiYear + '</span></td></tr>';
+      var jTotCls = !yr.n ? 'sh-cell-dim' : ((yr.h > 0 && yr.h * 90 >= yr.k) ? 'sh-cell-ok' : 'sh-cell-bad');
+      jodiRowsHtml += '<tr>' + nameCell(m) + jodiCells
+        + '<td><span class="sh-cell-badge ' + jTotCls + '" style="font-size:12px;">' + yr.h + '</span><div class="sh-sub">' + spdPct(yr.h, yr.n) + '</div></td></tr>';
 
-      andarRowsHtml += '<tr><td class="l" style="color:' + m.col + '">' + m.lbl + '</td>'
-        + andarCells
-        + '<td style="font-weight:800;color:var(--txt);">' + totalAndarYear + '</td></tr>';
+      var uOk = yr.u > 0 && 9 * yr.u >= yr.nu, tOk = yr.t > 0 && 9 * yr.t >= yr.nt;
+      unitsRowsHtml += '<tr>' + nameCell(m) + unitsCells
+        + '<td style="font-weight:800;color:' + (!yr.n ? 'var(--mut)' : (uOk ? 'var(--ok)' : 'var(--err)')) + ';">' + yr.u + '<div class="sh-sub">' + spdPct(yr.u, yr.n) + '</div></td></tr>';
+      tensRowsHtml += '<tr>' + nameCell(m) + tensCells
+        + '<td style="font-weight:800;color:' + (!yr.n ? 'var(--mut)' : (tOk ? 'var(--ok)' : 'var(--err)')) + ';">' + yr.t + '<div class="sh-sub">' + spdPct(yr.t, yr.n) + '</div></td></tr>';
 
-      baharRowsHtml += '<tr><td class="l" style="color:' + m.col + '">' + m.lbl + '</td>'
-        + baharCells
-        + '<td style="font-weight:800;color:var(--txt);">' + totalBaharYear + '</td></tr>';
-
-      firstHitRowsHtml += '<tr><td class="l" style="color:' + m.col + '">' + m.lbl + '</td>'
-        + firstHitCells
-        + '<td style="font-weight:800;color:var(--ok);">' + avgFirstDay + '</td></tr>';
-
-      lastHitRowsHtml += '<tr><td class="l" style="color:' + m.col + '">' + m.lbl + '</td>'
-        + lastHitCells
-        + '<td style="font-weight:800;color:var(--txt);">' + avgLastDay + '</td></tr>';
+      firstHitRowsHtml += '<tr>' + nameCell(m) + firstHitCells + '<td style="font-weight:800;color:var(--txt);">' + avgFirst + '</td></tr>';
+      lastHitRowsHtml += '<tr>' + nameCell(m) + lastHitCells + '<td style="font-weight:800;color:var(--txt);">' + avgLast + '</td></tr>';
     });
 
-    document.getElementById('sh-jodi-tbody').innerHTML = jodiRowsHtml;
-    document.getElementById('sh-andar-tbody').innerHTML = andarRowsHtml;
-    document.getElementById('sh-bahar-tbody').innerHTML = baharRowsHtml;
-    document.getElementById('sh-firsthit-tbody').innerHTML = firstHitRowsHtml;
-    document.getElementById('sh-lasthit-tbody').innerHTML = lastHitRowsHtml;
+    spdSetHtml('sh-jodi-tbody', jodiRowsHtml);
+    spdSetHtml('sh-units-tbody', unitsRowsHtml);
+    spdSetHtml('sh-tens-tbody', tensRowsHtml);
+    spdSetHtml('sh-firsthit-tbody', firstHitRowsHtml);
+    spdSetHtml('sh-lasthit-tbody', lastHitRowsHtml);
 
   } catch(err) {
     showShError(err && err.message ? err.message : String(err));
