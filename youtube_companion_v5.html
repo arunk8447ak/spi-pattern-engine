@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- V5 page, 28 Nov 2026: 210-Day History + Hub ab wahi list ginte hain jo draw se pehle Predictions tab par thi. Prediction ka formula / SAGE niyam nahi badle. -->
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>SPI - YouTube Companion V5 SAGE ADAPTIVE</title>
@@ -496,7 +497,7 @@ table.ht tr:hover td{background:rgba(255,255,255,.04)}
   <div class="mgrid" id="mgrid"></div>
 </div>
 <div class="pg" id="pg-d">
-  <div class="sechd" style="margin-top:4px">&#9889; Overall Performance &mdash; Last 210 Days <span style="font-size:9px;color:#fbbf24;letter-spacing:1px">&#9733; V4 &mdash; STRATEGY 2 HYBRID</span></div>
+  <div class="sechd" style="margin-top:4px">&#9889; Overall Performance &mdash; Last 210 Days <span style="font-size:9px;color:#fbbf24;letter-spacing:1px">&#9733; V5 &mdash; SAGE + FORMULA</span></div>
   <div class="kpirow">
     <div class="kpi"><div class="kpi-l">Predictions Made</div><div class="kpi-v" id="kn">-</div><div class="kpi-s">days validated</div></div>
     <div class="kpi" style="border-color:rgba(251,191,36,.4)"><div class="kpi-l" style="color:#fbbf24">&#9733; Top Pick Hits</div><div class="kpi-v" style="color:#fbbf24" id="ktp">-</div><div class="kpi-s">strategy 2 single num</div></div>
@@ -507,6 +508,7 @@ table.ht tr:hover td{background:rgba(255,255,255,.04)}
     <div class="kpi"><div class="kpi-l">Bahar Hits</div><div class="kpi-v" style="color:#f59e0b" id="kba">-</div><div class="kpi-s">tens digit hits</div></div>
     <div class="kpi"><div class="kpi-l">Any Hit Rate</div><div class="kpi-v" style="color:var(--des)" id="krt">-</div><div class="kpi-s">jodi+andar+bahar</div></div>
   </div>
+  <div style="background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.22);border-radius:10px;padding:10px 14px;font-size:11.5px;color:var(--txt);line-height:1.6;margin:-4px 0 18px">Har din ki list wahi hai jo draw se pehle <b>Predictions tab</b> par thi (&#9889; = SAGE niyam wala din). Hub bhi isi list se ginta hai, isliye dono tab ke hit ab ek jaise hain. Asli kasauti <b>Jodi</b> hai: 8 number par barabar = 8.9% hit.</div>
   <div class="sechd">Accuracy by Market</div>
   <div class="accrow" id="accrow"></div>
   <div class="sechd">All Markets &mdash; Last 210 Days</div>
@@ -2420,81 +2422,33 @@ function renderCard(m){
 }
 function renderAll(){ MKTS.forEach(renderCard); }
 
+// ─── 28 Nov 2026: History / Hub ke liye "draw se pehle wali list" ───────────────
+// ypePred ko hi chalata hai (formula + SAGE, bilkul wahi jo Predictions tab dikhata hai), bas us tarikh ke
+// is market ka aur isse BAAD khulne wale market ka result us waqt ke liye chhupa deta hai. Isse History mein
+// wahi list aati hai jo draw se pehle card par thi; koi niyam baad mein aaye result ko dekh kar list nahi badal sakta.
+// Prediction ka koi formula / niyam yahan nahi badla.
+function v5PredBefore(mkt, d){
+  var hidden = [];
+  try {
+    [ACT, RD, RECENT].forEach(function(S){
+      if (!S) return;
+      MKS.forEach(function(x){
+        if (ORDER[x] >= ORDER[mkt] && S[x] && S[x][d] !== undefined) { hidden.push([S[x], S[x][d]]); S[x][d] = undefined; }
+      });
+    });
+    return ypePred(mkt, d);
+  } finally {
+    for (var i = 0; i < hidden.length; i++) hidden[i][0][d] = hidden[i][1];
+  }
+}
+
 // ─── DASHBOARD ───────────────────────────────────────────────────────────────
 function renderDash(){
   var td=today(), days=[], totN=0,totEx=0,totExt=0,totAn=0,totBa=0,totHit=0,totTp=0,totTpN=0;
   var ms={}; MKTS.forEach(function(m){ms[m.id]={n:0,ex:0,an:0,ba:0};});
   var months={};
-  // Snapshot ACT at render time — prevents result entry from shifting historical predictions
   var ACT_SNAP = {};
   MKS.forEach(function(mk){ ACT_SNAP[mk] = {}; if(ACT[mk]){ for(var d in ACT[mk]) ACT_SNAP[mk][d] = ACT[mk][d]; } });
-  function ypePredSnap(mkt, tdate){
-    var logic=BEST_LOGIC[mkt]; if(!logic) return null;
-    var mk1=logic[0],p1=logic[1],mk2=logic[2],p2=logic[3],k=logic[4],tname=logic[5];
-    function getDigitSnap(src, pos){
-      var try_dates=[];
-      if(ORDER[src] < ORDER[mkt]) try_dates.push(tdate);
-      for(var i=1;i<=10;i++) try_dates.push(addD(tdate,-i));
-      for(var i=0;i<try_dates.length;i++){
-        var d=try_dates[i];
-        if(isMarketClosed(src,d)) continue;
-        var dv=(ACT_SNAP[src] && ACT_SNAP[src][d]!==undefined) ? ACT_SNAP[src][d]
-              : (RD[src] && RD[src][d]!==undefined) ? RD[src][d] : null;
-        if(dv!==undefined&&dv!==null) return pos==='T'?Math.floor(dv/10):(dv%10);
-      }
-      return null;
-    }
-    var d1t=getDigitSnap(mk1,p1), d2t=getDigitSnap(mk2,p2);
-    if(d1t===null||d2t===null) return null;
-    var Ntoday=d1t*10+d2t;
-    var raw_m1=((Ntoday+k)%100+100)%100;
-    var raw_m2=((Ntoday-k)%100+100)%100;
-    var m1,m2;
-    if(tname==='raw'){ m1=raw_m1; m2=raw_m2; }
-else if(tname==='palti'){ m1=palti(raw_m1); m2=palti(raw_m2); }
-else if(tname==='pal+full'){ m1=palti(fullRashi(raw_m1)); m2=palti(fullRashi(raw_m2)); }
-else if(tname==='inner'){ m1=innerRashi(raw_m1); m2=innerRashi(raw_m2); }
-else if(tname==='outer'){ m1=outerRashi(raw_m1); m2=outerRashi(raw_m2); }
-else { m1=raw_m1; m2=raw_m2; }
-    var cluster=getCluster(m1,m2);
-    // Add yesterday's prediction as bonus lag-catcher (fixes +1/-1 day pattern)
-    var yprev=ypePredSnap_inner(mkt, addD(tdate,-1), ACT_SNAP);
-    if(yprev){ [yprev.j1,yprev.j2].forEach(function(n){ if(cluster.indexOf(n)<0) cluster.push(n); }); }
-    var units=[m1%10], tens=[Math.floor(m1/10)];
-    if(m2%10!==units[0]) units.push(m2%10);
-    if(Math.floor(m2/10)!==tens[0]) tens.push(Math.floor(m2/10));
-
-    cluster = cluster.slice(0, 8);
-
-    return {cluster:cluster,j1:m1,j2:m2,fam:cluster.slice(2),units:units,tens:tens};
-  }
-  function ypePredSnap_inner(mkt, tdate, snap){
-  var logic=BEST_LOGIC[mkt]; if(!logic) return null;
-  var mk1=logic[0],p1=logic[1],mk2=logic[2],p2=logic[3],k=logic[4],tname=logic[5];
-  function gd(src,pos){
-    var td2=[]; if(ORDER[src]<ORDER[mkt]) td2.push(tdate);
-    for(var i=1;i<=10;i++) td2.push(addD(tdate,-i));
-    for(var i=0;i<td2.length;i++){
-      var d=td2[i];
-      if(isMarketClosed(src,d)) continue;
-      var dv=(snap[src] && snap[src][d]!==undefined) ? snap[src][d]
-            : (RD[src] && RD[src][d]!==undefined) ? RD[src][d] : null;
-      if(dv!==undefined&&dv!==null) return pos==='T'?Math.floor(dv/10):(dv%10);
-    }
-    return null;
-  }
-  var d1=gd(mk1,p1), d2=gd(mk2,p2);
-  if(d1===null||d2===null) return null;
-  var N=d1*10+d2, rm1=((N+k)%100+100)%100, rm2=((N-k)%100+100)%100;
-  var m1,m2;
-  if(tname==='raw'){ m1=rm1; m2=rm2; }
-  else if(tname==='palti'){ m1=palti(rm1); m2=palti(rm2); }
-  else if(tname==='pal+full'){ m1=palti(fullRashi(rm1)); m2=palti(fullRashi(rm2)); }
-  else if(tname==='inner'){ m1=innerRashi(rm1); m2=innerRashi(rm2); }
-  else if(tname==='outer'){ m1=outerRashi(rm1); m2=outerRashi(rm2); }
-  else { m1=rm1; m2=rm2; }
-  return {j1:m1, j2:m2};
-}
 
   for(var i=210;i>=0;i--){
     var d=addD(td,-i), mo=d.slice(0,7);
@@ -2502,8 +2456,9 @@ else { m1=raw_m1; m2=raw_m2; }
     var row={date:d,cells:{}};
     MKTS.forEach(function(m){
       var a=(ACT_SNAP[m.id] && ACT_SNAP[m.id][d]!==undefined) ? ACT_SNAP[m.id][d] : null;
-      // Use snapshotted prediction — won't change when new results are entered
-      var p=(a!==null)?ypePredSnap(m.id,d):null;
+      if(a!==null && isMarketClosed(m.id,d)) a=null;   // band din (mahine ki 1 / aakhri tarikh) ka koi result nahi hota
+      // 28 Nov 2026: wahi list jo draw se pehle Predictions tab par thi (SAGE niyam samet). Pehle yahan purane formule ki list banti thi.
+      var p=(a!==null)?v5PredBefore(m.id,d):null;
       var c=(p&&a!==null)?cls(p,a):null;
       // Top Pick tracking (Faridabad only)
       var tp=p&&p.topNum!==undefined?p.topNum:null;
@@ -2545,9 +2500,9 @@ else { m1=raw_m1; m2=raw_m2; }
   var tbrows=days.slice().reverse().map(function(row){
     var cells=MKTS.map(function(m){
       var cell=row.cells[m.id];
-      var clArr=cell.p?(cell.p.cluster||[cell.p.j1,cell.p.j2]).slice(0,8):[];
+      var clArr=cell.p?(cell.p.cluster||[cell.p.j1,cell.p.j2]).slice():[];   // poori list (SAGE wali list 1, 5 ya 10 number ki hoti hai)
       // Highlight the top pick number in gold inside the cluster list
-      var pc=clArr.length?clArr.map(function(n){
+      var pc=clArr.length?((cell.p&&cell.p.sage)?'<span title="SAGE niyam wala din" style="color:#fbbf24;font-size:9px;font-weight:900;margin-right:3px">&#9889;</span>':'')+clArr.map(function(n){
         var isTop=cell.tp!==null&&n===cell.tp;
         var style=isTop?'style="color:#fbbf24;font-weight:900;border-color:rgba(251,191,36,.5)"':'';
         return '<span class="pc" '+style+'>'+p2(n)+'</span>';
@@ -2840,13 +2795,14 @@ function exportDashboardToCSV() {
     mList.forEach(function(m) {
       var a = (typeof ACT !== 'undefined' && ACT[m.id]) ? ACT[m.id][d] : (typeof TK !== 'undefined' && TK[m.id] ? TK[m.id][d] : null);
       if (a === undefined) a = null;
-      var p = (typeof ypePred === 'function') ? ypePred(m.id, d) : null;
+      if (a !== null && typeof isMarketClosed === 'function' && isMarketClosed(m.id, d)) a = null;
+      var p = (typeof v5PredBefore === 'function') ? v5PredBefore(m.id, d) : ((typeof ypePred === 'function') ? ypePred(m.id, d) : null);
 
       var pStr = "";
       var numList = [];
       if (p) {
         var clArr = p.cluster || [p.j1, p.j2];
-        numList = clArr.slice(0, 8);
+        numList = clArr.slice();
         pStr = numList.map(function(n){ return String(n).padStart(2, '0'); }).join(" ");
       }
       var aStr = (a !== null && !isNaN(a)) ? String(a).padStart(2, '0') : "";
@@ -3194,8 +3150,8 @@ var SH_STATE = {
 // Safe prediction runner
 function shGetPred(mkt, tdate) {
   try {
-    if (typeof ypePred === 'function') return ypePred(mkt, tdate);
-    return null;
+    if (isMarketClosed(mkt, tdate)) return null;              // band din ka result ginti mein nahi
+    return v5PredBefore(mkt, tdate);                          // 28 Nov 2026: wahi list jo draw se pehle card par thi (History tab jaisi)
   } catch(e) {
     return null;
   }
